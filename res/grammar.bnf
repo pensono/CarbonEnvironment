@@ -1,0 +1,19 @@
+expression ::= compositeExpression | terminalExpression
+
+compositeExpression ::= expression infixOperator expression
+             | expression "." expression
+             | expression "(" expressionList ")"
+
+terminalExpression ::= compositeExpression | literal
+
+expressionList ::= expression | expression "," expressionList
+
+// Root items
+literal ::= number
+          | '"' string '"'
+
+infixOperator ::= operatorSymbol | operatorSymbol operatorSymbol
+
+operatorSymbol ::= NOT grammarSymbol
+
+grammarSymbol ::= "(" | ")" | "{" | "}" | "." | "," | "[" | "]"
