@@ -10,11 +10,6 @@ import java.util.*;
  * Created by Ethan Shea on 8/29/2016.
  */
 public class Compiler {
-    private static Map<String, InfixParselet> infixParselets = new HashMap<>();
-    static {
-        infixParselets.put("<", new InfixParselet());
-    }
-
     public static CarbonExpression compile(String input){
         List<String> tokens = tokenize(input);
         return parse(Iterators.peekingIterator(tokens.iterator()));
@@ -27,24 +22,40 @@ public class Compiler {
     public static CarbonExpression parse(PeekingIterator<String> tokens) {
         //See if it's an infix operator
         String token = tokens.peek();
-        Parselet parselet = matchParselet(token);
 
-        CarbonExpression base = parselet.parse(tokens);
-
-        if (!tokens.hasNext()) return base;
-        String infixToken = tokens.peek();
-        if (infixToken.equals("<")){
-            return new InfixParselet().parse(tokens, base);
-        }
-        return base;
-    }
-
-    private static Parselet matchParselet(String token) {
         if (Ints.tryParse(token) != null){
-            return new IntegerParselet();
+            CarbonExpression base =  new IntegerExpression(Integer.parseInt(tokens.next()));
+
+            if (!tokens.hasNext()) return base;
+            String infixToken = tokens.peek();
+            if (infixToken.equals("<")){
+                return parseInfix(tokens, base);
+            }
+            return base;
         } else {
             throw new ParseException("Invalid token: " + token);
         }
+    }
+
+    private static CarbonExpression parseInfix(PeekingIterator<String> tokens, CarbonExpression base) {
+        String operatorToken = tokens.next();
+        CarbonExpression parameter = Compiler.parse(tokens);
+
+        CarbonExpression operator;
+        switch (operatorToken) {
+            case "<":
+                operator = new CarbonExpression() {
+                    @Override
+                    public String getDebugString() {
+                        return "< Operator";
+                    }
+                };
+                break;
+            default:
+                throw new ParseException("Invalid Token");
+        }
+
+        return new CompositeExpression(base, operator, parameter);
     }
 }
 
