@@ -1,7 +1,5 @@
 package org.carbon.compiler;
 
-import com.google.common.collect.Iterators;
-import com.google.common.collect.PeekingIterator;
 import com.google.common.primitives.Ints;
 
 import java.util.*;
@@ -10,52 +8,72 @@ import java.util.*;
  * Created by Ethan Shea on 8/29/2016.
  */
 public class Compiler {
+    private static List<Parselet> terminalParselets = new ArrayList<>();
+    private static List<CompoundParselet> compoundParselets = new ArrayList<>();
+    static {
+        terminalParselets.add(new Parselet() {
+            @Override
+            public PrototypeExpression parse(TokenIterator tokens) {
+                return new PrototypeIntegerExpression(Integer.parseInt(tokens.next()));
+            }
+
+            @Override
+            public boolean testMatch(String token) {
+                return Ints.tryParse(token) != null;
+            }
+        });
+        terminalParselets.add(new Parselet() {
+            @Override
+            public PrototypeExpression parse(TokenIterator tokens) {
+                return new PrototypeIdentifierExpression(tokens.next());
+            }
+
+            @Override
+            public boolean testMatch(String token) {
+                return true;
+            }
+        });
+        compoundParselets.add(new StaticParselet(".") {
+            @Override
+            public PrototypeExpression parse(PrototypeExpression base, TokenIterator tokens) {
+                tokens.consume(".");
+                PrototypeExpression member = Compiler.parse(tokens);
+                return new PrototypeMemberExpression(base, member);
+            }
+        });
+    }
+
     public static CarbonExpression compile(String input){
         List<String> tokens = tokenize(input);
-        return parse(Iterators.peekingIterator(tokens.iterator()));
+        System.out.println(String.join(",",tokens));
+        PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
+        System.out.println(protypeExpression.getPrettyString());
+        return null;
     }
 
     public static List<String> tokenize(String input) {
-        return Arrays.asList(input.split(" "));
+        return Arrays.asList(input.split(" |(?=[.])|(?<=[.])"));
     }
 
-    public static CarbonExpression parse(PeekingIterator<String> tokens) {
+    public static PrototypeExpression parse(TokenIterator tokens) {
         //See if it's an infix operator
         String token = tokens.peek();
 
-        if (Ints.tryParse(token) != null){
-            CarbonExpression base =  new IntegerExpression(Integer.parseInt(tokens.next()));
+        Optional<Parselet> match = terminalParselets.stream().filter(p -> p.testMatch(token)).findFirst();
+        if (match.isPresent()){
+            PrototypeExpression base = match.get().parse(tokens);
 
             if (!tokens.hasNext()) return base;
-            String infixToken = tokens.peek();
-            if (infixToken.equals("<")){
-                return parseInfix(tokens, base);
+            final String nextToken = tokens.peek();
+
+            Optional<CompoundParselet> nextMatch = compoundParselets.stream().filter(p -> p.testMatch(nextToken)).findFirst();
+            if (match.isPresent()){
+                return nextMatch.get().parse(base,tokens);
             }
             return base;
         } else {
             throw new ParseException("Invalid token: " + token);
         }
-    }
-
-    private static CarbonExpression parseInfix(PeekingIterator<String> tokens, CarbonExpression base) {
-        String operatorToken = tokens.next();
-        CarbonExpression parameter = Compiler.parse(tokens);
-
-        CarbonExpression operator;
-        switch (operatorToken) {
-            case "<":
-                operator = new CarbonExpression() {
-                    @Override
-                    public String getDebugString() {
-                        return "< Operator";
-                    }
-                };
-                break;
-            default:
-                throw new ParseException("Invalid Token");
-        }
-
-        return new CompositeExpression(base, operator, parameter);
     }
 }
 
