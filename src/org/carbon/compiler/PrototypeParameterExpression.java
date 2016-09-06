@@ -10,19 +10,22 @@ import java.util.stream.Collectors;
  * Created by Ethan Shea on 8/31/2016.
  */
 public class PrototypeParameterExpression extends PrototypeExpression {
+    private PrototypeExpression base;
     private List<PrototypeExpression> parameterList = new ArrayList<>();
 
-    public PrototypeParameterExpression(List<PrototypeExpression> parameterList) {
+    public PrototypeParameterExpression(PrototypeExpression base, List<PrototypeExpression> parameterList) {
         this.parameterList = parameterList;
+        this.base = base;
     }
 
     public String getPrettyString(int level) {
         return Strings.repeat("  ", level) + getDebugString() + "\n" +
-                String.join("\n", parameterList.stream().map(PrototypeExpression::getDebugString).collect(Collectors.toList()));
+                base.getPrettyString(level + 1) + "\n" +
+                String.join("\n", parameterList.stream().map(p -> p.getPrettyString(level + 1)).collect(Collectors.toList()));
     }
 
     @Override
     public String getDebugString() {
-        return "Member Expression";
+        return "Parameter Expression";
     }
 }

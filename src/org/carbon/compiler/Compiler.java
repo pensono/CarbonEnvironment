@@ -40,6 +40,22 @@ public class Compiler {
                 return new PrototypeMemberExpression(base, tokens.next());
             }
         });
+        compoundParselets.add(new StaticParselet("(") {
+            @Override
+            public PrototypeExpression parse(PrototypeExpression base, TokenIterator tokens) {
+                tokens.consume("(");
+                List<PrototypeExpression> parameters = new ArrayList<>();
+                while (!tokens.peek().equals(")")) {
+                    parameters.add(Compiler.parse(tokens));
+                    if (!tokens.peek().equals(",")) {
+                        break;
+                    }
+                    tokens.consume(",");
+                }
+
+                return new PrototypeParameterExpression(base, parameters);
+            }
+        });
     }
 
     public static CarbonExpression compile(String input){
@@ -51,7 +67,7 @@ public class Compiler {
     }
 
     public static List<String> tokenize(String input) {
-        return Arrays.asList(input.split(" |(?=[.])|(?<=[.])"));
+        return Arrays.asList(input.split(" |(?=[.\\(\\)])|(?<=[.\\(\\)])"));
     }
 
     public static PrototypeExpression parse(TokenIterator tokens) {
@@ -62,13 +78,15 @@ public class Compiler {
         if (match.isPresent()){
             PrototypeExpression base = match.get().parse(tokens);
 
-            // The predicate here must be more strict
+            // The predicate here must be more strict when the REPL is no longer the only means of input
             while (tokens.hasNext()) {
                 final String nextToken = tokens.peek();
 
                 Optional<CompoundParselet> nextMatch = compoundParselets.stream().filter(p -> p.testMatch(nextToken)).findFirst();
-                if (match.isPresent()) {
+                if (nextMatch.isPresent()) {
                     base = nextMatch.get().parse(base, tokens);
+                } else {
+                    break;
                 }
             }
             return base;
