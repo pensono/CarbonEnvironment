@@ -37,15 +37,14 @@ public class Compiler {
             @Override
             public PrototypeExpression parse(PrototypeExpression base, TokenIterator tokens) {
                 tokens.consume(".");
-                PrototypeExpression member = Compiler.parse(tokens);
-                return new PrototypeMemberExpression(base, member);
+                return new PrototypeMemberExpression(base, tokens.next());
             }
         });
     }
 
     public static CarbonExpression compile(String input){
         List<String> tokens = tokenize(input);
-        System.out.println(String.join(",",tokens));
+        //System.out.println(String.join(",",tokens));
         PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
         System.out.println(protypeExpression.getPrettyString());
         return null;
@@ -63,12 +62,14 @@ public class Compiler {
         if (match.isPresent()){
             PrototypeExpression base = match.get().parse(tokens);
 
-            if (!tokens.hasNext()) return base;
-            final String nextToken = tokens.peek();
+            // The predicate here must be more strict
+            while (tokens.hasNext()) {
+                final String nextToken = tokens.peek();
 
-            Optional<CompoundParselet> nextMatch = compoundParselets.stream().filter(p -> p.testMatch(nextToken)).findFirst();
-            if (match.isPresent()){
-                return nextMatch.get().parse(base,tokens);
+                Optional<CompoundParselet> nextMatch = compoundParselets.stream().filter(p -> p.testMatch(nextToken)).findFirst();
+                if (match.isPresent()) {
+                    base = nextMatch.get().parse(base, tokens);
+                }
             }
             return base;
         } else {

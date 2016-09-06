@@ -7,17 +7,17 @@ import com.google.common.base.Strings;
  */
 public class PrototypeMemberExpression extends PrototypeExpression {
     private PrototypeExpression base;
-    private PrototypeExpression member;
+    private String memberName;
 
-    public PrototypeMemberExpression(PrototypeExpression base, PrototypeExpression member) {
+    public PrototypeMemberExpression(PrototypeExpression base, String memberName) {
         this.base = base;
-        this.member = member;
+        this.memberName = memberName;
     }
 
     public String getPrettyString(int level) {
         return Strings.repeat("  ", level) + getDebugString() + "\n" +
                 base.getPrettyString(level + 1) + "\n" +
-                member.getPrettyString(level + 1) + "\n";
+                Strings.repeat("  ", level + 1  ) + "Member Name: " + memberName;
     }
 
     @Override
