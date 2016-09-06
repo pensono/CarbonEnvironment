@@ -3,11 +3,15 @@ package org.carbon.compiler;
 import com.google.common.primitives.Ints;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by Ethan Shea on 8/29/2016.
  */
 public class Compiler {
+    public static final String grammarChars = "[.\\(\\),]";
+
     private static List<Parselet> terminalParselets = new ArrayList<>();
     private static List<CompoundParselet> compoundParselets = new ArrayList<>();
     static {
@@ -52,22 +56,39 @@ public class Compiler {
                     }
                     tokens.consume(",");
                 }
+                tokens.consume(")");
 
                 return new PrototypeParameterExpression(base, parameters);
+            }
+        });
+        compoundParselets.add(new CompoundParselet() {
+            Pattern grammarSymbols = Pattern.compile(Compiler.grammarChars);
+
+            @Override
+            public PrototypeExpression parse(PrototypeExpression base, TokenIterator tokens) {
+                String operator = tokens.next();
+                PrototypeExpression argument = Compiler.parse(tokens);
+                return new PrototypeParameterExpression(new PrototypeMemberExpression(base, operator), Arrays.asList(argument));
+            }
+
+            @Override
+            public boolean testMatch(String token) {
+                Matcher matcher = grammarSymbols.matcher(token);
+                return !matcher.find();
             }
         });
     }
 
     public static CarbonExpression compile(String input){
         List<String> tokens = tokenize(input);
-        //System.out.println(String.join(",",tokens));
+        System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
         System.out.println(protypeExpression.getPrettyString());
         return null;
     }
 
     public static List<String> tokenize(String input) {
-        return Arrays.asList(input.split(" |(?=[.\\(\\)])|(?<=[.\\(\\)])"));
+        return Arrays.asList(input.split(" |(?=" + grammarChars + ")|(?<=" + grammarChars+ ")"));
     }
 
     public static PrototypeExpression parse(TokenIterator tokens) {
