@@ -14,18 +14,13 @@ public class LessThanExpression extends CarbonExpression {
     private Optional<CarbonExpression> rhs;
 
     public LessThanExpression(CarbonExpression parent){
-        super(parent, parent.getMember("Boolean"));
+        super(parent, parent.getMember("Boolean").get());
         rhs = Optional.empty();
     }
 
     public LessThanExpression(CarbonExpression parent, CarbonExpression rhs){
-        super(parent, parent.getMember("Boolean"));
+        super(parent, parent.getMember("Boolean").get());
         this.rhs = Optional.of(rhs);
-    }
-
-    @Override
-    public Optional<CarbonExpression> getMember(String name) {
-        return Optional.empty();
     }
 
     @Override

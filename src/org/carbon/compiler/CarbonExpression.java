@@ -18,9 +18,9 @@ public abstract class CarbonExpression implements PrettyPrintable {
         this.supertype = Optional.empty();
     }
 
-    public CarbonExpression(CarbonExpression parent, Optional<CarbonExpression> supertype){
+    public CarbonExpression(CarbonExpression parent, CarbonExpression supertype){
         this.parent = parent;
-        this.supertype = supertype;
+        this.supertype = Optional.of(supertype);
     }
 
     /**
@@ -29,7 +29,9 @@ public abstract class CarbonExpression implements PrettyPrintable {
      */
 //    public abstract boolean isValue();
 
-    public abstract Optional<CarbonExpression> getMember(String name);
+    public Optional<CarbonExpression> getMember(String name) {
+        return getParent().getMember(name);
+    }
 
     public CarbonExpression getParent() {
         return parent;

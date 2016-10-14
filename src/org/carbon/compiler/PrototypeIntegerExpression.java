@@ -1,5 +1,6 @@
 package org.carbon.compiler;
 
+import org.carbon.library.IntegerExpression;
 import org.carbon.library.IntegerRangeExpression;
 
 /**
@@ -19,6 +20,6 @@ public class PrototypeIntegerExpression extends PrototypeExpression {
 
     @Override
     public CarbonExpression link(CarbonExpression scope) {
-        return new IntegerRangeExpression(scope, value, value);
+        return new IntegerExpression(scope, value);
     }
 }

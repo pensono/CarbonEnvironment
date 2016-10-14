@@ -15,11 +15,6 @@ public class BooleanExpression extends CarbonExpression {
     }
 
     @Override
-    public Optional<CarbonExpression> getMember(String name) {
-        return Optional.empty();
-    }
-
-    @Override
     public CarbonExpression parameteritize(PrototypeExpression parameterList) {
         throw new ParseException("Booleans can't be parameteritized");
     }

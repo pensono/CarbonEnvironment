@@ -8,16 +8,15 @@ import org.carbon.compiler.PrototypeExpression;
 import java.util.Optional;
 
 /**
+ * An integer that represents exactly one value
  * Created by Ethan Shea on 8/29/2016.
  */
-public class IntegerRangeExpression extends GenericIntegerExpression {
-    private int valueLow; //inclusive
-    private int valueHigh; // inclusive
+public class IntegerExpression extends GenericIntegerExpression {
+    private int value;
 
-    public IntegerRangeExpression(CarbonExpression parent, int low, int high) {
-        super(parent);
-        valueLow = low;
-        valueHigh = high;
+    public IntegerExpression(CarbonExpression parent, int value) {
+        super(parent, parent.getMember("Integer").get());
+        this.value = value;
     }
 
     @Override
@@ -27,6 +26,6 @@ public class IntegerRangeExpression extends GenericIntegerExpression {
 
     @Override
     public String getDebugString() {
-        return "Integer[" + valueLow + ".." + valueHigh + "]";
+        return "Integer["+value+"]";
     }
 }
