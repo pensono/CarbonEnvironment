@@ -34,6 +34,6 @@ public class PrototypeMemberExpression extends PrototypeExpression {
         Optional<CarbonExpression> memberExpr = baseExpr.getMember(memberName);
         if (memberExpr.isPresent())
             return memberExpr.get();
-        throw new ParseException("Member " + memberExpr + "not found.");
+        throw new ParseException("Member " + memberName + " not found in\n" + base.getPrettyString());
     }
 }

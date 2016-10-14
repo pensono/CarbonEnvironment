@@ -2,6 +2,7 @@ package org.carbon;
 
 import org.carbon.compiler.CarbonExpression;
 import org.carbon.compiler.Compiler;
+import org.carbon.compiler.ParseException;
 import org.carbon.library.BooleanExpression;
 
 import java.util.Scanner;
@@ -18,8 +19,21 @@ public class Main {
         while (true) {
             System.out.print("$ ");
             String input = scanner.nextLine();
-            CarbonExpression expression = Compiler.compile(rootExpression, input);
-//            System.out.println(expression.getPrettyString());
+
+            if (input.equals("quit")){
+                break;
+            } else if (input.isEmpty()){
+                continue;
+            }
+
+            try {
+                CarbonExpression expression = Compiler.compile(rootExpression, input);
+            } catch (ParseException pe){
+                System.out.flush();
+                System.err.println(pe.getMessage());
+                pe.printStackTrace(System.err);
+                System.err.flush();
+            }
         }
     }
 }
