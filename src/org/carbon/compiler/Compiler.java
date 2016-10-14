@@ -79,12 +79,14 @@ public class Compiler {
         });
     }
 
-    public static CarbonExpression compile(String input){
+    public static CarbonExpression compile(CarbonExpression scope, String input){
         List<String> tokens = tokenize(input);
         System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
         System.out.println(protypeExpression.getPrettyString());
-        return null;
+        CarbonExpression expression = link(scope, protypeExpression);
+        System.out.println(expression.getPrettyString());
+        return expression;
     }
 
     public static List<String> tokenize(String input) {
@@ -114,6 +116,10 @@ public class Compiler {
         } else {
             throw new ParseException("Invalid token: " + token);
         }
+    }
+
+    private static CarbonExpression link(CarbonExpression scope, PrototypeExpression protypeExpression) {
+        return protypeExpression.link(scope);
     }
 }
 

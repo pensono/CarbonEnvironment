@@ -17,3 +17,13 @@ infixOperator ::= operatorSymbol | operatorSymbol operatorSymbol
 operatorSymbol ::= NOT grammarSymbol
 
 grammarSymbol ::= "(" | ")" | "{" | "}" | "." | "," | "[" | "]"
+
+
+////////////////////////////////////////////////////////////////
+Integer = {
+    > (Other) : Boolean
+}
+
+Boolean = True | False
+
+Nullable(Type) = Type | Null

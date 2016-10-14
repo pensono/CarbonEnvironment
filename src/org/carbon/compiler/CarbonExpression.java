@@ -1,16 +1,48 @@
 package org.carbon.compiler;
 
-import com.google.common.base.Strings;
+import org.carbon.PrettyPrintable;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Ethan Shea on 8/29/2016.
  */
-public abstract class CarbonExpression {
-    public String getPrettyString() { return getPrettyString(0); }
+public abstract class CarbonExpression implements PrettyPrintable {
+    private CarbonExpression parent;
+    private Optional<CarbonExpression> supertype;
 
-    public String getPrettyString(int level) {
-        return Strings.repeat("  ", level) + getDebugString();
+    public CarbonExpression(CarbonExpression parent){
+        this.parent = parent;
+        this.supertype = Optional.empty();
     }
 
-    public abstract String getDebugString();
+    public CarbonExpression(CarbonExpression parent, Optional<CarbonExpression> supertype){
+        this.parent = parent;
+        this.supertype = supertype;
+    }
+
+    /**
+     * Returns true if this expression can only have one value
+     * @return
+     */
+//    public abstract boolean isValue();
+
+    public abstract Optional<CarbonExpression> getMember(String name);
+
+    public CarbonExpression getParent() {
+        return parent;
+    }
+
+    public Optional<CarbonExpression> getSupertype() {
+        return supertype;
+    }
+
+    /**
+     * Returns a version of this expression with the given parameter filled out
+     * @param parameter
+     * @return
+     */
+    public abstract CarbonExpression parameteritize(PrototypeExpression parameter);
 }

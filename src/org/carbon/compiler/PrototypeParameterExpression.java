@@ -28,4 +28,13 @@ public class PrototypeParameterExpression extends PrototypeExpression {
     public String getDebugString() {
         return "Parameter Expression";
     }
+
+    @Override
+    public CarbonExpression link(CarbonExpression scope) {
+        CarbonExpression expr = base.link(scope);
+        for (PrototypeExpression expression : parameterList) {
+            expr = expr.parameteritize(expression);
+        }
+        return expr;
+    }
 }
