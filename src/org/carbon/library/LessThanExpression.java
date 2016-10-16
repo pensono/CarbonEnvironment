@@ -10,15 +10,15 @@ import java.util.Optional;
 /**
  * @author Ethan
  */
-public class LessThanExpression extends CarbonExpression {
-    private Optional<CarbonExpression> rhs;
+public class LessThanExpression extends BooleanExpression {
+    private Optional<GenericIntegerExpression> rhs;
 
-    public LessThanExpression(CarbonExpression parent){
+    public LessThanExpression(GenericIntegerExpression parent){
         super(parent, parent.getMember("Boolean").get());
         rhs = Optional.empty();
     }
 
-    public LessThanExpression(CarbonExpression parent, CarbonExpression rhs){
+    public LessThanExpression(GenericIntegerExpression parent, GenericIntegerExpression rhs){
         super(parent, parent.getMember("Boolean").get());
         this.rhs = Optional.of(rhs);
     }
@@ -33,7 +33,7 @@ public class LessThanExpression extends CarbonExpression {
         if (!expression.isSubtypeOf(getMember("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
         }
-        return new LessThanExpression(getParent(), expression);
+        return new LessThanExpression((GenericIntegerExpression)getParent(), (GenericIntegerExpression) expression);
     }
 
     public String getPrettyString(int level) {
@@ -45,5 +45,14 @@ public class LessThanExpression extends CarbonExpression {
     @Override
     public String getDebugString() {
         return "LessThan:"+getSupertype().get().getDebugString();
+    }
+
+    @Override
+    public CarbonExpression reduce(){
+        if (rhs.isPresent() && getParent() instanceof IntegerExpression && rhs.get() instanceof IntegerExpression){
+            boolean value = ((IntegerExpression) getParent()).getValue() < ((IntegerExpression) rhs.get()).getValue();
+            return new BooleanExpression(getParent(), value);
+        }
+        return this;
     }
 }

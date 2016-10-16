@@ -28,4 +28,8 @@ public class IntegerExpression extends GenericIntegerExpression {
     public String getDebugString() {
         return "Integer["+value+"]";
     }
+
+    public int getValue() {
+        return value;
+    }
 }
