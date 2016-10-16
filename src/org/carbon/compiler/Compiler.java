@@ -86,7 +86,7 @@ public class Compiler {
         System.out.println(protypeExpression.getPrettyString());
         CarbonExpression expression = link(scope, protypeExpression);
         System.out.println(expression.getPrettyString());
-        return expression;
+        return expression.reduce();
     }
 
     public static List<String> tokenize(String input) {

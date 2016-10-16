@@ -41,10 +41,19 @@ public abstract class CarbonExpression implements PrettyPrintable {
         return supertype;
     }
 
+    public boolean isSubtypeOf(CarbonExpression expression) {
+        if (supertype.isPresent()){
+            return supertype.get() == expression || supertype.get().isSubtypeOf(expression);
+        }
+        return false;
+    }
+
     /**
      * Returns a version of this expression with the given parameter filled out
      * @param parameter
      * @return
      */
     public abstract CarbonExpression parameteritize(PrototypeExpression parameter);
+
+    public CarbonExpression reduce() { return this; }
 }

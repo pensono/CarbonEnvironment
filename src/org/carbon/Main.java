@@ -30,6 +30,7 @@ public class Main {
 
             try {
                 CarbonExpression expression = Compiler.compile(rootExpression, input);
+                System.out.println(expression.getPrettyString());
             } catch (ParseException pe){
                 System.out.flush();
                 System.err.println(pe.getMessage());

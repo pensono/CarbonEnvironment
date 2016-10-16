@@ -29,7 +29,11 @@ public class LessThanExpression extends CarbonExpression {
             //double paramaterization, what happens now?
             throw new ParseException("Double parametrization" + this + "\n" + parameter);
         }
-        return new LessThanExpression(getParent(), parameter.link(this));
+        CarbonExpression expression = parameter.link(this);
+        if (!expression.isSubtypeOf(getMember("Integer").get())){
+            throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
+        }
+        return new LessThanExpression(getParent(), expression);
     }
 
     public String getPrettyString(int level) {
