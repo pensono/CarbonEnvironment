@@ -81,9 +81,9 @@ public class Compiler {
 
     public static CarbonExpression compile(CarbonExpression scope, String input){
         List<String> tokens = tokenize(input);
-        System.out.println(String.join(" ",tokens));
+        //System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
-        System.out.println(protypeExpression.getPrettyString());
+        //System.out.println(protypeExpression.getPrettyString());
         CarbonExpression expression = link(scope, protypeExpression);
         System.out.println(expression.getPrettyString());
         return expression.reduce();

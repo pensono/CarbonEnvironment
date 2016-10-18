@@ -6,21 +6,26 @@ import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
+import java.util.function.BiPredicate;
+import java.util.function.IntBinaryOperator;
 
 /**
  * @author Ethan
  */
-public class LessThanExpression extends BooleanExpression {
+public class ComparisonExpression extends BooleanExpression {
     private Optional<GenericIntegerExpression> rhs;
+    private BiPredicate<Integer, Integer> operator;
 
-    public LessThanExpression(GenericIntegerExpression parent){
+    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator){
         super(parent, parent.getMember("Boolean").get());
-        rhs = Optional.empty();
+        this.rhs = Optional.empty();
+        this.operator = operator;
     }
 
-    public LessThanExpression(GenericIntegerExpression parent, GenericIntegerExpression rhs){
+    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, GenericIntegerExpression rhs){
         super(parent, parent.getMember("Boolean").get());
         this.rhs = Optional.of(rhs);
+        this.operator = operator;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class LessThanExpression extends BooleanExpression {
         if (!expression.isSubtypeOf(getMember("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
         }
-        return new LessThanExpression((GenericIntegerExpression)getParent(), (GenericIntegerExpression) expression);
+        return new ComparisonExpression((GenericIntegerExpression)getParent(), operator, (GenericIntegerExpression) expression);
     }
 
     public String getPrettyString(int level) {
@@ -50,7 +55,8 @@ public class LessThanExpression extends BooleanExpression {
     @Override
     public CarbonExpression reduce(){
         if (rhs.isPresent() && getParent() instanceof IntegerExpression && rhs.get() instanceof IntegerExpression){
-            boolean value = ((IntegerExpression) getParent()).getValue() < ((IntegerExpression) rhs.get()).getValue();
+            boolean value = operator.test(((IntegerExpression) getParent()).getValue(),
+                                          ((IntegerExpression) rhs.get()).getValue());
             return new BooleanExpression(getParent(), value);
         }
         return this;
