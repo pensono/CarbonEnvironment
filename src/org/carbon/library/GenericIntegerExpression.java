@@ -26,17 +26,17 @@ public class GenericIntegerExpression extends CarbonExpression {
     public Optional<CarbonExpression> getMember(String name) {
         switch (name){
             case "<":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x < y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x < y, "<"));
             case ">":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x > y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x > y, ">"));
             case "<=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x <= y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x <= y, "<="));
             case ">=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x >= y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x >= y, ">="));
             case "==":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x == y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x == y, "=="));
             case "!=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x != y));
+                return Optional.of(new ComparisonExpression(this, (x, y) -> x != y, "!="));
             default:
                 return getParent().getMember(name);
         }

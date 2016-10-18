@@ -14,18 +14,21 @@ import java.util.function.IntBinaryOperator;
  */
 public class ComparisonExpression extends BooleanExpression {
     private Optional<GenericIntegerExpression> rhs;
+    private String comparisonName;
     private BiPredicate<Integer, Integer> operator;
 
-    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator){
+    private ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName, Optional<GenericIntegerExpression> rhs){
         super(parent, parent.getMember("Boolean").get());
-        this.rhs = Optional.empty();
-        this.operator = operator;
+        this.rhs = rhs;
+        this.comparisonName = comparisonName;
+        this.operator = operator;    }
+
+    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName) {
+        this(parent, operator, comparisonName, Optional.empty());
     }
 
-    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, GenericIntegerExpression rhs){
-        super(parent, parent.getMember("Boolean").get());
-        this.rhs = Optional.of(rhs);
-        this.operator = operator;
+    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName, GenericIntegerExpression rhs){
+        this(parent, operator, comparisonName, Optional.of(rhs));
     }
 
     @Override
@@ -38,7 +41,7 @@ public class ComparisonExpression extends BooleanExpression {
         if (!expression.isSubtypeOf(getMember("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
         }
-        return new ComparisonExpression((GenericIntegerExpression)getParent(), operator, (GenericIntegerExpression) expression);
+        return new ComparisonExpression((GenericIntegerExpression)getParent(), operator, comparisonName, (GenericIntegerExpression) expression);
     }
 
     public String getPrettyString(int level) {
@@ -49,7 +52,7 @@ public class ComparisonExpression extends BooleanExpression {
 
     @Override
     public String getDebugString() {
-        return "LessThan:"+getSupertype().get().getDebugString();
+        return comparisonName + ":"+getSupertype().get().getDebugString();
     }
 
     @Override
