@@ -6,29 +6,28 @@ import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
-import java.util.function.BiPredicate;
-import java.util.function.IntBinaryOperator;
+import java.util.function.BiFunction;
 
 /**
- * @author Ethan
+ * Created by Ethan Shea on 10/18/2016.
  */
-public class ComparisonExpression extends BooleanExpression {
+public class IntegerArithmeticExpression extends GenericIntegerExpression {
     private Optional<GenericIntegerExpression> rhs;
-    private String comparisonName;
-    private BiPredicate<Integer, Integer> operator;
+    private String operatorName;
+    private BiFunction<Integer, Integer, Integer> operator;
 
-    private ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName, Optional<GenericIntegerExpression> rhs){
-        super(parent, parent.getMember("Boolean").get());
+    private IntegerArithmeticExpression(GenericIntegerExpression parent, BiFunction<Integer, Integer, Integer> operator, String operatorName, Optional<GenericIntegerExpression> rhs){
+        super(parent, parent.getMember("Integer").get());
         this.rhs = rhs;
-        this.comparisonName = comparisonName;
+        this.operatorName = operatorName;
         this.operator = operator;    }
 
-    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName) {
-        this(parent, operator, comparisonName, Optional.empty());
+    public IntegerArithmeticExpression(GenericIntegerExpression parent, BiFunction<Integer, Integer, Integer> operator, String operatorName) {
+        this(parent, operator, operatorName, Optional.empty());
     }
 
-    public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName, GenericIntegerExpression rhs){
-        this(parent, operator, comparisonName, Optional.of(rhs));
+    public IntegerArithmeticExpression(GenericIntegerExpression parent, BiFunction<Integer, Integer, Integer> operator, String operatorName, GenericIntegerExpression rhs){
+        this(parent, operator, operatorName, Optional.of(rhs));
     }
 
     @Override
@@ -41,7 +40,7 @@ public class ComparisonExpression extends BooleanExpression {
         if (!expression.isSubtypeOf(getMember("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
         }
-        return new ComparisonExpression((GenericIntegerExpression)getParent(), operator, comparisonName, (GenericIntegerExpression) expression);
+        return new IntegerArithmeticExpression((GenericIntegerExpression)getParent(), operator, operatorName, (GenericIntegerExpression) expression);
     }
 
     public String getPrettyString(int level) {
@@ -52,7 +51,7 @@ public class ComparisonExpression extends BooleanExpression {
 
     @Override
     public String getDebugString() {
-        return comparisonName + ":"+getSupertype().get().getDebugString();
+        return operatorName + ":"+getSupertype().get().getDebugString();
     }
 
     @Override
@@ -63,11 +62,12 @@ public class ComparisonExpression extends BooleanExpression {
 
         // TODO does this always reduce to a GenericIntegerExpression?
         rhs = Optional.of((GenericIntegerExpression) rhs.get().reduce());
-        if (rhs.isPresent() && getParent() instanceof IntegerExpression && rhs.get() instanceof IntegerExpression){
-            boolean value = operator.test(((IntegerExpression) getParent()).getValue(),
-                                          ((IntegerExpression) rhs.get()).getValue());
-            return new BooleanExpression(getParent(), value);
+        if (getParent() instanceof IntegerExpression && rhs.get() instanceof IntegerExpression){
+            int value = operator.apply(((IntegerExpression) getParent()).getValue(),
+                    ((IntegerExpression) rhs.get()).getValue());
+            return new IntegerExpression(getParent(), value);
         }
         return this;
     }
+
 }

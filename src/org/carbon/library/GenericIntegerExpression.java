@@ -37,6 +37,14 @@ public class GenericIntegerExpression extends CarbonExpression {
                 return Optional.of(new ComparisonExpression(this, (x, y) -> x == y, "=="));
             case "!=":
                 return Optional.of(new ComparisonExpression(this, (x, y) -> x != y, "!="));
+            case "+":
+                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x + y, "+"));
+            case "-":
+                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x - y, "-"));
+            case "*":
+                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x * y, "*"));
+            case "/":
+                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x / y, "/"));
             default:
                 return getParent().getMember(name);
         }
