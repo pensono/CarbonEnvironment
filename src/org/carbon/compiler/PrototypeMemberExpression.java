@@ -1,6 +1,5 @@
 package org.carbon.compiler;
 
-import com.google.common.base.Strings;
 import org.carbon.PrettyPrintable;
 
 import java.util.Optional;
@@ -18,13 +17,13 @@ public class PrototypeMemberExpression extends PrototypeExpression {
     }
 
     public String getPrettyString(int level) {
-        return PrettyPrintable.indent(level) + getDebugString() + "\n" +
+        return PrettyPrintable.indent(level) + getShortString() + "\n" +
                 base.getPrettyString(level + 1) + "\n" +
                 PrettyPrintable.indent(level + 1) + "Member Name: " + memberName;
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Member Expression";
     }
 

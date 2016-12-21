@@ -26,7 +26,7 @@ public class IntegerRangeExpression extends GenericIntegerExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Integer[" + valueLow + ".." + valueHigh + "]";
     }
 }

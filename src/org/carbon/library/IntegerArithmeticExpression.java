@@ -44,14 +44,14 @@ public class IntegerArithmeticExpression extends GenericIntegerExpression {
     }
 
     public String getPrettyString(int level) {
-        return PrettyPrintable.indent(level) + getDebugString() + "\n" +
+        return PrettyPrintable.indent(level) + getShortString() + "\n" +
                 getParent().getPrettyString(level + 1) +
                 (rhs.isPresent() ? "\n" + rhs.get().getPrettyString(level + 1) : "");
     }
 
     @Override
-    public String getDebugString() {
-        return operatorName + ":"+getSupertype().get().getDebugString();
+    public String getShortString() {
+        return operatorName + ":"+getSupertype().get().getShortString();
     }
 
     @Override

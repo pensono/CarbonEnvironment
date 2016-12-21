@@ -56,7 +56,7 @@ public class GenericIntegerExpression extends CarbonExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Integer";
     }
 }

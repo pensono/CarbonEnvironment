@@ -5,7 +5,6 @@ import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -26,14 +25,14 @@ public class RootExpression extends CarbonExpression {
 
     @Override
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Cannot parameterize root. (How the hell did you even do this?!");
+        throw new ParseException("Cannot parameterize root. (How the hell did you even do this?!)");
     }
 
     @Override
     public String getPrettyString(int level) {
         StringBuilder sb = new StringBuilder();
         sb.append(PrettyPrintable.indent(level));
-        sb.append(getDebugString());
+        sb.append(getShortString());
 
         for (Map.Entry<String, CarbonExpression> entry : members.entrySet()){
             sb.append(PrettyPrintable.indent(level+1));
@@ -44,7 +43,7 @@ public class RootExpression extends CarbonExpression {
         return sb.toString();
     }
 
-    public String getDebugString() {
+    public String getShortString() {
         return "Root expression";
     }
 

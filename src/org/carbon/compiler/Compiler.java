@@ -85,7 +85,7 @@ public class Compiler {
         PrototypeExpression protypeExpression = parse(new TokenIterator(tokens));
         //System.out.println(protypeExpression.getPrettyString());
         CarbonExpression expression = link(scope, protypeExpression);
-        System.out.println(expression.getPrettyString());
+        //System.out.println(expression.getPrettyString());
         return expression.reduce();
     }
 

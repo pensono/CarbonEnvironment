@@ -7,7 +7,6 @@ import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
 import java.util.function.BiPredicate;
-import java.util.function.IntBinaryOperator;
 
 /**
  * @author Ethan
@@ -45,14 +44,14 @@ public class ComparisonExpression extends BooleanExpression {
     }
 
     public String getPrettyString(int level) {
-        return PrettyPrintable.indent(level) + getDebugString() + "\n" +
+        return PrettyPrintable.indent(level) + getShortString() + "\n" +
                 getParent().getPrettyString(level + 1) +
                 (rhs.isPresent() ? "\n" + rhs.get().getPrettyString(level + 1) : "");
     }
 
     @Override
-    public String getDebugString() {
-        return comparisonName + ":"+getSupertype().get().getDebugString();
+    public String getShortString() {
+        return comparisonName + ":"+getSupertype().get().getShortString();
     }
 
     @Override

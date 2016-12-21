@@ -1,12 +1,18 @@
-expression ::= compositeExpression | terminalExpression
+expression ::= relation
+             | terminalExpression
+             | expression "[" expression "]"
 
-compositeExpression ::= expression infixOperator expression
+relation ::= expression infixOperator expression
              | expression "." expression
              | expression "(" expressionList ")"
 
-terminalExpression ::= compositeExpression | literal
+compositeExpression ::= "{" expressions "}"
+
+terminalExpression ::= literal
 
 expressionList ::= expression | expression "," expressionList
+
+expressions ::= expression | expression expressions
 
 // Root items
 literal ::= number

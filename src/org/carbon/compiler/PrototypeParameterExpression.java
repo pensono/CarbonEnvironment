@@ -19,13 +19,13 @@ public class PrototypeParameterExpression extends PrototypeExpression {
     }
 
     public String getPrettyString(int level) {
-        return Strings.repeat("  ", level) + getDebugString() + "\n" +
+        return Strings.repeat("  ", level) + getShortString() + "\n" +
                 base.getPrettyString(level + 1) + "\n" +
                 String.join("\n", parameterList.stream().map(p -> p.getPrettyString(level + 1)).collect(Collectors.toList()));
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Parameter Expression";
     }
 

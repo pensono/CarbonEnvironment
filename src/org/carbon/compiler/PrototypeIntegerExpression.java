@@ -14,7 +14,7 @@ public class PrototypeIntegerExpression extends PrototypeExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Integer: " + Integer.toString(value);
     }
 

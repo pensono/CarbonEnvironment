@@ -25,7 +25,7 @@ public class IntegerExpression extends GenericIntegerExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Integer["+value+"]";
     }
 

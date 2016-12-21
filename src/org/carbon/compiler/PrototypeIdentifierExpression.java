@@ -13,7 +13,7 @@ public class PrototypeIdentifierExpression extends PrototypeExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return "Identifier: " + name;
     }
 

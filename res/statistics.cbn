@@ -1,0 +1,9 @@
+NormalDistribution(Unit, StdDev:Unit[>= 0], Mean:Unit) = {
+    +(Other:NormalDistribution) =
+        NormalDistrobution(Mean + Other.Mean,
+                           StandardDeviation^2 + Other.StandardDeviation^2)
+
+    -(Other:NormalDistribution) =
+            NormalDistrobution(Mean - Other.Mean,
+                               StandardDeviation^2 + Other.StandardDeviation^2)
+}

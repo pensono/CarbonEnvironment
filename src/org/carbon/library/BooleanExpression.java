@@ -37,7 +37,7 @@ public class BooleanExpression extends CarbonExpression {
     }
 
     @Override
-    public String getDebugString() {
+    public String getShortString() {
         return value.isPresent() ? "Boolean{" + value.get() + "]" : "Boolean";
     }
 }

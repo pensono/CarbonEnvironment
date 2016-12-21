@@ -1,0 +1,9 @@
+Population(Alleles:List(Allele)) = {
+    Homozygous:Boolean = A == B
+
+    Cross(Other:Population) = {
+
+    }
+}
+
+Allele(prop Frequency)
