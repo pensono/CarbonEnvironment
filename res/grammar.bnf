@@ -3,8 +3,8 @@ expression ::= relation
              | expression "[" expression "]"
 
 relation ::= expression infixOperator expression
-             | expression "." expression
-             | expression "(" expressionList ")"
+           | expression "." expression
+           | expression "(" expressionList ")"
 
 compositeExpression ::= "{" expressions "}"
 
@@ -13,6 +13,9 @@ terminalExpression ::= literal
 expressionList ::= expression | expression "," expressionList
 
 expressions ::= expression | expression expressions
+
+definition ::= name ":" type
+             | name "=" expression
 
 // Root items
 literal ::= number

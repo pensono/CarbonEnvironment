@@ -23,10 +23,11 @@ public class Main {
         rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
 
         //Compile all carbon source files
+        System.out.println("Searching for source within " + Paths.get("res").toAbsolutePath());
         try(Stream<Path> paths = Files.walk(Paths.get("res").toAbsolutePath())){
-            paths.filter(path -> path.endsWith(".cbn")).forEach(file -> {
+            paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
-                    System.out.println(file);
+                    System.out.println("Compiling " + file);
                     Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
                 } catch (IOException e) {
                     e.printStackTrace();

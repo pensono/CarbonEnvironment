@@ -3,6 +3,7 @@ package org.carbon.compiler;
 import org.carbon.PrettyPrintable;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -10,14 +11,14 @@ import java.util.Set;
  * @author Ethan
  */
 public class CompoundExpression extends CarbonExpression {
-    private HashMap<String, CarbonExpression> children;
+    private Map<String, CarbonExpression> children;
 
-    public CompoundExpression(CarbonExpression parent, HashMap<String, CarbonExpression> children){
+    public CompoundExpression(CarbonExpression parent, Map<String, CarbonExpression> children){
         super(parent);
         this.children = children;
     }
 
-    public CompoundExpression(CarbonExpression parent, CarbonExpression supertype, HashMap<String, CarbonExpression> children){
+    public CompoundExpression(CarbonExpression parent, CarbonExpression supertype, Map<String, CarbonExpression> children){
         super(parent, supertype);
         this.children = children;
     }

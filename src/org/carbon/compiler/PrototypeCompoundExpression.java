@@ -1,28 +1,29 @@
 package org.carbon.compiler;
 
+import com.google.common.collect.HashBiMap;
 import org.carbon.PrettyPrintable;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Ethan
  */
 public class PrototypeCompoundExpression extends PrototypeExpression {
-    private Set<PrototypeExpression> children;
+    private Map<String, PrototypeExpression> children;
 
-    public PrototypeCompoundExpression(Set<PrototypeExpression> children) {
+    public PrototypeCompoundExpression(Map<String, PrototypeExpression> children) {
         this.children = children;
     }
 
-
     @Override
     public CarbonExpression link(CarbonExpression scope) {
-        Set<CarbonExpression> linkedChildren = new HashSet<>();
-        for (PrototypeExpression child : children){
-            linkedChildren.add(child.link(expr));
-        }
+        return new LazyLinkExpression((CarbonExpression parent) -> {
+            Map<String, CarbonExpression> linkedChildren = new HashMap<>();
+            for (Map.Entry<String, PrototypeExpression> child : children.entrySet()){
+                linkedChildren.put(child.getKey(), child.getValue().link(parent));
+            }
+            return new CompoundExpression(parent, linkedChildren);
+        },scope);
     }
 
     public String getPrettyString(int level) {
