@@ -31,7 +31,16 @@ public class Compiler {
             @Override
             public PrototypeExpression parse(TokenIterator tokens) {
                 tokens.consume("{");
-                Map<String, PrototypeExpression> children = parseDeclarations(tokens);
+                Map<String, PrototypeExpression>  children = new HashMap<>();
+                while (!tokens.peek().equals("}")) {
+                    String name = tokens.next();
+                    children.put(name, Compiler.parse(tokens));
+                    if (tokens.peek().equals(",")) {
+                        tokens.consume(",");
+                    } else {
+                        break;
+                    }
+                }
                 tokens.consume("}");
 
                 return new PrototypeCompoundExpression(children);
@@ -110,17 +119,6 @@ public class Compiler {
     public static List<String> tokenize(String input) {
         return Arrays.asList(input.split("\\s+|(?=" + grammarChars + ")|(?<=" + grammarChars + ")")).stream()
                 .filter(s -> !s.isEmpty()).collect(Collectors.toList());
-    }
-
-    // I would like not to have this function
-    public static Map<String, PrototypeExpression> parseDeclarations(TokenIterator tokens){
-        Map<String, PrototypeExpression> declarations = new HashMap<>();
-        while (!tokens.peek().equals("}")) {
-            String name = tokens.next();
-            tokens.consume("=");
-            declarations.put(name, Compiler.parse(tokens));
-        }
-        return declarations;
     }
 
     public static PrototypeExpression parse(TokenIterator tokens) {

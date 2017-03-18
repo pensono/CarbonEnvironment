@@ -1,0 +1,95 @@
+# A{ E } -> B -> C(D)
+
+# Where do the parameters for C go?
+C = A : B : {
+
+}
+
+C = A : B : (D) { }
+C = A : B : {
+} (D)
+
+# Use something more like C function notation
+A : B : C(D) {
+}
+
+# Doesn't work when C overrides elements of A
+A : C {
+    E = F
+}
+
+# Maybe combine the two notations? Have them live side by side. (Not simple enough
+
+# Three different kinds of definitions
+# Definition - Defines something
+# Override - Defines something with modification
+# Parameter (Declaration?) - Defines what might be used. Defines a superset of ass possible arguments
+
+# Definition needs:
+#   Base type (super type)
+#   Name
+#   Value
+
+# Override needs:
+#   New value
+#   Name of thing being overridden
+
+# Parameter needs:
+#   Supertype
+#   Name
+
+# Parameter defines something?
+# Override specifies something
+
+# Declaration has:
+#    Name
+#    Supertype (potentially none)
+
+# Specification has:
+#    Name
+#    Value
+
+Definition = Declaration + Specification
+
+Declaration :=
+Specification :=
+Definition := Type "" Name Value
+
+# Split between identifiers and specifications
+
+Idt -> Exp Idt
+Idt -> Name ( Params* )
+Spc -> Idt Exp
+
+# With no punctuation
+A B C(D) {
+    E() F
+}
+
+# Always put parentheses after new identifiers?
+
+# What about parameteritized superclasses?
+A(G, H) B C(D) {
+    E() F
+}
+
+# Something different
+C(D) A(G, H R):B:{
+    E() F,
+    Q(O, F E:B) G:{
+    }
+}
+
+C(D) {
+}
+
+A(D) B(C)
+
+Inches(Feet) Feet * 12
+
+Acceleration(Velocity, Time) Velocity / Time
+
+# Grammar
+Specification -> Identity Expression
+Specification -> Expression          # Name is the name of the expression
+Identity -> Name(Specification,)

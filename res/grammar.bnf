@@ -1,29 +1,32 @@
 expression ::= relation
              | terminalExpression
-             | expression "[" expression "]"
+// Not sure about how this fits into the grammar
+//             | expression "[" expression "]"
 
 relation ::= expression infixOperator expression
            | expression "." expression
            | expression "(" expressionList ")"
 
-compositeExpression ::= "{" expressions "}"
+compositeExpression ::= "{" specificationList "}"
 
 terminalExpression ::= literal
 
 expressionList ::= expression | expression "," expressionList
 
-expressions ::= expression | expression expressions
+identity ::= name "(" specificationList ")"
 
-definition ::= name ":" type
-             | name "=" expression
+specification ::= identity expression
+                | expression
+
+specificationList ::= specification | specification "," specificationList
 
 // Root items
 literal ::= number
           | '"' string '"'
 
-infixOperator ::= operatorSymbol | operatorSymbol operatorSymbol
+infixOperator ::= identifierSymbol | identifierSymbol identifierSymbol
 
-operatorSymbol ::= NOT grammarSymbol
+identifierSymbol ::= NOT grammarSymbol
 
 grammarSymbol ::= "(" | ")" | "{" | "}" | "." | "," | "[" | "]"
 

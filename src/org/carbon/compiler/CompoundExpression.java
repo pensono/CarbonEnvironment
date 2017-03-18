@@ -30,7 +30,7 @@ public class CompoundExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return "CompoundExpression:" + getParent().getShortString();
+        return getSupertype().isPresent() ? getSupertype().get().getShortString() + " : " : "" + "CompoundExpression" ;
     }
 
     public String getPrettyString(int level){

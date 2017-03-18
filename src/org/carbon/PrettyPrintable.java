@@ -4,6 +4,7 @@ import com.google.common.base.Strings;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -17,7 +18,7 @@ public interface PrettyPrintable {
 
     static String prettyPrint(Map<String, ? extends PrettyPrintable> children, int level) {
         return String.join("\n", children.entrySet().stream().map(
-                e -> indent(level) + e.getKey() + "- " + e.getValue().getPrettyString())
+                e -> indent(level) + e.getKey() + e.getValue().getPrettyString(level))
                 .collect(Collectors.toList()));
     }
 

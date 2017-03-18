@@ -25,6 +25,6 @@ public class PrototypeIdentifierExpression extends PrototypeExpression {
             return expr.get();
         }
         // Else put this into the scope?
-        throw new ParseException("Could not find " + name);
+        throw new LinkException("Could not find " + name);
     }
 }
