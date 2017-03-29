@@ -28,7 +28,8 @@ public class Main {
                 try {
                     System.out.println("Compiling " + file);
                     CarbonExpression expression = Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
-                    System.out.println(expression);
+                    expression = expression.reduce();
+                    System.out.println(expression.getPrettyString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

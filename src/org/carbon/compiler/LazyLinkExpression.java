@@ -35,7 +35,9 @@ public class LazyLinkExpression extends CarbonExpression {
         return getExpression().parameteritize(parameter);
     }
 
-    public CarbonExpression reduce() { return getExpression(); }
+    public CarbonExpression reduce() {
+        return getExpression();
+    }
 
     private CarbonExpression getExpression(){
         if (linkedExpression == null){

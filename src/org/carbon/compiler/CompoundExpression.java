@@ -41,4 +41,18 @@ public class CompoundExpression extends CarbonExpression {
     public Optional<CarbonExpression> getMember(String name) {
         return Optional.ofNullable(children.get(name));
     }
+
+    @Override
+    public CarbonExpression reduce() {
+        Map<String, CarbonExpression> newChildren = new HashMap<>();
+        for (String name : children.keySet()){
+            newChildren.put(name, children.get(name).reduce());
+        }
+
+        if (getSupertype().isPresent()) {
+            return new CompoundExpression(getParent(), getSupertype().get(), newChildren);
+        } else {
+            return new CompoundExpression(getParent(), newChildren);
+        }
+    }
 }
