@@ -20,7 +20,8 @@ public class ComparisonExpression extends BooleanExpression {
         super(parent, parent.getMember("Boolean").get());
         this.rhs = rhs;
         this.comparisonName = comparisonName;
-        this.operator = operator;    }
+        this.operator = operator;
+    }
 
     public ComparisonExpression(GenericIntegerExpression parent, BiPredicate<Integer, Integer> operator, String comparisonName) {
         this(parent, operator, comparisonName, Optional.empty());
@@ -44,9 +45,8 @@ public class ComparisonExpression extends BooleanExpression {
     }
 
     public String getPrettyString(int level) {
-        return PrettyPrintable.indent(level) + getShortString() + "\n" +
-                getParent().getPrettyString(level + 1) +
-                (rhs.isPresent() ? "\n" + rhs.get().getPrettyString(level + 1) : "");
+        return PrettyPrintable.indent(level) + getShortString() + "(" +
+                (rhs.isPresent() ? rhs.get().getShortString() : "") + ")";
     }
 
     @Override

@@ -1,8 +1,7 @@
 package org.carbon;
 
-import org.carbon.compiler.CarbonExpression;
+import org.carbon.compiler.*;
 import org.carbon.compiler.Compiler;
-import org.carbon.compiler.ParseException;
 import org.carbon.library.BooleanExpression;
 import org.carbon.library.GenericIntegerExpression;
 import sun.misc.IOUtils;
@@ -28,7 +27,8 @@ public class Main {
             paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
                     System.out.println("Compiling " + file);
-                    Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
+                    CarbonExpression expression = Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
+                    System.out.println(expression);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -52,7 +52,7 @@ public class Main {
             try {
                 CarbonExpression expression = Compiler.compile(rootExpression, input);
                 System.out.println(expression.getPrettyString());
-            } catch (ParseException pe){
+            } catch (CarbonException pe){
                 System.out.flush();
                 System.err.println(pe.getMessage());
                 pe.printStackTrace(System.err);

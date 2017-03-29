@@ -112,7 +112,7 @@ public class Compiler {
         CarbonExpression expression = link(scope, protypeExpression);
         // System.out.println(expression.getPrettyString());
         expression = expression.reduce();
-        System.out.println(expression.getPrettyString());
+        //System.out.println(expression.getPrettyString());
         return expression;
     }
 

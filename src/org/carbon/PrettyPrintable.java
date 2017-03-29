@@ -18,7 +18,7 @@ public interface PrettyPrintable {
 
     static String prettyPrint(Map<String, ? extends PrettyPrintable> children, int level) {
         return String.join("\n", children.entrySet().stream().map(
-                e -> indent(level) + e.getKey() + e.getValue().getPrettyString(level))
+                e -> indent(level) + e.getKey() + " " + e.getValue().getShortString())
                 .collect(Collectors.toList()));
     }
 

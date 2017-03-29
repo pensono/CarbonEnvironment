@@ -38,6 +38,6 @@ public class BooleanExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return value.isPresent() ? "Boolean{" + value.get() + "]" : "Boolean";
+        return value.isPresent() ? "Boolean[" + value.get() + "]" : "Boolean";
     }
 }
