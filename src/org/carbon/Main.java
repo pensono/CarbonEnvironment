@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
+        Compiler compiler = new Compiler();
 	    RootExpression rootExpression = new RootExpression();
         rootExpression.putMember("Boolean", new BooleanExpression(rootExpression));
         rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
@@ -27,7 +28,7 @@ public class Main {
             paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
                     System.out.println("Compiling " + file);
-                    CarbonExpression expression = Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
+                    CarbonExpression expression = compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
                     expression = expression.reduce();
                     System.out.println(expression.getPrettyString());
                 } catch (IOException e) {
@@ -51,7 +52,7 @@ public class Main {
             }
 
             try {
-                CarbonExpression expression = Compiler.compile(rootExpression, input);
+                CarbonExpression expression = compiler.compile(rootExpression, input);
                 System.out.println(expression.getPrettyString());
             } catch (CarbonException pe){
                 System.out.flush();

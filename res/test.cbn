@@ -3,5 +3,5 @@
     Value2 Boolean,
     Value3 {
         Value4 Integer
-    }
+    },
 }

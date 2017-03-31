@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 /**
  * Created by Ethan Shea on 8/31/2016.
  */
-public class PrototypeParameterExpression extends PrototypeExpression {
+public class PrototypeParameterizedExpression extends PrototypeExpression {
     private PrototypeExpression base;
     private List<PrototypeExpression> parameterList = new ArrayList<>();
 
-    public PrototypeParameterExpression(PrototypeExpression base, List<PrototypeExpression> parameterList) {
+    public PrototypeParameterizedExpression(PrototypeExpression base, List<PrototypeExpression> parameterList) {
         this.parameterList = parameterList;
         this.base = base;
     }
