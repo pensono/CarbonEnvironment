@@ -1,5 +1,9 @@
 package org.carbon.compiler;
 
+import org.carbon.compiler.Parser;
+import org.carbon.compiler.PrototypeExpression;
+import org.carbon.compiler.TokenIterator;
+
 /**
  * Created by Ethan Shea on 3/31/2017.
  */

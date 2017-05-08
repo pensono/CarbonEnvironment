@@ -10,21 +10,23 @@ import java.util.NoSuchElementException;
  * Created by Ethan Shea on 8/31/2016.
  */
 public class TokenIterator implements PeekingIterator<String> {
-    private PeekingIterator<String> impl;
+    private PeekingIterator<Token> impl;
 
-    public TokenIterator(List<String> tokens){
+    public TokenIterator(List<Token> tokens){
         impl = Iterators.peekingIterator(tokens.iterator());
     }
 
-    public void consume(String token){
-        if (!impl.next().equals(token))
-            throw new ParseException("Expected a " + token);
+    public void consume(String tokenStr){
+        Token token = impl.next();
+        if (!token.getToken().equals(tokenStr))
+            throw new ParseException("Expected a " + tokenStr + " at line " + token.getLine() +
+                    " and column " + token.getColumn());
     }
 
     @Override
     public String peek() {
         try {
-            return impl.peek();
+            return impl.peek().getToken();
         } catch (NoSuchElementException ex){
             throw new ParseException("End of file reached.");
         }
@@ -37,11 +39,14 @@ public class TokenIterator implements PeekingIterator<String> {
 
     @Override
     public String next() {
-        return impl.next();
+        return impl.next().getToken();
     }
 
     @Override
     public void remove() {
         impl.remove();
     }
+
+    // TODO make a way to obtain the line and column of the current token for better diagnostics
+
 }

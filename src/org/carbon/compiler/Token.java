@@ -8,7 +8,21 @@ public class Token {
     private int line;
     private int column;
 
-    public Token(String token) {
+    public Token(String token, int line, int column) {
         this.token = token;
+        this.line = line;
+        this.column = column;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public int getLine() {
+        return line;
+    }
+
+    public int getColumn() {
+        return column;
     }
 }

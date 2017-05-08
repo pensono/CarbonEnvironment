@@ -1,0 +1,16 @@
+
+
+{ Thing1, Thing2 }
+MyStruct = { Integer, Boolean }
+MyOtherStruct = {
+    Integer,
+    Boolean,
+    CureForCancer() = None
+
+    Condition(Value Integer) Value < 5
+}
+Inches Feet * 12
+
+Destroy(World)
+
+def Destroy(Thing) KillAll(Thing)

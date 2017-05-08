@@ -14,8 +14,8 @@ public class Compiler {
     public static final String grammarChars = "[\\{}.\\(\\),]";
     private Parser parser = new PrattParser();
 
-    public CarbonExpression compile(CarbonExpression scope, String input){
-        List<String> tokens = tokenize(input);
+    public CarbonExpression compile(CarbonExpression scope, String input) {
+        List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
         // System.out.println(protypeExpression.getPrettyString());
@@ -26,9 +26,17 @@ public class Compiler {
         return expression;
     }
 
-    public List<String> tokenize(String input) {
-        return Arrays.asList(input.split("\\s+|(?=" + grammarChars + ")|(?<=" + grammarChars + ")")).stream()
-                .filter(s -> !s.isEmpty()).collect(Collectors.toList());
+    public List<Token> tokenize(String input) {
+        List<Token> tokens = new ArrayList<>();
+        String[] lines = input.split("\\n");
+        for (int line = 0; line < lines.length; line++) {
+            final int lineNo = line; // For the closure
+            tokens.addAll(Arrays.asList(lines[line].split("\\s+|(?=" + grammarChars + ")|(?<=" + grammarChars + ")")).stream()
+                .filter(s -> !s.isEmpty())
+                .map(s -> new Token(s, lineNo, 0)) // TODO implement the character position instead of just 0
+                .collect(Collectors.toList()));
+        }
+        return tokens;
     }
 
 
