@@ -73,5 +73,9 @@ public class Main {
         System.err.println(e.getMessage());
         e.printStackTrace(System.err);
         System.err.flush();
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) { }
     }
 }
