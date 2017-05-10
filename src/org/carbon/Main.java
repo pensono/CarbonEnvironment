@@ -30,7 +30,10 @@ public class Main {
                     System.out.println("Compiling " + file);
                     CarbonExpression expression = compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
                     expression = expression.reduce();
-                    System.out.println(expression.getPrettyString());
+
+                    // TODO a better way to extract the name of the file.
+                    // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
+                    rootExpression.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
                 } catch (IOException | CarbonException e) {
                     handleError(e);
                 }

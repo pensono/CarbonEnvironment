@@ -18,7 +18,7 @@ public class Compiler {
         List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
-        System.out.println(protypeExpression.getPrettyString());
+        // System.out.println(protypeExpression.getPrettyString());
         CarbonExpression expression = link(scope, protypeExpression);
         // System.out.println(expression.getPrettyString());
         expression = expression.reduce();
