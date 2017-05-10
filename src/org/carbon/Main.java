@@ -31,12 +31,12 @@ public class Main {
                     CarbonExpression expression = compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
                     expression = expression.reduce();
                     System.out.println(expression.getPrettyString());
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException | CarbonException e) {
+                    handleError(e);
                 }
             });
         } catch (IOException ioe){
-            ioe.printStackTrace();
+            handleError(ioe);
         }
 
         //Start REPL for CoW
@@ -54,12 +54,21 @@ public class Main {
             try {
                 CarbonExpression expression = compiler.compile(rootExpression, input);
                 System.out.println(expression.getPrettyString());
-            } catch (CarbonException pe){
-                System.out.flush();
-                System.err.println(pe.getMessage());
-                pe.printStackTrace(System.err);
-                System.err.flush();
+            } catch (CarbonException e){
+                handleError(e);
             }
         }
+    }
+
+    private static void handleError(Exception e){
+        System.out.flush();
+
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException ex) { }
+
+        System.err.println(e.getMessage());
+        e.printStackTrace(System.err);
+        System.err.flush();
     }
 }

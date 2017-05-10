@@ -32,6 +32,7 @@ public class PrattParser extends Parser {
                 Map<String, PrototypeExpression> children = new HashMap<>();
                 while (!tokens.peek().equals("}")) {
                     String name = tokens.next();
+                    tokens.consume("=");
                     children.put(name, parseExpression_impl(tokens));
                     if (tokens.peek().equals(",")) {
                         tokens.consume(",");

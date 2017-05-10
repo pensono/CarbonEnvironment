@@ -1,9 +1,7 @@
 {
-    Value Integer.<,
-    Value2 Boolean,
-    Value3 {
-        Value4 Integer
+    Value = Integer.<,
+    Value2 = Boolean,
+    Value3 = {
+        Value4 = Integer
     }
-
-    Condition(Value Integer) Value < 5
 }

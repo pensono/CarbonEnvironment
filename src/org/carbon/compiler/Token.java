@@ -25,4 +25,8 @@ public class Token {
     public int getColumn() {
         return column;
     }
+
+    public String toString() {
+        return "[" + token + " " + line + ":" + column + "]";
+    }
 }
