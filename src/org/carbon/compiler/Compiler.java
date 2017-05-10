@@ -18,7 +18,7 @@ public class Compiler {
         List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
-        // System.out.println(protypeExpression.getPrettyString());
+        System.out.println(protypeExpression.getPrettyString());
         CarbonExpression expression = link(scope, protypeExpression);
         // System.out.println(expression.getPrettyString());
         expression = expression.reduce();
@@ -29,8 +29,8 @@ public class Compiler {
     public List<Token> tokenize(String input) {
         List<Token> tokens = new ArrayList<>();
         String[] lines = input.split("\\n");
-        for (int line = 0; line < lines.length; line++) {
-            final int lineNo = line; // For the closure
+        for (int line = 1; line < lines.length; line++) {
+            final int lineNo = line + 1; // For the closure. Line numbers start counting at 1
             tokens.addAll(Arrays.asList(lines[line].split("\\s+|(?=" + grammarChars + ")|(?<=" + grammarChars + ")")).stream()
                 .filter(s -> !s.isEmpty())
                 .map(s -> new Token(s, lineNo, 0)) // TODO implement the character position instead of just 0
