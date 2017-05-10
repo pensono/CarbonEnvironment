@@ -39,15 +39,15 @@ public class ComparisonExpression extends BooleanExpression {
         }
         CarbonExpression expression = parameter.link(this);
         if (!expression.isSubtypeOf(getMember("Integer").get())){
-            throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
+            throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
         return new ComparisonExpression((GenericIntegerExpression)getParent(), operator, comparisonName, (GenericIntegerExpression) expression);
     }
 
-    public String getPrettyString(int level) {
-        return PrettyPrintable.indent(level) + getShortString() + "(" +
-                (rhs.isPresent() ? rhs.get().getShortString() : "") + ")";
-    }
+//    public String getBodyString(int level) {
+//        return PrettyPrintable.indent(level) + getShortString() + "(" +
+//                (rhs.isPresent() ? rhs.get().getShortString() : "") + ")";
+//    }
 
     @Override
     public String getShortString() {

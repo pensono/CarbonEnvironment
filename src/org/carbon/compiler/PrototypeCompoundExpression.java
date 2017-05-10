@@ -30,7 +30,7 @@ public class PrototypeCompoundExpression extends PrototypeExpression {
 //                    if (value.isPresent()){
 //                        linkedChildren.put(child.getKey(), value.get());
 //                    } else {
-//                        throw new ParseException("Could not find \"" + child.getKey() + "\" in:\n" + scope.getPrettyString());
+//                        throw new ParseException("Could not find \"" + child.getKey() + "\" in:\n" + scope.getBodyString());
 //                    }
 //                }
             }
@@ -38,7 +38,7 @@ public class PrototypeCompoundExpression extends PrototypeExpression {
         },scope);
     }
 
-    public String getPrettyString(int level) {
+    public String getBodyString(int level) {
         return PrettyPrintable.indent(level) + getShortString() + "\n" +
                 PrettyPrintable.prettyPrint(children, level + 1);
     }

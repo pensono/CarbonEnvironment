@@ -33,8 +33,8 @@ public class CompoundExpression extends CarbonExpression {
         return getSupertype().isPresent() ? getSupertype().get().getShortString() + " : " : "" + "CompoundExpression" ;
     }
 
-    public String getPrettyString(int level){
-        return getShortString() + "\n" + PrettyPrintable.prettyPrint(children, level + 1);
+    public String getBodyString(int level){
+        return PrettyPrintable.prettyPrint(children, level + 1);
     }
 
     @Override

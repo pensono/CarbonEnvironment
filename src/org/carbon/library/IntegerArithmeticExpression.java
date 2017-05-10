@@ -38,15 +38,15 @@ public class IntegerArithmeticExpression extends GenericIntegerExpression {
         }
         CarbonExpression expression = parameter.link(this);
         if (!expression.isSubtypeOf(getMember("Integer").get())){
-            throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getPrettyString());
+            throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
         return new IntegerArithmeticExpression((GenericIntegerExpression)getParent(), operator, operatorName, (GenericIntegerExpression) expression);
     }
 
-    public String getPrettyString(int level) {
+    public String getBodyString(int level) {
         return PrettyPrintable.indent(level) + getShortString() + "\n" +
-                getParent().getPrettyString(level + 1) +
-                (rhs.isPresent() ? "\n" + rhs.get().getPrettyString(level + 1) : "");
+                getParent().getBodyString(level + 1) +
+                (rhs.isPresent() ? "\n" + rhs.get().getBodyString(level + 1) : "");
     }
 
     @Override

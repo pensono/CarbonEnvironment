@@ -16,9 +16,9 @@ public class PrototypeMemberExpression extends PrototypeExpression {
         this.memberName = memberName;
     }
 
-    public String getPrettyString(int level) {
+    public String getBodyString(int level) {
         return PrettyPrintable.indent(level) + getShortString() + "\n" +
-                base.getPrettyString(level + 1) + "\n" +
+                base.getBodyString(level + 1) + "\n" +
                 PrettyPrintable.indent(level + 1) + "Member Name: " + memberName;
     }
 
@@ -33,6 +33,6 @@ public class PrototypeMemberExpression extends PrototypeExpression {
         Optional<CarbonExpression> memberExpr = baseExpr.getMember(memberName);
         if (memberExpr.isPresent())
             return memberExpr.get();
-        throw new ParseException("Member " + memberName + " not found in\n" + base.getPrettyString());
+        throw new ParseException("Member " + memberName + " not found in\n" + base.getBodyString());
     }
 }

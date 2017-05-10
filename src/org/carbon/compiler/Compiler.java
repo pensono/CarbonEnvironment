@@ -18,11 +18,11 @@ public class Compiler {
         List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
-        // System.out.println(protypeExpression.getPrettyString());
+        // System.out.println(protypeExpression.getBodyString());
         CarbonExpression expression = link(scope, protypeExpression);
-        // System.out.println(expression.getPrettyString());
+        // System.out.println(expression.getBodyString());
         expression = expression.reduce();
-        //System.out.println(expression.getPrettyString());
+        //System.out.println(expression.getBodyString());
         return expression;
     }
 

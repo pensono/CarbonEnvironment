@@ -29,7 +29,7 @@ public class RootExpression extends CarbonExpression {
     }
 
     @Override
-    public String getPrettyString(int level) {
+    public String getBodyString(int level) {
         StringBuilder sb = new StringBuilder();
         sb.append(PrettyPrintable.indent(level));
         sb.append(getShortString());
@@ -38,7 +38,7 @@ public class RootExpression extends CarbonExpression {
             sb.append(PrettyPrintable.indent(level+1));
             sb.append(entry.getKey());
             sb.append("\n");
-            sb.append(entry.getValue().getPrettyString(level + 1));
+            sb.append(entry.getValue().getBodyString(level + 1));
         }
         return sb.toString();
     }

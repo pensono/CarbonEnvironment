@@ -56,7 +56,7 @@ public class Main {
 
             try {
                 CarbonExpression expression = compiler.compile(rootExpression, input);
-                System.out.println(expression.getPrettyString());
+                System.out.println(expression.getFullString());
             } catch (CarbonException e){
                 handleError(e);
             }

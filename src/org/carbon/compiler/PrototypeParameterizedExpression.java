@@ -18,10 +18,10 @@ public class PrototypeParameterizedExpression extends PrototypeExpression {
         this.base = base;
     }
 
-    public String getPrettyString(int level) {
+    public String getBodyString(int level) {
         return Strings.repeat("  ", level) + getShortString() + "\n" +
-                base.getPrettyString(level + 1) + "\n" +
-                String.join("\n", parameterList.stream().map(p -> p.getPrettyString(level + 1)).collect(Collectors.toList()));
+                base.getBodyString(level + 1) + "\n" +
+                String.join("\n", parameterList.stream().map(p -> p.getBodyString(level + 1)).collect(Collectors.toList()));
     }
 
     @Override
