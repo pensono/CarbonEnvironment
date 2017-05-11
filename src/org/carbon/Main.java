@@ -34,6 +34,7 @@ public class Main {
                     // TODO a better way to extract the name of the file.
                     // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
                     rootExpression.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
+                    System.out.println(expression.getFullString());
                 } catch (IOException | CarbonException e) {
                     handleError(e);
                 }
