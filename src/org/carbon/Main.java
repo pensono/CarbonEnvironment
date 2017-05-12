@@ -61,6 +61,8 @@ public class Main {
     private static RootExpression loadCarbonEnvironment() {
         RootExpression rootExpression = new RootExpression();
         rootExpression.putMember("Boolean", new BooleanExpression(rootExpression));
+        rootExpression.putMember("True", new BooleanExpression(rootExpression, true));
+        rootExpression.putMember("False", new BooleanExpression(rootExpression, false));
         rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
 
         loadTestSources(rootExpression);
