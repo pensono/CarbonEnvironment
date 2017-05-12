@@ -17,31 +17,7 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
-        Compiler compiler = new Compiler();
-	    RootExpression rootExpression = new RootExpression();
-        rootExpression.putMember("Boolean", new BooleanExpression(rootExpression));
-        rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
-
-        //Compile all carbon source files
-        System.out.println("Searching for source within " + Paths.get("res").toAbsolutePath());
-        try(Stream<Path> paths = Files.walk(Paths.get("res").toAbsolutePath())){
-            paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
-                try {
-                    System.out.println("Compiling " + file);
-                    CarbonExpression expression = compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
-                    expression = expression.reduce();
-
-                    // TODO a better way to extract the name of the file.
-                    // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
-                    rootExpression.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
-                    System.out.println(expression.getFullString());
-                } catch (IOException | CarbonException e) {
-                    handleError(e);
-                }
-            });
-        } catch (IOException ioe){
-            handleError(ioe);
-        }
+        RootExpression rootExpression = loadCarbonEnvironment();
 
         //Start REPL for CoW
         Scanner scanner = new Scanner(System.in);
@@ -51,12 +27,14 @@ public class Main {
 
             if (input.equals("quit")){
                 break;
+            } else if (input.equals("reload")) {
+                rootExpression = loadCarbonEnvironment();
             } else if (input.isEmpty()){
                 continue;
             }
 
             try {
-                CarbonExpression expression = compiler.compile(rootExpression, input);
+                CarbonExpression expression = Compiler.compile(rootExpression, input);
                 System.out.println(expression.getFullString());
             } catch (CarbonException e){
                 handleError(e);
@@ -78,5 +56,36 @@ public class Main {
         try {
             Thread.sleep(10);
         } catch (InterruptedException ex) { }
+    }
+
+    private static RootExpression loadCarbonEnvironment() {
+        RootExpression rootExpression = new RootExpression();
+        rootExpression.putMember("Boolean", new BooleanExpression(rootExpression));
+        rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
+
+        loadTestSources(rootExpression);
+        return rootExpression;
+    }
+
+    private static void loadTestSources(RootExpression rootExpression){
+        System.out.println("Searching for source within " + Paths.get("res").toAbsolutePath());
+        try(Stream<Path> paths = Files.walk(Paths.get("res").toAbsolutePath())){
+            paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
+                try {
+                    System.out.println("Compiling " + file);
+                    CarbonExpression expression = Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
+                    expression = expression.reduce();
+
+                    // TODO a better way to extract the name of the file.
+                    // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
+                    rootExpression.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
+                    System.out.println(expression.getFullString());
+                } catch (IOException | CarbonException e) {
+                    handleError(e);
+                }
+            });
+        } catch (IOException ioe){
+            handleError(ioe);
+        }
     }
 }

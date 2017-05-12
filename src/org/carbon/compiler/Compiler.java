@@ -12,9 +12,9 @@ import java.util.stream.Collectors;
  */
 public class Compiler {
     public static final String grammarChars = "[\\{}.\\(\\),]";
-    private Parser parser = new PrattParser();
+    private static Parser parser = new PrattParser();
 
-    public CarbonExpression compile(CarbonExpression scope, String input) {
+    public static CarbonExpression compile(CarbonExpression scope, String input) {
         List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
@@ -26,7 +26,7 @@ public class Compiler {
         return expression;
     }
 
-    public List<Token> tokenize(String input) {
+    public static List<Token> tokenize(String input) {
         List<Token> tokens = new ArrayList<>();
         String[] lines = input.split("\\n");
         for (int line = 0; line < lines.length; line++) {
@@ -40,7 +40,7 @@ public class Compiler {
     }
 
 
-    private CarbonExpression link(CarbonExpression scope, PrototypeExpression protypeExpression) {
+    private static CarbonExpression link(CarbonExpression scope, PrototypeExpression protypeExpression) {
         return protypeExpression.link(scope);
     }
 }

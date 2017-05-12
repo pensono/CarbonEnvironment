@@ -19,8 +19,8 @@ public class TokenIterator implements PeekingIterator<String> {
     public void consume(String tokenStr){
         Token token = impl.next();
         if (!token.getToken().equals(tokenStr))
-            throw new ParseException("Expected a " + tokenStr + " at line " + token.getLine() +
-                    " and column " + token.getColumn());
+            throw new ParseException("Expected a " + tokenStr + " at line:col " + token.getLine() +
+                    ":" + token.getColumn() + ". Instead got a " + token.getToken());
     }
 
     @Override

@@ -20,7 +20,7 @@ public interface PrettyPrintable {
     }
 
     default String getFullString() {
-        return getShortString() + "\n" + getBodyString(1);
+        return getShortString() + bodyWithReturn(this);
     }
 
     static String indent(int levels){
@@ -34,10 +34,18 @@ public interface PrettyPrintable {
     static String prettyPrint(Map<String, ? extends PrettyPrintable> children, int level) {
         return String.join("\n", children.entrySet().stream().map(
                 e -> {
-                    String bodyString = e.getValue().getBodyString(level + 1);
                     return indent(level) + e.getKey() + " " + e.getValue().getShortString() +
-                            (bodyString.isEmpty() ? "" : "\n" + bodyString);
+                            bodyWithReturn(e.getValue(), level + 1);
                 })
                 .collect(Collectors.toList()));
+    }
+
+    static String bodyWithReturn(PrettyPrintable printable){
+        return bodyWithReturn(printable, 1);
+    }
+
+    static String bodyWithReturn(PrettyPrintable printable, int level){
+        String bodyString = printable.getBodyString(level);
+        return bodyString.isEmpty() ? "" : "\n " + bodyString;
     }
 }

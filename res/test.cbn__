@@ -14,3 +14,6 @@ Inches Feet * 12
 Destroy(World)
 
 def Destroy(Thing) KillAll(Thing)
+
+
+    Compare(A, B) = A < B,
