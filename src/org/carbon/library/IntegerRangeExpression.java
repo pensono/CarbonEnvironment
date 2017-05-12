@@ -20,10 +20,10 @@ public class IntegerRangeExpression extends GenericIntegerExpression {
         valueHigh = high;
     }
 
-    @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Integers can't be parameteritize");
-    }
+//    @Override
+//    public CarbonExpression parameteritize(PrototypeExpression parameter) {
+//        throw new ParseException("Integers can't be parameteritize");
+//    }
 
     @Override
     public String getShortString() {

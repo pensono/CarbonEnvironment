@@ -19,10 +19,10 @@ public class IntegerExpression extends GenericIntegerExpression {
         this.value = value;
     }
 
-    @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Integers can't be parameteritize");
-    }
+//    @Override
+//    public CarbonExpression parameteritize(PrototypeExpression parameter) {
+//        throw new ParseException("Integers can't be parameteritize");
+//    }
 
     @Override
     public String getShortString() {

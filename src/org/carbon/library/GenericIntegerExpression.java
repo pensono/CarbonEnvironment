@@ -4,6 +4,7 @@ package org.carbon.library;
 import org.carbon.compiler.CarbonExpression;
 import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
+import org.carbon.compiler.PrototypeIntegerExpression;
 
 import java.util.Optional;
 
@@ -52,7 +53,11 @@ public class GenericIntegerExpression extends CarbonExpression {
 
     @Override
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Integers can't be parameteritize");
+        if (parameter instanceof PrototypeIntegerExpression){
+            return new IntegerExpression(getParent(), ((PrototypeIntegerExpression)parameter).getValue());
+        } else {
+            throw new ParseException("Integers can't be parameteritized by:\n" + parameter.getFullString());
+        }
     }
 
     @Override

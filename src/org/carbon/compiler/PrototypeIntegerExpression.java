@@ -22,4 +22,8 @@ public class PrototypeIntegerExpression extends PrototypeExpression {
     public CarbonExpression link(CarbonExpression scope) {
         return new IntegerExpression(scope, value);
     }
+
+    public int getValue() {
+        return value;
+    }
 }
