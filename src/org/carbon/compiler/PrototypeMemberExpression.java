@@ -17,9 +17,8 @@ public class PrototypeMemberExpression extends PrototypeExpression {
     }
 
     public String getBodyString(int level) {
-        return PrettyPrintable.indent(level) + getShortString() + "\n" +
-                base.getBodyString(level + 1) + "\n" +
-                PrettyPrintable.indent(level + 1) + "Member Name: " + memberName;
+        return PrettyPrintable.indent(level) + "Member Name: " + memberName + "\n" +
+                PrettyPrintable.indent(level) + "Base: " + base.getShortString() + PrettyPrintable.bodyWithReturn(base);
     }
 
     @Override

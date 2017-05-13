@@ -1,6 +1,7 @@
 package org.carbon.compiler;
 
 import com.google.common.base.Strings;
+import org.carbon.PrettyPrintable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +20,10 @@ public class PrototypeParameterizedExpression extends PrototypeExpression {
     }
 
     public String getBodyString(int level) {
-        return Strings.repeat("  ", level) + getShortString() + "\n" +
-                base.getBodyString(level + 1) + "\n" +
-                String.join("\n", parameterList.stream().map(p -> p.getBodyString(level + 1)).collect(Collectors.toList()));
+        return PrettyPrintable.indent(level) + "Base: " + base.getShortString() + "\n" +
+                    base.getBodyString(level + 1) + "\n" +
+                PrettyPrintable.indent(level) + "Parameters: \n" +
+                String.join("\n", parameterList.stream().map(p -> p.getFullString(level + 1)).collect(Collectors.toList()));
     }
 
     @Override

@@ -29,6 +29,7 @@ public class Main {
                 break;
             } else if (input.equals("reload")) {
                 rootExpression = loadCarbonEnvironment();
+                continue;
             } else if (input.isEmpty()){
                 continue;
             }
@@ -36,7 +37,7 @@ public class Main {
             try {
                 CarbonExpression expression = Compiler.compile(rootExpression, input);
                 System.out.println(expression.getFullString());
-            } catch (CarbonException e){
+            } catch (Exception e){
                 handleError(e);
             }
         }

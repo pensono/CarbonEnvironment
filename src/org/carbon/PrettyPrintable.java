@@ -20,7 +20,11 @@ public interface PrettyPrintable {
     }
 
     default String getFullString() {
-        return getShortString() + bodyWithReturn(this);
+        return getFullString(0);
+    }
+
+    default String getFullString(int level) {
+        return indent(level) + getShortString() + bodyWithReturn(this, level + 1);
     }
 
     static String indent(int levels){
@@ -46,6 +50,6 @@ public interface PrettyPrintable {
 
     static String bodyWithReturn(PrettyPrintable printable, int level){
         String bodyString = printable.getBodyString(level);
-        return bodyString.isEmpty() ? "" : "\n " + bodyString;
+        return bodyString.isEmpty() ? "" : "\n" + bodyString;
     }
 }
