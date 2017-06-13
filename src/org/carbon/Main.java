@@ -50,7 +50,6 @@ public class Main {
             Thread.sleep(10);
         } catch (InterruptedException ex) { }
 
-        System.err.println(e.getMessage());
         e.printStackTrace(System.err);
         System.err.flush();
 

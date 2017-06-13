@@ -36,12 +36,12 @@ public interface PrettyPrintable {
     }
 
     static String prettyPrint(Map<String, ? extends PrettyPrintable> children, int level) {
-        return String.join("\n", children.entrySet().stream().map(
+        return children.entrySet().stream().map(
                 e -> {
                     return indent(level) + e.getKey() + " " + e.getValue().getShortString() +
                             bodyWithReturn(e.getValue(), level + 1);
                 })
-                .collect(Collectors.toList()));
+                .collect(Collectors.joining("\n"));
     }
 
     static String bodyWithReturn(PrettyPrintable printable){
