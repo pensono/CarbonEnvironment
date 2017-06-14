@@ -2,6 +2,8 @@ package org.carbon.compiler;
 
 import org.carbon.PrettyPrintable;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -26,8 +28,12 @@ public class PrototypeMemberExpression extends PrototypeExpression {
         return "Member Expression";
     }
 
+//    public List<String> getDependencies() {
+//        return Arrays.asList(base);
+//    }
+
     @Override
-    public CarbonExpression link(CarbonExpression scope) {
+    public CarbonExpression link(CarbonScope scope) {
         CarbonExpression baseExpr = base.link(scope);
         Optional<CarbonExpression> memberExpr = baseExpr.getMember(memberName);
         if (memberExpr.isPresent())

@@ -1,5 +1,7 @@
 package org.carbon.compiler;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -17,10 +19,14 @@ public class PrototypeIdentifierExpression extends PrototypeExpression {
         return "Identifier: " + name;
     }
 
+    public List<String> getDependencies() {
+        return Arrays.asList(name);
+    }
+
     @Override
-    public CarbonExpression link(CarbonExpression scope) {
+    public CarbonExpression link(CarbonScope scope) {
         // TODO recurse up the scope's parents to find a suitable match
-        Optional<CarbonExpression> expr = scope.getMember(name);
+        Optional<CarbonExpression> expr = scope.getByIdentifier(name);
         if (expr.isPresent()){
             return expr.get();
         }

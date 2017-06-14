@@ -2,25 +2,26 @@ package org.carbon.compiler;
 
 import org.carbon.PrettyPrintable;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by Ethan Shea on 8/29/2016.
  */
 public abstract class CarbonExpression implements PrettyPrintable {
-    private CarbonExpression parent;
     private Optional<CarbonExpression> supertype;
+    private CarbonScope scope;
 
-    public CarbonExpression(CarbonExpression parent){
-        this.parent = parent;
-        this.supertype = Optional.empty();
+    public CarbonExpression(CarbonScope scope, Optional<CarbonExpression> supertype){
+        this.scope = scope;
+        this.supertype = supertype;
     }
 
-    public CarbonExpression(CarbonExpression parent, CarbonExpression supertype){
-        this.parent = parent;
-        this.supertype = Optional.of(supertype);
+    public CarbonExpression(CarbonScope scope){
+        this(scope, Optional.empty());
+    }
+
+    public CarbonExpression(CarbonScope scope, CarbonExpression supertype){
+        this(scope, Optional.of(supertype));
     }
 
     /**
@@ -28,14 +29,6 @@ public abstract class CarbonExpression implements PrettyPrintable {
      * @return
      */
 //    public abstract boolean isValue();
-
-    public Optional<CarbonExpression> getMember(String name) {
-        return getParent().getMember(name);
-    }
-
-    public CarbonExpression getParent() {
-        return parent;
-    }
 
     public Optional<CarbonExpression> getSupertype() {
         return supertype;
@@ -50,10 +43,20 @@ public abstract class CarbonExpression implements PrettyPrintable {
 
     /**
      * Returns a version of this expression with the given parameter filled out
+     *
      * @param parameter
      * @return
      */
     public abstract CarbonExpression parameteritize(PrototypeExpression parameter);
 
+    // The scope paramaeter may not be nececary
     public CarbonExpression reduce() { return this; }
+
+    public Optional<CarbonExpression> getMember(String name) {
+        return Optional.empty();
+    }
+
+    public CarbonScope getScope() {
+        return scope;
+    }
 }

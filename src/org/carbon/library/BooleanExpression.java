@@ -1,6 +1,7 @@
 package org.carbon.library;
 
 import org.carbon.compiler.CarbonExpression;
+import org.carbon.compiler.CarbonScope;
 import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 
@@ -16,18 +17,13 @@ public class BooleanExpression extends CarbonExpression {
      */
     Optional<Boolean> value;
 
-    public BooleanExpression(CarbonExpression parent) {
-        super(parent);
+    public BooleanExpression(CarbonScope scope) {
+        super(scope, scope.getByIdentifier("Boolean"));
         value = Optional.empty();
     }
 
-    public BooleanExpression(CarbonExpression parent, CarbonExpression supertype) {
-        super(parent, supertype);
-        value = Optional.empty();
-    }
-
-    public BooleanExpression(CarbonExpression parent, boolean value) {
-        super(parent);
+    public BooleanExpression(CarbonScope scope, boolean value) {
+        super(scope, scope.getByIdentifier("Boolean").get());
         this.value = Optional.of(value);
     }
 

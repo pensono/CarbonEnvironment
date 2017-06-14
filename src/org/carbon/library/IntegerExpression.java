@@ -1,11 +1,7 @@
 package org.carbon.library;
 
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.ParseException;
-import org.carbon.compiler.PrototypeExpression;
-
-import java.util.Optional;
+import org.carbon.compiler.CarbonScope;
 
 /**
  * An integer that represents exactly one value
@@ -14,8 +10,8 @@ import java.util.Optional;
 public class IntegerExpression extends GenericIntegerExpression {
     private int value;
 
-    public IntegerExpression(CarbonExpression parent, int value) {
-        super(parent, parent.getMember("Integer").get());
+    public IntegerExpression(CarbonScope scope, int value) {
+        super(scope, scope.getByIdentifier("Integer").get());
         this.value = value;
     }
 

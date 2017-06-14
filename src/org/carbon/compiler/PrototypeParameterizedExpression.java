@@ -1,6 +1,5 @@
 package org.carbon.compiler;
 
-import com.google.common.base.Strings;
 import org.carbon.PrettyPrintable;
 
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class PrototypeParameterizedExpression extends PrototypeExpression {
     }
 
     @Override
-    public CarbonExpression link(CarbonExpression scope) {
+    public CarbonExpression link(CarbonScope scope) {
         CarbonExpression expr = base.link(scope);
         for (PrototypeExpression expression : parameterList) {
             expr = expr.parameteritize(expression);

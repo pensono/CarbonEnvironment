@@ -5,7 +5,6 @@ import org.carbon.PrettyPrintable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Ethan
@@ -13,13 +12,13 @@ import java.util.Set;
 public class CompoundExpression extends CarbonExpression {
     private Map<String, CarbonExpression> children;
 
-    public CompoundExpression(CarbonExpression parent, Map<String, CarbonExpression> children){
-        super(parent);
+    public CompoundExpression(CarbonScope scope, Map<String, CarbonExpression> children){
+        super(scope);
         this.children = children;
     }
 
-    public CompoundExpression(CarbonExpression parent, CarbonExpression supertype, Map<String, CarbonExpression> children){
-        super(parent, supertype);
+    public CompoundExpression(CarbonScope scope, CarbonExpression supertype, Map<String, CarbonExpression> children){
+        super(scope, supertype);
         this.children = children;
     }
 
@@ -50,9 +49,9 @@ public class CompoundExpression extends CarbonExpression {
         }
 
         if (getSupertype().isPresent()) {
-            return new CompoundExpression(getParent(), getSupertype().get(), newChildren);
+            return new CompoundExpression(getScope(), getSupertype().get(), newChildren);
         } else {
-            return new CompoundExpression(getParent(), newChildren);
+            return new CompoundExpression(getScope(), newChildren);
         }
     }
 }

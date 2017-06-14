@@ -4,10 +4,8 @@ import org.carbon.compiler.*;
 import org.carbon.compiler.Compiler;
 import org.carbon.library.BooleanExpression;
 import org.carbon.library.GenericIntegerExpression;
-import sun.misc.IOUtils;
 
 import java.io.IOException;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,7 +15,7 @@ import java.util.stream.Stream;
 public class Main {
 
     public static void main(String[] args) {
-        RootExpression rootExpression = loadCarbonEnvironment();
+        RootScope rootScope = loadCarbonEnvironment();
 
         //Start REPL for CoW
         Scanner scanner = new Scanner(System.in);
@@ -28,14 +26,14 @@ public class Main {
             if (input.equals("quit")){
                 break;
             } else if (input.equals("reload")) {
-                rootExpression = loadCarbonEnvironment();
+                rootScope = loadCarbonEnvironment();
                 continue;
             } else if (input.isEmpty()){
                 continue;
             }
 
             try {
-                CarbonExpression expression = Compiler.compile(rootExpression, input);
+                CarbonExpression expression = Compiler.compile(rootScope, input);
                 System.out.println(expression.getFullString());
             } catch (Exception e){
                 handleError(e);
@@ -58,29 +56,29 @@ public class Main {
         } catch (InterruptedException ex) { }
     }
 
-    private static RootExpression loadCarbonEnvironment() {
-        RootExpression rootExpression = new RootExpression();
-        rootExpression.putMember("Boolean", new BooleanExpression(rootExpression));
-        rootExpression.putMember("True", new BooleanExpression(rootExpression, true));
-        rootExpression.putMember("False", new BooleanExpression(rootExpression, false));
-        rootExpression.putMember("Integer", new GenericIntegerExpression(rootExpression));
+    private static RootScope loadCarbonEnvironment() {
+        RootScope rootScope = new RootScope();
+        rootScope.putMember("Boolean", new BooleanExpression(rootScope));
+        rootScope.putMember("True", new BooleanExpression(rootScope, true));
+        rootScope.putMember("False", new BooleanExpression(rootScope, false));
+        rootScope.putMember("Integer", new GenericIntegerExpression(rootScope));
 
-        loadTestSources(rootExpression);
-        return rootExpression;
+        loadTestSources(rootScope);
+        return rootScope;
     }
 
-    private static void loadTestSources(RootExpression rootExpression){
+    private static void loadTestSources(RootScope rootScope){
         System.out.println("Searching for source within " + Paths.get("res").toAbsolutePath());
         try(Stream<Path> paths = Files.walk(Paths.get("res").toAbsolutePath())){
             paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
                     System.out.println("Compiling " + file);
-                    CarbonExpression expression = Compiler.compile(rootExpression, new String(Files.readAllBytes(file)));
+                    CarbonExpression expression = Compiler.compile(rootScope, new String(Files.readAllBytes(file)));
                     expression = expression.reduce();
 
                     // TODO a better way to extract the name of the file.
                     // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
-                    rootExpression.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
+                    rootScope.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
                     System.out.println(expression.getFullString());
                 } catch (IOException | CarbonException e) {
                     handleError(e);

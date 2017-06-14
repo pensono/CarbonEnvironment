@@ -18,24 +18,19 @@ public class PrototypeCompoundExpression extends PrototypeExpression {
     }
 
     @Override
-    public CarbonExpression link(CarbonExpression scope) {
-        return new LazyLinkExpression((CarbonExpression parent) -> {
+    public CarbonExpression link(CarbonScope scope) {
+        // Build a dependency graph and link from the top down.
+        // Cyclic dependencies are not allowed in Carbon
+
+        // ... eventually
+
+        // For now, lets just require that an item is declared in source before it is referenced.
+        // This policy can be relaxed later
             Map<String, CarbonExpression> linkedChildren = new HashMap<>();
-            for (Map.Entry<String, PrototypeExpression> child : children.entrySet()){
-                linkedChildren.put(child.getKey(), child.getValue().link(parent));
-//                if (child.getValue().isPresent()) {
-//                    linkedChildren.put(child.getKey(), child.getValue().get().link(parent));
-//                } else {
-//                    Optional<CarbonExpression> value = scope.getMember(child.getKey());
-//                    if (value.isPresent()){
-//                        linkedChildren.put(child.getKey(), value.get());
-//                    } else {
-//                        throw new ParseException("Could not find \"" + child.getKey() + "\" in:\n" + scope.getBodyString());
-//                    }
-//                }
+            for (Map.Entry<String, PrototypeExpression> child : children.entrySet()) {
+                linkedChildren.put(child.getKey(), child.getValue().link(scope)); // This is incorrect. Scope should be this
             }
-            return new CompoundExpression(parent, linkedChildren);
-        },scope);
+            return new CompoundExpression(scope, linkedChildren);
     }
 
     public String getBodyString(int level) {

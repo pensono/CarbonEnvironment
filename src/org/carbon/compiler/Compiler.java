@@ -1,10 +1,6 @@
 package org.carbon.compiler;
 
-import com.google.common.primitives.Ints;
-
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -14,7 +10,7 @@ public class Compiler {
     public static final String grammarChars = "[\\{}.\\(\\),]";
     private static Parser parser = new PrattParser();
 
-    public static CarbonExpression compile(CarbonExpression scope, String input) {
+    public static CarbonExpression compile(CarbonScope scope, String input) {
         List<Token> tokens = tokenize(input);
         // System.out.println(String.join(" ",tokens));
         PrototypeExpression protypeExpression = parser.parseExpression(new TokenIterator(tokens));
@@ -40,7 +36,7 @@ public class Compiler {
     }
 
 
-    private static CarbonExpression link(CarbonExpression scope, PrototypeExpression protypeExpression) {
+    private static CarbonExpression link(CarbonScope scope, PrototypeExpression protypeExpression) {
         return protypeExpression.link(scope);
     }
 }

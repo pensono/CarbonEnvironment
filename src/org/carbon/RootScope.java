@@ -1,8 +1,7 @@
 package org.carbon;
 
 import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.ParseException;
-import org.carbon.compiler.PrototypeExpression;
+import org.carbon.compiler.CarbonScope;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,22 +10,8 @@ import java.util.Optional;
 /**
  * Created by Ethan Shea on 9/6/2016.
  */
-public class RootExpression extends CarbonExpression {
+public class RootScope implements CarbonScope {
     private Map<String, CarbonExpression> members = new HashMap<>();
-
-    public RootExpression() {
-        super(null); // What to send in as the parent of this??
-    }
-
-    @Override
-    public Optional<CarbonExpression> getMember(String name) {
-        return Optional.ofNullable(members.get(name));
-    }
-
-    @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Cannot parameterize root. (How the hell did you even do this?!)");
-    }
 
     @Override
     public String getBodyString(int level) {
@@ -49,5 +34,10 @@ public class RootExpression extends CarbonExpression {
 
     public void putMember(String name, CarbonExpression expression){
         members.put(name, expression);
+    }
+
+    @Override
+    public Optional<CarbonExpression> getByIdentifier(String name) {
+        return Optional.ofNullable(members.get(name));
     }
 }

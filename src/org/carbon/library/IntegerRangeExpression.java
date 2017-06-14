@@ -2,6 +2,7 @@ package org.carbon.library;
 
 
 import org.carbon.compiler.CarbonExpression;
+import org.carbon.compiler.CarbonScope;
 import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 
@@ -14,8 +15,8 @@ public class IntegerRangeExpression extends GenericIntegerExpression {
     private int valueLow; //inclusive
     private int valueHigh; // inclusive
 
-    public IntegerRangeExpression(CarbonExpression parent, int low, int high) {
-        super(parent);
+    public IntegerRangeExpression(CarbonScope scope, int low, int high) {
+        super(scope);
         valueLow = low;
         valueHigh = high;
     }

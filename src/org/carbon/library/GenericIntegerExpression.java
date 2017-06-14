@@ -1,10 +1,7 @@
 package org.carbon.library;
 
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.ParseException;
-import org.carbon.compiler.PrototypeExpression;
-import org.carbon.compiler.PrototypeIntegerExpression;
+import org.carbon.compiler.*;
 
 import java.util.Optional;
 
@@ -14,47 +11,47 @@ import java.util.Optional;
  */
 public class GenericIntegerExpression extends CarbonExpression {
 
-
-    public GenericIntegerExpression(CarbonExpression parent) {
-        super(parent);
+    public GenericIntegerExpression(CarbonScope scope) {
+        super(scope);
     }
 
-    public GenericIntegerExpression(CarbonExpression parent, CarbonExpression supertype){
-        super(parent, supertype);
+    public GenericIntegerExpression(CarbonScope scope, CarbonExpression supertype){
+        super(scope, supertype);
     }
 
     @Override
     public Optional<CarbonExpression> getMember(String name) {
+        GenericIntegerExpression integerPrototype = (GenericIntegerExpression) getScope().getByIdentifier("Integer").get();
         switch (name){
             case "<":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x < y, "<"));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x < y, "<", this));
             case ">":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x > y, ">"));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x > y, ">", this));
             case "<=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x <= y, "<="));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x <= y, "<=", this));
             case ">=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x >= y, ">="));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x >= y, ">=", this));
             case "==":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x == y, "=="));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x == y, "==", this));
             case "!=":
-                return Optional.of(new ComparisonExpression(this, (x, y) -> x != y, "!="));
+                return Optional.of(new ComparisonExpression(getScope(), (x, y) -> x != y, "!=", this));
             case "+":
-                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x + y, "+"));
+                return Optional.of(new IntegerArithmeticExpression(getScope(), (x, y) -> x + y, "+", this));
             case "-":
-                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x - y, "-"));
+                return Optional.of(new IntegerArithmeticExpression(getScope(), (x, y) -> x - y, "-", this));
             case "*":
-                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x * y, "*"));
+                return Optional.of(new IntegerArithmeticExpression(getScope(), (x, y) -> x * y, "*", this));
             case "/":
-                return Optional.of(new IntegerArithmeticExpression(this, (x, y) -> x / y, "/"));
+                return Optional.of(new IntegerArithmeticExpression(getScope(), (x, y) -> x / y, "/", this));
             default:
-                return getParent().getMember(name);
+                return super.getMember(name);
         }
     }
 
     @Override
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
         if (parameter instanceof PrototypeIntegerExpression){
-            return new IntegerExpression(getParent(), ((PrototypeIntegerExpression)parameter).getValue());
+            return new IntegerExpression(getScope(), ((PrototypeIntegerExpression)parameter).getValue());
         } else {
             throw new ParseException("Integers can't be parameteritized by:\n" + parameter.getFullString());
         }
