@@ -7,7 +7,7 @@ import java.util.Optional;
 /**
  * Created by Ethan Shea on 8/29/2016.
  */
-public abstract class CarbonExpression implements PrettyPrintable {
+public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
     private Optional<CarbonExpression> supertype;
     private CarbonScope scope;
 

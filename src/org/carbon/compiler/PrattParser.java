@@ -29,7 +29,7 @@ public class PrattParser extends Parser {
             @Override
             public PrototypeExpression parse(TokenIterator tokens) {
                 tokens.consume("{");
-                Map<String, PrototypeExpression> children = new HashMap<>();
+                Map<String, PrototypeExpression> children = new LinkedHashMap<>();
                 while (!tokens.peek().equals("}")) {
                     String name = tokens.next();
                     tokens.consume("=");

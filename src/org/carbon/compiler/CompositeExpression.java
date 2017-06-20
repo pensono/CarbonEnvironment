@@ -9,15 +9,19 @@ import java.util.Optional;
 /**
  * @author Ethan
  */
-public class CompoundExpression extends CarbonExpression {
+public class CompositeExpression extends CarbonExpression {
     private Map<String, CarbonExpression> children;
 
-    public CompoundExpression(CarbonScope scope, Map<String, CarbonExpression> children){
+    public CompositeExpression(CarbonScope scope){
+        this(scope, new HashMap<>());
+    }
+
+    public CompositeExpression(CarbonScope scope, Map<String, CarbonExpression> children){
         super(scope);
         this.children = children;
     }
 
-    public CompoundExpression(CarbonScope scope, CarbonExpression supertype, Map<String, CarbonExpression> children){
+    public CompositeExpression(CarbonScope scope, CarbonExpression supertype, Map<String, CarbonExpression> children){
         super(scope, supertype);
         this.children = children;
     }
@@ -29,7 +33,7 @@ public class CompoundExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return getSupertype().isPresent() ? getSupertype().get().getShortString() + " : " : "" + "CompoundExpression" ;
+        return getSupertype().isPresent() ? getSupertype().get().getShortString() + " : " : "" + "CompositeExpression" ;
     }
 
     public String getBodyString(int level){
@@ -41,6 +45,10 @@ public class CompoundExpression extends CarbonExpression {
         return Optional.ofNullable(children.get(name));
     }
 
+    public void addMember(String name, CarbonExpression member) {
+        children.put(name, member);
+    }
+
     @Override
     public CarbonExpression reduce() {
         Map<String, CarbonExpression> newChildren = new HashMap<>();
@@ -49,9 +57,18 @@ public class CompoundExpression extends CarbonExpression {
         }
 
         if (getSupertype().isPresent()) {
-            return new CompoundExpression(getScope(), getSupertype().get(), newChildren);
+            return new CompositeExpression(getScope(), getSupertype().get(), newChildren);
         } else {
-            return new CompoundExpression(getScope(), newChildren);
+            return new CompositeExpression(getScope(), newChildren);
+        }
+    }
+
+    @Override
+    public Optional<CarbonExpression> getByIdentifier(String name) {
+        if (children.containsKey(name)) {
+            return Optional.of(children.get(name));
+        } else {
+            return getScope().getByIdentifier(name);
         }
     }
 }

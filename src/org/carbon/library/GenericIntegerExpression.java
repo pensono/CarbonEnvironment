@@ -9,7 +9,7 @@ import java.util.Optional;
  * An integer with no range at all. Must be parameteritized to become useful
  * Created by Ethan Shea on 8/29/2016.
  */
-public class GenericIntegerExpression extends CarbonExpression {
+public class GenericIntegerExpression extends PrimeExpression {
 
     public GenericIntegerExpression(CarbonScope scope) {
         super(scope);

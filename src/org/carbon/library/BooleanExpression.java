@@ -1,16 +1,13 @@
 package org.carbon.library;
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.CarbonScope;
-import org.carbon.compiler.ParseException;
-import org.carbon.compiler.PrototypeExpression;
+import org.carbon.compiler.*;
 
 import java.util.Optional;
 
 /**
  * @author Ethan
  */
-public class BooleanExpression extends CarbonExpression {
+public class BooleanExpression extends PrimeExpression {
     /**
      * Empty means the bool could be either true or false.
      * Populated means only true or false

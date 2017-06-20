@@ -1,5 +1,5 @@
 {
     Value = Integer.<,
     Value2 = Boolean,
-    Value3 = Test.Value2,
+    Value3 = Value2,
 }

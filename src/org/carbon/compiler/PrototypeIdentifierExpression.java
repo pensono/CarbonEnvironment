@@ -25,12 +25,11 @@ public class PrototypeIdentifierExpression extends PrototypeExpression {
 
     @Override
     public CarbonExpression link(CarbonScope scope) {
-        // TODO recurse up the scope's parents to find a suitable match
         Optional<CarbonExpression> expr = scope.getByIdentifier(name);
         if (expr.isPresent()){
             return expr.get();
         }
-        // Else put this into the scope?
-        throw new LinkException("Could not find " + name);
+        // TODO Better error message showing an example definition
+        throw new LinkException("Could not find " + name + ". Did you forget to define it first?");
     }
 }
