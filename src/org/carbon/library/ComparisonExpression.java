@@ -1,7 +1,7 @@
 package org.carbon.library;
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.CarbonScope;
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrototypeExpression;
 

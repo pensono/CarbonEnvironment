@@ -1,5 +1,7 @@
 package org.carbon.compiler;
 
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.PrettyPrintable;
 
 import java.util.HashMap;

@@ -1,7 +1,7 @@
 package org.carbon.library;
 
 
-import org.carbon.compiler.CarbonScope;
+import org.carbon.CarbonScope;
 
 /**
  * An integer that represents exactly one value

@@ -1,8 +1,5 @@
 package org.carbon;
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.CarbonScope;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

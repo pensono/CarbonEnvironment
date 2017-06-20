@@ -1,9 +1,9 @@
 package org.carbon.compiler;
 
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.PrettyPrintable;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 /**

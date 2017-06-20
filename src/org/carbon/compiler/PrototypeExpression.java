@@ -1,10 +1,8 @@
 package org.carbon.compiler;
 
-import com.google.common.base.Strings;
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.PrettyPrintable;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Ethan Shea on 8/31/2016.

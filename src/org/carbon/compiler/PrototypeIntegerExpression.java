@@ -1,7 +1,8 @@
 package org.carbon.compiler;
 
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.library.IntegerExpression;
-import org.carbon.library.IntegerRangeExpression;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,4 @@
-package org.carbon.compiler;
-
-import org.carbon.PrettyPrintable;
+package org.carbon;
 
 import java.util.Optional;
 

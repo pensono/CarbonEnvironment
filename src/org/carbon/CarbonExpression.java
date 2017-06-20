@@ -1,6 +1,6 @@
-package org.carbon.compiler;
+package org.carbon;
 
-import org.carbon.PrettyPrintable;
+import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
 

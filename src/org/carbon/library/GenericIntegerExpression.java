@@ -1,6 +1,8 @@
 package org.carbon.library;
 
 
+import org.carbon.CarbonExpression;
+import org.carbon.CarbonScope;
 import org.carbon.compiler.*;
 
 import java.util.Optional;

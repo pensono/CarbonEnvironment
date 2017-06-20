@@ -1,12 +1,7 @@
 package org.carbon.library;
 
 
-import org.carbon.compiler.CarbonExpression;
-import org.carbon.compiler.CarbonScope;
-import org.carbon.compiler.ParseException;
-import org.carbon.compiler.PrototypeExpression;
-
-import java.util.Optional;
+import org.carbon.CarbonScope;
 
 /**
  * Created by Ethan Shea on 8/29/2016.
