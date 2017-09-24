@@ -1,7 +1,8 @@
-package org.carbon.compiler;
+package org.carbon;
 
 import org.carbon.CarbonExpression;
 import org.carbon.CarbonScope;
+import org.carbon.compiler.*;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -12,12 +12,12 @@ import java.util.function.BiPredicate;
  * @author Ethan
  */
 public class ComparisonExpression extends BooleanExpression {
-    private GenericIntegerExpression lhs;
-    private Optional<GenericIntegerExpression> rhs;
+    private IntegerExpression lhs;
+    private Optional<IntegerExpression> rhs;
     private String comparisonName;
     private BiPredicate<Integer, Integer> operator;
 
-    private ComparisonExpression(CarbonScope scope, GenericIntegerExpression lhs, Optional<GenericIntegerExpression> rhs, BiPredicate<Integer, Integer> operator, String comparisonName){
+    private ComparisonExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, BiPredicate<Integer, Integer> operator, String comparisonName){
         super(scope);
         this.lhs = lhs;
         this.rhs = rhs;
@@ -25,11 +25,11 @@ public class ComparisonExpression extends BooleanExpression {
         this.operator = operator;
     }
 
-    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, GenericIntegerExpression lhs) {
+    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs) {
         this(scope, lhs, Optional.empty(), operator, comparisonName);
     }
 
-    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, GenericIntegerExpression lhs, GenericIntegerExpression rhs){
+    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs, IntegerExpression rhs){
         this(scope, lhs, Optional.of(rhs), operator, comparisonName);
     }
 
@@ -43,7 +43,7 @@ public class ComparisonExpression extends BooleanExpression {
         if (!expression.isSubtypeOf(getMember("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
-        return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (GenericIntegerExpression) expression);
+        return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);
     }
 
 //    public String getBodyString(int level) {
@@ -62,11 +62,11 @@ public class ComparisonExpression extends BooleanExpression {
             return this;
         }
 
-        // TODO does this always reduce to a GenericIntegerExpression?
-        rhs = Optional.of((GenericIntegerExpression) rhs.get().reduce());
-        if (rhs.isPresent() && lhs instanceof IntegerExpression && rhs.get() instanceof IntegerExpression){
-            boolean value = operator.test(((IntegerExpression) lhs).getValue(),
-                                          ((IntegerExpression) rhs.get()).getValue());
+        // TODO does this always reduce to a IntegerExpression?
+        rhs = Optional.of((IntegerExpression) rhs.get().reduce());
+        if (rhs.isPresent() && lhs instanceof SpecificIntegerExpression && rhs.get() instanceof SpecificIntegerExpression){
+            boolean value = operator.test(((SpecificIntegerExpression) lhs).getValue(),
+                                          ((SpecificIntegerExpression) rhs.get()).getValue());
             return new BooleanExpression(getScope(), value);
         }
         return this;

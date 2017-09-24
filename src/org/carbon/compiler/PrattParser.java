@@ -1,6 +1,7 @@
 package org.carbon.compiler;
 
 import com.google.common.primitives.Ints;
+import org.carbon.Compiler;
 
 import java.util.*;
 import java.util.regex.Matcher;

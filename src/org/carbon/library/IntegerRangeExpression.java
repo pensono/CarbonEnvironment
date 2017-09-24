@@ -6,7 +6,7 @@ import org.carbon.CarbonScope;
 /**
  * Created by Ethan Shea on 8/29/2016.
  */
-public class IntegerRangeExpression extends GenericIntegerExpression {
+public class IntegerRangeExpression extends IntegerExpression {
     private int valueLow; //inclusive
     private int valueHigh; // inclusive
 

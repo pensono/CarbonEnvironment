@@ -1,9 +1,8 @@
 package org.carbon;
 
 import org.carbon.compiler.*;
-import org.carbon.compiler.Compiler;
 import org.carbon.library.BooleanExpression;
-import org.carbon.library.GenericIntegerExpression;
+import org.carbon.library.IntegerExpression;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -57,11 +56,7 @@ public class Main {
     }
 
     private static RootScope loadCarbonEnvironment() {
-        RootScope rootScope = new RootScope();
-        rootScope.putMember("Boolean", new BooleanExpression(rootScope));
-        rootScope.putMember("True", new BooleanExpression(rootScope, true));
-        rootScope.putMember("False", new BooleanExpression(rootScope, false));
-        rootScope.putMember("Integer", new GenericIntegerExpression(rootScope));
+        RootScope rootScope = new CarbonLibrary();
 
         loadTestSources(rootScope);
         return rootScope;
