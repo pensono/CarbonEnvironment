@@ -2,6 +2,7 @@ package org.carbon.library;
 
 
 import org.carbon.CarbonExpression;
+import org.carbon.CarbonInterface;
 import org.carbon.CarbonScope;
 import org.carbon.compiler.*;
 
@@ -11,15 +12,7 @@ import java.util.Optional;
  * An integer with no range at all. Must be parameteritized to become useful
  * Created by Ethan Shea on 8/29/2016.
  */
-public class IntegerExpression extends PrimeExpression {
-
-    public IntegerExpression(CarbonScope scope) {
-        super(scope);
-    }
-
-    public IntegerExpression(CarbonScope scope, CarbonExpression supertype){
-        super(scope, supertype);
-    }
+public class IntegerExpression extends CarbonInterface {
 
     @Override
     public Optional<CarbonExpression> getMember(String name) {

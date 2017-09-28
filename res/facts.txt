@@ -1,0 +1,3 @@
+- Names are held by the thing that contains the named object.
+  + This way the object itself is anonymous
+

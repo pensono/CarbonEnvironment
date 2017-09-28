@@ -52,10 +52,6 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
     // The scope paramaeter may not be nececary
     public CarbonExpression reduce() { return this; }
 
-    public Optional<CarbonExpression> getMember(String name) {
-        return Optional.empty();
-    }
-
     public CarbonScope getScope() {
         return scope;
     }

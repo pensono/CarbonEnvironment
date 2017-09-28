@@ -1,0 +1,14 @@
+Integer {
+    +(Integer) : Integer,
+    -(Integer) : Integer,
+    *(Integer) : Integer,
+    /(Integer) : Rational,
+    //(Integer) : Integer, // Is this the best syntax?
+
+    < (Integer) : Integer,
+    > (Integer) : Integer,
+    <=(Integer) : Integer,
+    >=(Integer) : Integer,
+    ==(Integer) : Integer,
+    !=(Integer) : Integer,
+}
