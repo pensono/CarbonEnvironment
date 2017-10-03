@@ -14,7 +14,7 @@ public class BooleanExpression extends PrimeExpression {
      * Empty means the bool could be either true or false.
      * Populated means only true or false
      */
-    Optional<Boolean> value;
+    private Optional<Boolean> value;
 
     public BooleanExpression(CarbonScope scope) {
         super(scope, scope.getByIdentifier("Boolean"));
@@ -34,5 +34,9 @@ public class BooleanExpression extends PrimeExpression {
     @Override
     public String getShortString() {
         return value.isPresent() ? "Boolean[" + value.get() + "]" : "Boolean";
+    }
+
+    public Optional<Boolean> getValue() {
+        return value;
     }
 }

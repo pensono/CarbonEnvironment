@@ -39,4 +39,12 @@ public class IntegerExpressionTest {
         assertEquals(((SpecificIntegerExpression) sum).getValue(), 9);
     }
 
+    @Test
+    public void testComparison() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compile(scope, "5 > 4");
+
+        assertEquals(((BooleanExpression) sum).getValue().get(), true);
+    }
+
 }

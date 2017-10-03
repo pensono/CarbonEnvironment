@@ -37,10 +37,10 @@ public class ComparisonExpression extends BooleanExpression {
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
         if (rhs.isPresent()){
             //double paramaterization, what happens now?
-            throw new ParseException("Double parametrization" + this + "\n" + parameter);
+            throw new ParseException("Double parametrization " + this + "\n" + parameter);
         }
         CarbonExpression expression = parameter.link(getScope());
-        if (!expression.isSubtypeOf(getMember("Integer").get())){
+        if (!expression.isSubtypeOf(getScope().getByIdentifier("Integer").get())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
         return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);
