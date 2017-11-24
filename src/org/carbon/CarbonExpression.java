@@ -8,20 +8,16 @@ import java.util.Optional;
  * Created by Ethan Shea on 8/29/2016.
  */
 public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
-    private Optional<CarbonExpression> supertype;
+    private CarbonInterface supertype;
     private CarbonScope scope;
 
-    public CarbonExpression(CarbonScope scope, Optional<CarbonExpression> supertype){
+    public CarbonExpression(CarbonScope scope, CarbonInterface supertype){
         this.scope = scope;
         this.supertype = supertype;
     }
 
     public CarbonExpression(CarbonScope scope){
-        this(scope, Optional.empty());
-    }
-
-    public CarbonExpression(CarbonScope scope, CarbonExpression supertype){
-        this(scope, Optional.of(supertype));
+        this(scope, new CarbonInterface());
     }
 
     /**
@@ -30,15 +26,8 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
      */
 //    public abstract boolean isValue();
 
-    public Optional<CarbonExpression> getSupertype() {
+    public CarbonInterface getInterface() {
         return supertype;
-    }
-
-    public boolean isSubtypeOf(CarbonExpression expression) {
-        if (supertype.isPresent()){
-            return supertype.get() == expression || supertype.get().isSubtypeOf(expression);
-        }
-        return false;
     }
 
     /**
@@ -49,7 +38,7 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
      */
     public abstract CarbonExpression parameteritize(PrototypeExpression parameter);
 
-    // The scope paramaeter may not be nececary
+    // The scope parameter may not be necessary
     public CarbonExpression reduce() { return this; }
 
     public Optional<CarbonExpression> getMember(String name) {

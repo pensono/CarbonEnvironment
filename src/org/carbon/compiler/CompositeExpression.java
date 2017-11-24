@@ -1,6 +1,7 @@
 package org.carbon.compiler;
 
 import org.carbon.CarbonExpression;
+import org.carbon.CarbonInterface;
 import org.carbon.CarbonScope;
 import org.carbon.PrettyPrintable;
 
@@ -23,8 +24,8 @@ public class CompositeExpression extends CarbonExpression {
         this.children = children;
     }
 
-    public CompositeExpression(CarbonScope scope, CarbonExpression supertype, Map<String, CarbonExpression> children){
-        super(scope, supertype);
+    public CompositeExpression(CarbonScope scope, CarbonInterface carbonInterface, Map<String, CarbonExpression> children){
+        super(scope, carbonInterface);
         this.children = children;
     }
 
@@ -35,7 +36,7 @@ public class CompositeExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return getSupertype().isPresent() ? getSupertype().get().getShortString() + " : " : "" + "CompositeExpression" ;
+        return getInterface().getShortString() + " : " + "CompositeExpression";
     }
 
     public String getBodyString(int level){
@@ -58,11 +59,7 @@ public class CompositeExpression extends CarbonExpression {
             newChildren.put(name, children.get(name).reduce());
         }
 
-        if (getSupertype().isPresent()) {
-            return new CompositeExpression(getScope(), getSupertype().get(), newChildren);
-        } else {
-            return new CompositeExpression(getScope(), newChildren);
-        }
+        return new CompositeExpression(getScope(), getInterface(), newChildren);
     }
 
     @Override

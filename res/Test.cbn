@@ -1,5 +1,5 @@
 {
-    Value = Integer.<,
-    Value2 = Boolean,
-    Value3 = Value2,
+    Value = 4,
+    Value2 = True,
+    Value3 = 1 + 3,
 }

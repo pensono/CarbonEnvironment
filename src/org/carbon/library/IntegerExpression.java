@@ -2,23 +2,28 @@ package org.carbon.library;
 
 
 import org.carbon.CarbonExpression;
+import org.carbon.CarbonInterface;
 import org.carbon.CarbonScope;
 import org.carbon.compiler.*;
 
 import java.util.Optional;
 
 /**
- * An integer with no range at all. Must be parameteritized to become useful
+ * An integer with no range at all. Must be parameteritized to become useful.
+ * For the sake of this interpreter, this is a 32-bit two's complement integer
  * Created by Ethan Shea on 8/29/2016.
  */
 public class IntegerExpression extends PrimeExpression {
+    private int value;
 
-    public IntegerExpression(CarbonScope scope) {
-        super(scope);
+    public IntegerExpression(CarbonScope scope, int value){
+        super(scope, new IntegerInterface());
+        this.value = value;
     }
 
-    public IntegerExpression(CarbonScope scope, CarbonExpression supertype){
-        super(scope, supertype);
+    public IntegerExpression(CarbonScope scope, CarbonInterface carbonInterface, int value){
+        super(scope, carbonInterface);
+        this.value = value;
     }
 
     @Override
@@ -49,13 +54,13 @@ public class IntegerExpression extends PrimeExpression {
         }
     }
 
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        if (parameter instanceof PrototypeIntegerExpression){
-            return new SpecificIntegerExpression(getScope(), ((PrototypeIntegerExpression)parameter).getValue());
-        } else {
-            throw new ParseException("Integers can't be parameteritized by:\n" + parameter.getFullString());
-        }
+        throw new ParseException("Integers can't be parameteritized! Attempted:\n" + parameter.getFullString());
     }
 
     @Override

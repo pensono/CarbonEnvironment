@@ -3,15 +3,18 @@ package org.carbon.library;
 import org.carbon.CarbonExpression;
 import org.carbon.CarbonScope;
 import org.carbon.compiler.ParseException;
+import org.carbon.compiler.PrimeExpression;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
 import java.util.function.IntBinaryOperator;
 
 /**
+ * This can't extend IntegerExpression because it might not be an int. It could be a
+ * function which takes an int and returns an int, but not an int itself.
  * Created by Ethan Shea on 10/18/2016.
  */
-public class IntegerArithmeticExpression extends IntegerExpression {
+public class IntegerArithmeticExpression extends PrimeExpression {
     private IntegerExpression lhs;
 
     // TODO factor a new subclass
@@ -20,7 +23,7 @@ public class IntegerArithmeticExpression extends IntegerExpression {
     private IntBinaryOperator operator;
 
     private IntegerArithmeticExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, IntBinaryOperator operator, String operatorName) {
-        super(scope, scope.getByIdentifier("Integer").get());
+        super(scope, new IntegerInterface());
         this.lhs = lhs;
         this.rhs = rhs;
         this.operatorName = operatorName;
@@ -42,7 +45,7 @@ public class IntegerArithmeticExpression extends IntegerExpression {
             throw new ParseException("Double parametrization" + this + "\n" + parameter);
         }
         CarbonExpression expression = parameter.link(getScope());
-        if (!expression.isSubtypeOf(getByIdentifier("Integer").get())) {
+        if (!new IntegerInterface().isSupertypeOf(expression.getInterface())) {
             throw new ParseException("Parameter is not a subtype of Integer. Parameter:\n" + parameter.getFullString());
         }
         return new IntegerArithmeticExpression(getScope(), operator, operatorName, lhs, (IntegerExpression) expression);
@@ -55,7 +58,7 @@ public class IntegerArithmeticExpression extends IntegerExpression {
 
     @Override
     public String getShortString() {
-        return operatorName + ":" + getSupertype().get().getShortString();
+        return operatorName + ":" + getInterface().getShortString();
     }
 
     @Override
@@ -66,12 +69,12 @@ public class IntegerArithmeticExpression extends IntegerExpression {
 
         // TODO does this always reduce to a IntegerExpression?
         rhs = Optional.of((IntegerExpression) rhs.get().reduce());
-        if (lhs instanceof SpecificIntegerExpression && rhs.get() instanceof SpecificIntegerExpression) {
-            int lhsValue = ((SpecificIntegerExpression) lhs).getValue();
-            int rhsValue = ((SpecificIntegerExpression) rhs.get()).getValue();
+        if (lhs instanceof IntegerExpression && rhs.get() instanceof IntegerExpression) {
+            int lhsValue = ((IntegerExpression) lhs).getValue();
+            int rhsValue = ((IntegerExpression) rhs.get()).getValue();
 
             int value = operator.applyAsInt(lhsValue, rhsValue);
-            return new SpecificIntegerExpression(getScope(), value);
+            return new IntegerExpression(getScope(), value);
         }
         return this;
     }

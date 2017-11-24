@@ -1,6 +1,7 @@
 package org.carbon.compiler;
 
 import org.carbon.CarbonExpression;
+import org.carbon.CarbonInterface;
 import org.carbon.CarbonScope;
 
 import java.util.Optional;
@@ -14,11 +15,7 @@ public abstract class PrimeExpression extends CarbonExpression {
         super(scope);
     }
 
-    public PrimeExpression(CarbonScope scope, CarbonExpression supertype) {
-        super(scope, supertype);
-    }
-
-    public PrimeExpression(CarbonScope scope, Optional<CarbonExpression> supertype) {
+    public PrimeExpression(CarbonScope scope, CarbonInterface supertype) {
         super(scope, supertype);
     }
 

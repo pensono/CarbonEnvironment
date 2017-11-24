@@ -16,7 +16,7 @@ public class IntegerExpressionTest {
     @Test
     public void hasNoMembers() throws Exception {
         RootScope scope = new RootScope();
-        CarbonExpression expr = new IntegerExpression(scope);
+        CarbonExpression expr = new IntegerExpression(scope, 0);
 
         // TODO add mockito and test for any string
         assertEquals(expr.getMember("notAMember"), Optional.empty());
@@ -25,9 +25,9 @@ public class IntegerExpressionTest {
     @Test
     public void parameteritize() throws Exception {
         RootScope scope = new RootScope();
-        CarbonExpression expr = new IntegerExpression(scope);
+        CarbonExpression expr = new IntegerExpression(scope, 0);
 
-        CarbonExpression integer = new IntegerExpression(scope);
+        CarbonExpression integer = new IntegerExpression(scope, 0);
         //expr.parameteritize()
     }
 
@@ -36,7 +36,7 @@ public class IntegerExpressionTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compile(scope, "5 + 4");
 
-        assertEquals(((SpecificIntegerExpression) sum).getValue(), 9);
+        assertEquals(((IntegerExpression) sum).getValue(), 9);
     }
 
     @Test

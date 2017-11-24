@@ -3,6 +3,7 @@ package org.carbon.library;
 import org.carbon.CarbonExpression;
 import org.carbon.CarbonScope;
 import org.carbon.compiler.ParseException;
+import org.carbon.compiler.PrimeExpression;
 import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.function.BiPredicate;
 /**
  * @author Ethan
  */
-public class ComparisonExpression extends BooleanExpression {
+public class ComparisonExpression extends PrimeExpression {
     private IntegerExpression lhs;
     private Optional<IntegerExpression> rhs;
     private String comparisonName;
@@ -40,7 +41,7 @@ public class ComparisonExpression extends BooleanExpression {
             throw new ParseException("Double parametrization " + this + "\n" + parameter);
         }
         CarbonExpression expression = parameter.link(getScope());
-        if (!expression.isSubtypeOf(getScope().getByIdentifier("Integer").get())){
+        if (!new IntegerInterface().isSupertypeOf(expression.getInterface())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
         return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);
@@ -53,7 +54,7 @@ public class ComparisonExpression extends BooleanExpression {
 
     @Override
     public String getShortString() {
-        return comparisonName + ":"+getSupertype().get().getShortString();
+        return comparisonName + ":"+ getInterface().getShortString();
     }
 
     @Override
@@ -64,9 +65,9 @@ public class ComparisonExpression extends BooleanExpression {
 
         // TODO does this always reduce to a IntegerExpression?
         rhs = Optional.of((IntegerExpression) rhs.get().reduce());
-        if (rhs.isPresent() && lhs instanceof SpecificIntegerExpression && rhs.get() instanceof SpecificIntegerExpression){
-            boolean value = operator.test(((SpecificIntegerExpression) lhs).getValue(),
-                                          ((SpecificIntegerExpression) rhs.get()).getValue());
+        if (rhs.isPresent()){
+            boolean value = operator.test(((IntegerExpression) lhs).getValue(),
+                                          ((IntegerExpression) rhs.get()).getValue());
             return new BooleanExpression(getScope(), value);
         }
         return this;

@@ -2,7 +2,8 @@ package org.carbon.compiler;
 
 import org.carbon.CarbonExpression;
 import org.carbon.CarbonScope;
-import org.carbon.library.SpecificIntegerExpression;
+import org.carbon.library.IntegerExpression;
+import org.carbon.library.IntegerInterface;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class PrototypeIntegerExpression extends PrototypeExpression {
 
     @Override
     public CarbonExpression link(CarbonScope scope) {
-        return new SpecificIntegerExpression(scope, value);
+        return new IntegerExpression(scope, value);
     }
 
     public int getValue() {
