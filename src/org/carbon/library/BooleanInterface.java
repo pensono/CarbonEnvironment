@@ -34,7 +34,7 @@ public class BooleanInterface extends CarbonInterface {
         return false;
     }
 
-    public Optional<CarbonInterface> getMember(String name) {
+    public Optional<CarbonInterface> getInterfaceMember(String name) {
         return Optional.empty();
     }
 

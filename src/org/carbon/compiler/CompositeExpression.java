@@ -20,7 +20,7 @@ public class CompositeExpression extends CarbonExpression {
     }
 
     public CompositeExpression(CarbonScope scope, Map<String, CarbonExpression> children){
-        super(scope);
+        super(scope, new CarbonInterface(scope));
         this.children = children;
     }
 
@@ -36,7 +36,7 @@ public class CompositeExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return getInterface().getShortString() + " : " + "CompositeExpression";
+        return "CompositeExpression : " + getInterface().getShortString();
     }
 
     public String getBodyString(int level){

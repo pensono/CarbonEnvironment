@@ -16,10 +16,6 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
         this.supertype = supertype;
     }
 
-    public CarbonExpression(CarbonScope scope){
-        this(scope, new CarbonInterface());
-    }
-
     /**
      * Returns true if this expression can only have one value
      * @return

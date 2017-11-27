@@ -21,7 +21,7 @@ public class IntegerInterface extends CarbonInterface {
     }
 
     @Override
-    public Optional<CarbonInterface> getMember(String name) {
+    public Optional<CarbonInterface> getInterfaceMember(String name) {
         switch (name){
             case "<":
             case ">":
@@ -36,7 +36,7 @@ public class IntegerInterface extends CarbonInterface {
             case "/":
                 return Optional.of(new IntegerInterface());
             default:
-                return super.getMember(name);
+                return super.getInterfaceMember(name);
         }
     }
 }
