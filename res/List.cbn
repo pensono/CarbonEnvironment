@@ -1,0 +1,19 @@
+List(A:Interface) {
+  Append(Item:A) : List[Size == Size + 1] {}
+  *Add(Item:A) : List[Size == Size + 1] = Append(Item)
+  *Remove(Item[Contains(Item)]:A) : List[Size == Size + 1] {}
+  Size : Natural
+  Contains(Item:A) : Boolean {}
+}
+
+Set(Interface) {
+  *Add(Item:Interface) : Set[Size >= Size] {}
+  *Remove(Item:Interface) : Set[Size == Size + 1] {}
+  Contains(Item:Interface) : Boolean {}
+  Size : Natural
+}
+
+Set(List(A)) = {
+    Size = List.Size
+    
+}
