@@ -17,12 +17,12 @@ public class BooleanExpression extends PrimeExpression {
     private Optional<Boolean> value;
 
     public BooleanExpression(CarbonScope scope) {
-        super(scope, new BooleanInterface());
+        super(scope, new BooleanInterface(scope));
         value = Optional.empty();
     }
 
     public BooleanExpression(CarbonScope scope, boolean value) {
-        super(scope, new BooleanInterface());
+        super(scope, new BooleanInterface(scope));
         this.value = Optional.of(value);
     }
 

@@ -17,7 +17,7 @@ public class IntegerExpression extends PrimeExpression {
     private int value;
 
     public IntegerExpression(CarbonScope scope, int value){
-        super(scope, new IntegerInterface());
+        super(scope, new IntegerInterface(scope));
         this.value = value;
     }
 

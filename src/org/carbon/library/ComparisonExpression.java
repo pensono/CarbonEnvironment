@@ -19,7 +19,7 @@ public class ComparisonExpression extends PrimeExpression {
     private BiPredicate<Integer, Integer> operator;
 
     private ComparisonExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, BiPredicate<Integer, Integer> operator, String comparisonName){
-        super(scope);
+        super(scope, new BooleanInterface(scope));
         this.lhs = lhs;
         this.rhs = rhs;
         this.comparisonName = comparisonName;
@@ -35,13 +35,13 @@ public class ComparisonExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
+    public CarbonExpression parameteritize(CarbonExpression parameter) {
         if (rhs.isPresent()){
             //double paramaterization, what happens now?
             throw new ParseException("Double parametrization " + this + "\n" + parameter);
         }
         CarbonExpression expression = parameter.link(getScope());
-        if (!new IntegerInterface().isSupertypeOf(expression.getInterface())){
+        if (IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + parameter.getBodyString());
         }
         return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);

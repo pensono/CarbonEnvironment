@@ -23,7 +23,7 @@ public class IntegerArithmeticExpression extends PrimeExpression {
     private IntBinaryOperator operator;
 
     private IntegerArithmeticExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, IntBinaryOperator operator, String operatorName) {
-        super(scope, new IntegerInterface());
+        super(scope, new IntegerInterface(scope));
         this.lhs = lhs;
         this.rhs = rhs;
         this.operatorName = operatorName;
@@ -45,7 +45,7 @@ public class IntegerArithmeticExpression extends PrimeExpression {
             throw new ParseException("Double parametrization" + this + "\n" + parameter);
         }
         CarbonExpression expression = parameter.link(getScope());
-        if (!new IntegerInterface().isSupertypeOf(expression.getInterface())) {
+        if (IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())) {
             throw new ParseException("Parameter is not a subtype of Integer. Parameter:\n" + parameter.getFullString());
         }
         return new IntegerArithmeticExpression(getScope(), operator, operatorName, lhs, (IntegerExpression) expression);

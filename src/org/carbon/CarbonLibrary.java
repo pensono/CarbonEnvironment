@@ -13,9 +13,9 @@ import java.util.Optional;
 public class CarbonLibrary extends RootScope {
     public CarbonLibrary(){
         putMember("Interface", new CarbonInterface(this));
-        putMember("Boolean", new BooleanInterface());
+        putMember("Boolean", new BooleanInterface(this));
         putMember("True", new BooleanExpression(this, true));
         putMember("False", new BooleanExpression(this, false));
-        putMember("Integer", new IntegerInterface());
+        putMember("Integer", new IntegerInterface(this));
     }
 }

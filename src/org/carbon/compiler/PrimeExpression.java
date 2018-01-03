@@ -11,12 +11,8 @@ import java.util.Optional;
  * Created by Ethan Shea on 6/19/2017.
  */
 public abstract class PrimeExpression extends CarbonExpression {
-    public PrimeExpression(CarbonScope scope) {
-        super(scope);
-    }
-
-    public PrimeExpression(CarbonScope scope, CarbonInterface supertype) {
-        super(scope, supertype);
+    public PrimeExpression(CarbonScope scope, CarbonInterface _interface) {
+        super(scope, _interface);
     }
 
     public Optional<CarbonExpression> getByIdentifier(String name) {

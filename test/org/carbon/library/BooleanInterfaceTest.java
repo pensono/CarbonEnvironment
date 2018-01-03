@@ -1,5 +1,7 @@
 package org.carbon.library;
 
+import org.carbon.CarbonLibrary;
+import org.carbon.CarbonScope;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -13,21 +15,23 @@ import static org.junit.Assert.*;
 public class BooleanInterfaceTest {
     @Test
     public void isSupertypeOfCorrect() throws Exception {
-        BooleanInterface noRefinement = new BooleanInterface();
+        CarbonScope lib = new CarbonLibrary();
 
-        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface(Mockito.anyBoolean())));
-        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface()));
+        BooleanInterface noRefinement = new BooleanInterface(lib);
 
-        BooleanInterface aRefinement = new BooleanInterface(true);
+        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface(lib, Mockito.anyBoolean())));
+        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface(lib)));
 
-        assertTrue(aRefinement.isSupertypeOf(new BooleanInterface(true)));
-        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface(false)));
-        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface()));
+        BooleanInterface aRefinement = new BooleanInterface(lib, true);
+
+        assertTrue(aRefinement.isSupertypeOf(new BooleanInterface(lib, true)));
+        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface(lib, false)));
+        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface(lib)));
     }
 
     @Test
     public void getShortString() throws Exception {
-        assertEquals(new BooleanInterface().getShortString(), "Boolean");
+        assertEquals(new BooleanInterface(new CarbonLibrary()).getShortString(), "Boolean");
     }
 
 }

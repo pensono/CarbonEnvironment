@@ -8,12 +8,12 @@ import java.util.Optional;
  * Created by Ethan Shea on 8/29/2016.
  */
 public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
-    private CarbonInterface supertype;
+    private CarbonInterface _interface;
     private CarbonScope scope;
 
-    public CarbonExpression(CarbonScope scope, CarbonInterface supertype){
+    public CarbonExpression(CarbonScope scope, CarbonInterface _interface){
         this.scope = scope;
-        this.supertype = supertype;
+        this._interface = _interface;
     }
 
     /**
@@ -23,7 +23,7 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
 //    public abstract boolean isValue();
 
     public CarbonInterface getInterface() {
-        return supertype;
+        return _interface;
     }
 
     /**
@@ -32,7 +32,7 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
      * @param parameter
      * @return
      */
-    public abstract CarbonExpression parameteritize(PrototypeExpression parameter);
+    public abstract CarbonExpression parameteritize(CarbonExpression parameter);
 
     // The scope parameter may not be necessary
     public CarbonExpression reduce() { return this; }

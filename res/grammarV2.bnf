@@ -16,6 +16,6 @@ compound_expression ::= "{" expression_list "}"
 expression_list ::= | expression ("," expression)*
 
 parameterization ::= "(" argument_list ")"
-argument_list ::= declaration ("," declaration)
+argument_list ::= declaration ("," declaration)*
 
 enum_list ::= label ("|" label)*

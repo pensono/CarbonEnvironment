@@ -1,7 +1,10 @@
 package org.carbon.library;
 
 import org.carbon.CarbonInterface;
+import org.carbon.CarbonScope;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,12 +13,23 @@ import java.util.Optional;
  * @date 11/24/2017
  */
 public class IntegerInterface extends CarbonInterface {
+    public IntegerInterface(CarbonScope scope) {
+        super(scope);
+    }
+
+    public IntegerInterface(CarbonScope scope, List<CarbonInterface> parameters) {
+        super(scope, parameters);
+    }
 
     @Override
-    public boolean isSupertypeOf(CarbonInterface carbonInterface) {
-        if (carbonInterface instanceof IntegerInterface) {
+    public boolean isSupertypeOf(CarbonInterface _interface){
+        return isSupertypeOfUnparameterized(_interface);
+        // Later do more advanced checking (for range interfaces or stepped ones)
+    }
+
+    public static boolean isSupertypeOfUnparameterized(CarbonInterface _interface) {
+        if (_interface instanceof IntegerInterface) {
             return true;
-            // Later do more advanced checking (for range interfaces or steped ones)
         }
         return false;
     }
@@ -29,12 +43,18 @@ public class IntegerInterface extends CarbonInterface {
             case ">=":
             case "==":
             case "!=":
-                return Optional.of(new BooleanInterface());
+                List<CarbonInterface> parameters = new ArrayList<>();
+                parameters.add(new IntegerInterface(getScope()));
+                parameters.add(new IntegerInterface(getScope()));
+                return Optional.of(new BooleanInterface(getScope(), parameters));
             case "+":
             case "-":
             case "*":
             case "/":
-                return Optional.of(new IntegerInterface());
+                parameters = new ArrayList<>();
+                parameters.add(new IntegerInterface(getScope()));
+                parameters.add(new IntegerInterface(getScope()));
+                return Optional.of(new IntegerInterface(getScope(), parameters));
             default:
                 return super.getInterfaceMember(name);
         }

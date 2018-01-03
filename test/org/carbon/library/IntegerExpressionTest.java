@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 
 import org.carbon.Compiler;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import java.util.Optional;
 /**
@@ -45,6 +46,14 @@ public class IntegerExpressionTest {
         CarbonExpression sum = Compiler.compile(scope, "5 > 4");
 
         assertEquals(((BooleanExpression) sum).getValue().get(), true);
+    }
+
+    @Test
+    public void isSubtypeOfUnparameterized() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression integer = new IntegerExpression(scope, Mockito.anyInt());
+
+        assertTrue(IntegerInterface.isSupertypeOfUnparameterized(integer.getInterface()));
     }
 
 }

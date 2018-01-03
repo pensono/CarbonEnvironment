@@ -2,6 +2,8 @@ package org.carbon;
 
 import org.carbon.compiler.PrototypeExpression;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -10,8 +12,15 @@ import java.util.Optional;
  * @date 11/24/2017
  */
 public class CarbonInterface extends CarbonExpression implements PrettyPrintable {
-    public CarbonInterface(CarbonScope scope) {
+    private final List<CarbonInterface> parameters;
+
+    public CarbonInterface(CarbonScope scope, List<CarbonInterface> parameters) {
         super(scope, null);
+        this.parameters = parameters;
+    }
+
+    public CarbonInterface(CarbonScope scope) {
+        this(scope, new ArrayList<>());
     }
 
     /**
@@ -39,5 +48,13 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
     @Override
     public CarbonExpression parameteritize(PrototypeExpression parameter) {
         return null;
+    }
+
+    public List<CarbonInterface> getParameters() {
+        return this.parameters;
+    }
+
+    public int getArity() {
+        return parameters.size();
     }
 }
