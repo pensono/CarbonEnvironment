@@ -59,8 +59,8 @@ public class IntegerExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
-        throw new ParseException("Integers can't be parameteritized! Attempted:\n" + parameter.getFullString());
+    public CarbonExpression parameteritize(CarbonExpression expression) {
+        throw new ParseException("Integers can't be parameteritized! Attempted:\n" + expression.getFullString());
     }
 
     @Override

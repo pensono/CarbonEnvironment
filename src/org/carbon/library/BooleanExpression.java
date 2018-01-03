@@ -27,7 +27,7 @@ public class BooleanExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameterList) {
+    public CarbonExpression parameteritize(CarbonExpression expression) {
         throw new ParseException("Booleans can't be parameteritized");
     }
 

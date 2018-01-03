@@ -39,14 +39,13 @@ public class IntegerArithmeticExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
+    public CarbonExpression parameteritize(CarbonExpression expression) {
         if (rhs.isPresent()) {
             //double paramaterization, what happens now?
-            throw new ParseException("Double parametrization" + this + "\n" + parameter);
+            throw new ParseException("Double parametrization" + this + "\n" + expression);
         }
-        CarbonExpression expression = parameter.link(getScope());
-        if (IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())) {
-            throw new ParseException("Parameter is not a subtype of Integer. Parameter:\n" + parameter.getFullString());
+        if (!IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())) {
+            throw new ParseException("Parameter is not a subtype of Integer. Parameter:\n" + expression.getFullString());
         }
         return new IntegerArithmeticExpression(getScope(), operator, operatorName, lhs, (IntegerExpression) expression);
     }

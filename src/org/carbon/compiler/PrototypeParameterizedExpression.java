@@ -36,7 +36,7 @@ public class PrototypeParameterizedExpression extends PrototypeExpression {
     public CarbonExpression link(CarbonScope scope) {
         CarbonExpression expr = base.link(scope);
         for (PrototypeExpression expression : parameterList) {
-            expr = expr.parameteritize(expression);
+            expr = expr.parameteritize(expression.link(scope));
         }
         return expr;
     }

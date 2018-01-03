@@ -30,7 +30,7 @@ public class CompositeExpression extends CarbonExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(PrototypeExpression parameter) {
+    public CarbonExpression parameteritize(CarbonExpression parameter) {
         return null;
     }
 
