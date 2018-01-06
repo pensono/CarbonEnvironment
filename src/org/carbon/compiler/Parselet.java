@@ -1,8 +1,6 @@
 package org.carbon.compiler;
 
-import com.google.common.collect.PeekingIterator;
-
-import java.util.Iterator;
+import org.carbon.tokenizer.TokenIterator;
 
 /**
  * Created by Ethan Shea on 8/29/2016.

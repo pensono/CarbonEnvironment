@@ -1,21 +1,30 @@
-expression ::= declaration parameterization? compound_expression?
-             | label "=" (type parameterization?)
-             | label "=" compound_expression
-             | declaration enum_list
-             | label
+statement ::= declaration parameterization? "=" expression ";"
 
-declaration ::= label ":" type | type
+expression ::= compound_expression
+             | enum_list
+             | identifier application?
 
-type ::= label
-       | label refinement
+parameter ::= label ":" type | type
+declaration ::= label ":" type | label
+
+type ::= identifier
+       | identifier refinement
 
 refinement ::= "[" refinement_list "]"
 refinement_list ::= expression_list // that must typecheck to bool
 
-compound_expression ::= "{" expression_list "}"
-expression_list ::= | expression ("," expression)*
 
-parameterization ::= "(" argument_list ")"
-argument_list ::= declaration ("," declaration)*
+compound_expression ::= "{" statement_list "}"
+statement_list ::= statement*
 
-enum_list ::= label ("|" label)*
+parameterization ::= "(" parameter_list ")"
+parameter_list ::= parameter ("," parameter)*
+
+application ::= "(" expression_list ")"
+expression_list ::= expression ("," expression)*
+
+enum_list ::= ("|" label)+
+
+identifier ::= label ("." label)*
+
+label ::= // Any string of letters

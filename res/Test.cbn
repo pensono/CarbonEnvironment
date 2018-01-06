@@ -1,5 +1,5 @@
-{
-    Value = 4,
-    Value2 = True,
-    Value3 = 1 + 3,
+Test = {
+    Value = 4;
+    Value2 = True;
+    Value3 = 1 + 3;
 }

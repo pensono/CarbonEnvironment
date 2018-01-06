@@ -1,6 +1,7 @@
 package org.carbon.library;
 
 import org.carbon.CarbonExpression;
+import org.carbon.CarbonInterface;
 import org.carbon.CarbonScope;
 import org.carbon.compiler.ParseException;
 import org.carbon.compiler.PrimeExpression;
@@ -11,7 +12,7 @@ import java.util.function.IntBinaryOperator;
 
 /**
  * This can't extend IntegerExpression because it might not be an int. It could be a
- * function which takes an int and returns an int, but not an int itself.
+ * function which takes an int and returns an int, but not an int itself. <-- on second thought may not be true
  * Created by Ethan Shea on 10/18/2016.
  */
 public class IntegerArithmeticExpression extends PrimeExpression {
@@ -68,9 +69,10 @@ public class IntegerArithmeticExpression extends PrimeExpression {
 
         // TODO does this always reduce to a IntegerExpression?
         rhs = Optional.of((IntegerExpression) rhs.get().reduce());
-        if (lhs instanceof IntegerExpression && rhs.get() instanceof IntegerExpression) {
-            int lhsValue = ((IntegerExpression) lhs).getValue();
-            int rhsValue = ((IntegerExpression) rhs.get()).getValue();
+        if (IntegerInterface.isSupertypeOfUnparameterized(lhs.getInterface()) &&
+                IntegerInterface.isSupertypeOfUnparameterized(rhs.get().getInterface())) {
+            int lhsValue = lhs.getValue();
+            int rhsValue = rhs.get().getValue();
 
             int value = operator.applyAsInt(lhsValue, rhsValue);
             return new IntegerExpression(getScope(), value);

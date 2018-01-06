@@ -2,6 +2,8 @@ package org.carbon.compiler;
 
 import com.google.common.primitives.Ints;
 import org.carbon.Compiler;
+import org.carbon.tokenizer.TokenIterator;
+import org.carbon.tokenizer.Tokenizer;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -87,7 +89,7 @@ public class PrattParser extends Parser {
             }
         });
         compoundParselets.add(new CompoundParselet() {
-            Pattern grammarSymbols = Pattern.compile(Compiler.grammarChars);
+            Pattern grammarSymbols = Pattern.compile(Tokenizer.grammarChars);
 
             @Override
             public PrototypeExpression parse(PrototypeExpression base, TokenIterator tokens) {
@@ -105,6 +107,11 @@ public class PrattParser extends Parser {
     }
 
     public PrototypeExpression parseExpression(TokenIterator tokens) {
+        return parseExpression_impl(tokens);
+    }
+
+    @Override
+    public PrototypeExpression parseStatement(TokenIterator tokens) {
         return parseExpression_impl(tokens);
     }
 
