@@ -1,8 +1,11 @@
 package org.carbon.parser;
 
-import org.carbon.CarbonExpression;
-import org.carbon.CarbonScope;
+import org.carbon.compiler.CompositeExpression;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonScope;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -17,7 +20,13 @@ public class CompoundExpressionNode extends ExpressionNode {
 
     @Override
     public CarbonExpression link(CarbonScope scope) {
-        return null;
+        Map<String, CarbonExpression> expressionMembers = new HashMap<>();
+
+        for (StatementNode member : members) {
+            expressionMembers.put(member.getLabel(), member.getValue().link(scope));
+        }
+
+        return new CompositeExpression(scope, expressionMembers);
     }
 
     @Override

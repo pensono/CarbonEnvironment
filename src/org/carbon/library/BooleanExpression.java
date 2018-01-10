@@ -1,8 +1,9 @@
 package org.carbon.library;
 
-import org.carbon.CarbonExpression;
-import org.carbon.CarbonScope;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonScope;
 import org.carbon.compiler.*;
+import org.carbon.parser.ParseException;
 
 import java.util.Optional;
 
@@ -27,7 +28,7 @@ public class BooleanExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(CarbonExpression expression) {
+    public CarbonExpression apply(CarbonExpression expression) {
         throw new ParseException("Booleans can't be parameteritized");
     }
 

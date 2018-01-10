@@ -1,6 +1,6 @@
-package org.carbon;
+package org.carbon.runtime;
 
-import org.carbon.compiler.PrototypeExpression;
+import org.carbon.PrettyPrintable;
 
 import java.util.Optional;
 
@@ -32,7 +32,7 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
      * @param parameter
      * @return
      */
-    public abstract CarbonExpression parameteritize(CarbonExpression parameter);
+    public abstract CarbonExpression apply(CarbonExpression parameter);
 
     // The scope parameter may not be necessary
     public CarbonExpression reduce() { return this; }

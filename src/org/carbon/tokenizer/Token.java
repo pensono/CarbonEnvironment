@@ -10,13 +10,17 @@ public class Token {
     private int columnNumber;
 
     public Token(String token, String line, int lineNumber, int columnNumber) {
+        if (token.isEmpty()) {
+            throw new IllegalArgumentException("Token can't be empty.");
+        }
+
         this.token = token;
         this.line = line;
         this.lineNumber = lineNumber;
         this.columnNumber = columnNumber;
     }
 
-    public String getToken() {
+    public String getText() {
         return token;
     }
 
@@ -34,5 +38,17 @@ public class Token {
 
     public String getLine() {
         return line;
+    }
+
+    public TokenType getType() {
+        if (Tokenizer.grammarChars.contains(token.charAt(0) + "")) {
+            return TokenType.GRAMMAR;
+        } else if (Character.isAlphabetic(token.charAt(0))) {
+            return TokenType.REGULAR;
+        } else if (Character.isLetterOrDigit(token.charAt(0))) {
+            return  TokenType.NUMERIC;
+        } else {
+            return TokenType.SYMBOL;
+        }
     }
 }

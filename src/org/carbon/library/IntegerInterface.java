@@ -1,7 +1,7 @@
 package org.carbon.library;
 
-import org.carbon.CarbonInterface;
-import org.carbon.CarbonScope;
+import org.carbon.runtime.CarbonInterface;
+import org.carbon.runtime.CarbonScope;
 
 import java.util.ArrayList;
 import java.util.List;

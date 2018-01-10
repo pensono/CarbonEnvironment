@@ -1,6 +1,7 @@
 package org.carbon.parser;
 
 import org.carbon.tokenizer.TokenIterator;
+import org.carbon.tokenizer.TokenType;
 
 import java.util.*;
 
@@ -16,8 +17,8 @@ public class RecursiveDescentParser {
             //case "|":
             // return parseEnumeration(tokens);
             default:
-                IdentifierNode identifier = parseIdentifier(tokens);
-                if (tokens.peek().equals("(")) {
+                ExpressionNode expression = parseValueExpression(tokens);
+                if (tokens.hasNext() && tokens.peek().equals("(")) {
                     List<ExpressionNode> arguments = new ArrayList<>();
                     arguments.add(parseExpression(tokens));
                     while (!tokens.peek().equals(")")){
@@ -25,11 +26,29 @@ public class RecursiveDescentParser {
                         arguments.add(parseExpression(tokens));
                     }
 
-                    return new AppliedExpressionNode(identifier, arguments);
-                } else {
-                    return identifier;
+                    return new AppliedExpressionNode(expression, arguments);
                 }
+                return expression;
         }
+    }
+
+    private ExpressionNode parseValueExpression(TokenIterator tokens) {
+        ExpressionNode expression;
+        if (tokens.peekToken().getType() == TokenType.NUMERIC) {
+            int value = Integer.parseInt(tokens.next()); // Should be able to parse custom numeric types
+            expression = new NumericNode(value);
+        } else {
+            expression = parseIdentifier(tokens);
+        }
+
+        while (tokens.hasNext() && tokens.peekToken().getType() == TokenType.SYMBOL) {
+            String operator = tokens.next();
+
+            ExpressionNode argument = parseValueExpression(tokens);
+
+            expression = new OperatorNode(expression, operator, argument);
+        }
+        return expression;
     }
 
     private CompoundExpressionNode parseCompoundExpression(TokenIterator tokens) {
@@ -48,7 +67,7 @@ public class RecursiveDescentParser {
         List<String> labels = new ArrayList<>();
         labels.add(tokens.next());
 
-        while (tokens.peek().equals(".")) {
+        while (tokens.hasNext() && tokens.peek().equals(".")) {
             tokens.consume(".");
             labels.add(tokens.next());
         }

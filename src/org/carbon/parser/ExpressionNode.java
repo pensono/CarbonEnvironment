@@ -1,7 +1,7 @@
 package org.carbon.parser;
 
-import org.carbon.CarbonExpression;
-import org.carbon.CarbonScope;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonScope;
 
 /**
  * @author Ethan

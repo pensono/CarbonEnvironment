@@ -1,8 +1,7 @@
 package org.carbon.library;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import org.carbon.CarbonInterface;
-import org.carbon.CarbonScope;
+import org.carbon.runtime.CarbonInterface;
+import org.carbon.runtime.CarbonScope;
 
 import java.util.List;
 import java.util.Optional;

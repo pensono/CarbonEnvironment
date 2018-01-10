@@ -2,13 +2,16 @@ statement ::= declaration parameterization? "=" expression ";"
 
 expression ::= compound_expression
              | enum_list
-             | identifier application?
+             | value_expression application?
+
+value_expression ::= value_expression symbol value_expression
+                   | identifier
+                   | number
 
 parameter ::= label ":" type | type
 declaration ::= label ":" type | label
 
-type ::= identifier
-       | identifier refinement
+type ::= identifier refinement?
 
 refinement ::= "[" refinement_list "]"
 refinement_list ::= expression_list // that must typecheck to bool
@@ -28,3 +31,7 @@ enum_list ::= ("|" label)+
 identifier ::= label ("." label)*
 
 label ::= // Any string of letters
+
+symbol ::= // Any non-alphanumeric characters
+
+number ::= // Any token beginning with a numeric character

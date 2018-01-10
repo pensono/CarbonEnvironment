@@ -1,8 +1,5 @@
 package org.carbon.parser;
 
-import org.carbon.CarbonExpression;
-import org.carbon.CarbonScope;
-
 import java.util.Optional;
 
 /**
@@ -29,6 +26,18 @@ public class StatementNode extends SyntaxNode {
         this.label = label;
         this.type = Optional.of(type);
         this.value = value;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public Optional<TypeNode> getType() {
+        return type;
+    }
+
+    public ExpressionNode getValue() {
+        return value;
     }
 
     @Override

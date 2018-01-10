@@ -1,6 +1,6 @@
-package org.carbon;
+package org.carbon.runtime;
 
-import org.carbon.compiler.PrototypeExpression;
+import org.carbon.PrettyPrintable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,7 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
     }
 
     @Override
-    public CarbonExpression parameteritize(CarbonExpression parameter) {
+    public CarbonExpression apply(CarbonExpression parameter) {
         return null;
     }
 

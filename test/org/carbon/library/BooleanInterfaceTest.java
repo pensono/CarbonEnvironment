@@ -1,8 +1,6 @@
 package org.carbon.library;
 
-import org.carbon.CarbonLibrary;
-import org.carbon.CarbonScope;
-import org.junit.Assert;
+import org.carbon.runtime.CarbonScope;
 import org.junit.Test;
 import org.mockito.Mockito;
 

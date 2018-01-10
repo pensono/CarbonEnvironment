@@ -1,10 +1,11 @@
 package org.carbon.library;
 
-import org.carbon.*;
-
 import static org.junit.Assert.*;
 
-import org.carbon.Compiler;
+import org.carbon.compiler.Compiler;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonScope;
+import org.carbon.runtime.RootScope;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -29,7 +30,7 @@ public class IntegerExpressionTest {
         CarbonExpression expr = new IntegerExpression(scope, 0);
 
         CarbonExpression integer = new IntegerExpression(scope, 0);
-        //expr.parameteritize()
+        //expr.apply()
     }
 
     @Test

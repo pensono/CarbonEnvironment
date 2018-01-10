@@ -1,11 +1,9 @@
 package org.carbon.library;
 
-import org.carbon.CarbonExpression;
-import org.carbon.CarbonInterface;
-import org.carbon.CarbonScope;
-import org.carbon.compiler.ParseException;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonScope;
+import org.carbon.parser.ParseException;
 import org.carbon.compiler.PrimeExpression;
-import org.carbon.compiler.PrototypeExpression;
 
 import java.util.Optional;
 import java.util.function.IntBinaryOperator;
@@ -40,7 +38,7 @@ public class IntegerArithmeticExpression extends PrimeExpression {
     }
 
     @Override
-    public CarbonExpression parameteritize(CarbonExpression expression) {
+    public CarbonExpression apply(CarbonExpression expression) {
         if (rhs.isPresent()) {
             //double paramaterization, what happens now?
             throw new ParseException("Double parametrization" + this + "\n" + expression);

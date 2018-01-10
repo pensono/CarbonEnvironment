@@ -1,6 +1,6 @@
 package org.carbon.compiler;
 
-import org.carbon.CarbonExpression;
+import org.carbon.runtime.CarbonExpression;
 
 /**
  * Created by Ethan Shea on 5/12/2017.

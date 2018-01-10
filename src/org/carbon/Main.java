@@ -1,8 +1,10 @@
 package org.carbon;
 
 import org.carbon.compiler.*;
-import org.carbon.library.BooleanExpression;
-import org.carbon.library.IntegerExpression;
+import org.carbon.compiler.Compiler;
+import org.carbon.library.CarbonLibrary;
+import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.RootScope;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -68,7 +70,7 @@ public class Main {
             paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
                     System.out.println("Compiling " + file);
-                    CarbonExpression expression = Compiler.compile(rootScope, new String(Files.readAllBytes(file)));
+                    CarbonExpression expression = Compiler.compileFile(rootScope, new String(Files.readAllBytes(file)));
                     expression = expression.reduce();
 
                     // TODO a better way to extract the name of the file.
