@@ -7,7 +7,10 @@ import org.carbon.runtime.CarbonScope;
 import org.carbon.compiler.*;
 import org.carbon.parser.ParseException;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * An integer with no range at all. Must be parameteritized to become useful.
@@ -53,6 +56,12 @@ public class IntegerExpression extends PrimeExpression {
             default:
                 return super.getMember(name);
         }
+    }
+
+    private static final Set<String> ops = new HashSet<>(Arrays.asList("<", ">", "<=", ">=", "==", "!=", "+", "-", "*", "/"));
+    @Override
+    public boolean hasMember(String name) {
+        return ops.contains(name);
     }
 
     public int getValue() {

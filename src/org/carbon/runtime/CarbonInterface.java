@@ -41,11 +41,6 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
     }
 
     @Override
-    public Optional<CarbonExpression> getByIdentifier(String name) {
-        return null;
-    }
-
-    @Override
     public CarbonExpression apply(CarbonExpression parameter) {
         return null;
     }

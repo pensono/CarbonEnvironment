@@ -36,7 +36,7 @@ public class IntegerExpressionTest {
     @Test
     public void testAddition() throws Exception {
         CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compile(scope, "5 + 4");
+        CarbonExpression sum = Compiler.compileExpression(scope, "5 + 4");
 
         assertEquals(((IntegerExpression) sum).getValue(), 9);
     }
@@ -44,7 +44,7 @@ public class IntegerExpressionTest {
     @Test
     public void testComparison() throws Exception {
         CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compile(scope, "5 > 4");
+        CarbonExpression sum = Compiler.compileExpression(scope, "5 > 4");
 
         assertEquals(((BooleanExpression) sum).getValue().get(), true);
     }

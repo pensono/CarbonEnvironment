@@ -5,6 +5,7 @@ import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,21 +13,27 @@ import java.util.Set;
  * @author Ethan
  */
 public class CompoundExpressionNode extends ExpressionNode {
-    private Set<StatementNode> members;
+    private List<StatementNode> members;
 
-    public CompoundExpressionNode(Set<StatementNode> members) {
+    public CompoundExpressionNode(List<StatementNode> members) {
         this.members = members;
     }
 
     @Override
-    public CarbonExpression link(CarbonScope scope) {
-        Map<String, CarbonExpression> expressionMembers = new HashMap<>();
+    public CompositeExpression link(CarbonScope scope) {
+        // Build a dependency graph and link with a pre-order traversal.
+        // Cyclic dependencies are not allowed in Carbon
 
+        // ... eventually
+
+        // For now, lets just require that an item is declared in source before it is referenced.
+        // This policy can be relaxed later
+        CompositeExpression newExpression = new CompositeExpression(scope);
         for (StatementNode member : members) {
-            expressionMembers.put(member.getLabel(), member.getValue().link(scope));
+            newExpression.addMember(member.getLabel(), member.getValue().link(newExpression));
         }
 
-        return new CompositeExpression(scope, expressionMembers);
+        return newExpression;
     }
 
     @Override
@@ -34,7 +41,7 @@ public class CompoundExpressionNode extends ExpressionNode {
         return "Compound Expression";
     }
 
-    public Set<StatementNode> getMembers() {
+    public List<StatementNode> getMembers() {
         return members;
     }
 }

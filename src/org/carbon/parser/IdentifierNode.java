@@ -6,6 +6,7 @@ import org.carbon.compiler.LinkException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * @author Ethan
@@ -24,9 +25,9 @@ public class IdentifierNode extends ExpressionNode {
     }
 
     public CarbonExpression link(CarbonScope scope) {
-        String fullString = String.join(".", labels);
-        return scope.getByIdentifier(fullString)
-                .orElseThrow(() -> new LinkException("Could not find identifier " + fullString));
+        List<String> identifier = new ArrayList<>(labels);
+        return scope.getByIdentifier(identifier)
+                .orElseThrow(() -> new LinkException("Could not find identifier \"" + String.join(".", labels) + "\""));
     }
 
     /**

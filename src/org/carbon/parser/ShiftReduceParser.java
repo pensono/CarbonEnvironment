@@ -18,7 +18,7 @@ public class ShiftReduceParser {
 
     public ShiftReduceParser(){
         addReduction(nodes -> {
-            Set<StatementNode> statements = new HashSet<>();
+            List<StatementNode> statements = new ArrayList<>();
             for (SyntaxNode node : nodes){
                 statements.add((StatementNode) node);
             }
@@ -92,7 +92,7 @@ public class ShiftReduceParser {
     }
 
     public CompoundExpressionNode parseStatements(TokenIterator tokens) {
-        Set<StatementNode> statements = new HashSet<>();
+        List<StatementNode> statements = new ArrayList<>();
         while (tokens.hasNext()) {
             statements.add(parseStatement(tokens));
         }

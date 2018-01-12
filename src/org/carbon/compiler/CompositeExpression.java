@@ -8,6 +8,7 @@ import org.carbon.PrettyPrintable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Stack;
 
 /**
  * @author Ethan
@@ -52,6 +53,10 @@ public class CompositeExpression extends CarbonExpression {
         children.put(name, member);
     }
 
+    public boolean hasMember(String name) {
+        return children.containsKey(name);
+    }
+
     @Override
     public CarbonExpression reduce() {
         Map<String, CarbonExpression> newChildren = new HashMap<>();
@@ -60,14 +65,5 @@ public class CompositeExpression extends CarbonExpression {
         }
 
         return new CompositeExpression(getScope(), getInterface(), newChildren);
-    }
-
-    @Override
-    public Optional<CarbonExpression> getByIdentifier(String name) {
-        if (children.containsKey(name)) {
-            return Optional.of(children.get(name));
-        } else {
-            return getScope().getByIdentifier(name);
-        }
     }
 }

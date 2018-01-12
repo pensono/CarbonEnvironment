@@ -14,8 +14,7 @@ import java.util.stream.Collectors;
 public class TokenIterator implements PeekingIterator<String> {
     private PeekingIterator<Token> impl;
 
-    public TokenIterator(List<Token> tokens){
-        System.out.println(tokens.stream().map(Token::getText).collect(Collectors.joining(",")));
+    public TokenIterator(List<Token> tokens) {
         impl = Iterators.peekingIterator(tokens.iterator());
     }
 

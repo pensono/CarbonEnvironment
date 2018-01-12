@@ -2,6 +2,7 @@ package org.carbon.runtime;
 
 import org.carbon.PrettyPrintable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,6 +40,26 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
 
     public Optional<CarbonExpression> getMember(String name) {
         return Optional.empty();
+    }
+
+    public void addMember(String name, CarbonExpression expression) { }
+
+    public Optional<CarbonExpression> getByIdentifier(List<String> identifier) {
+        if (identifier.isEmpty()) {
+            return Optional.of(this);
+        } else {
+            if (hasMember(identifier.get(0))) {
+                String name = identifier.remove(0);
+                return getMember(name).get().getByIdentifier(identifier);
+            } else {
+                return getScope().getByIdentifier(identifier);
+            }
+        }
+    }
+
+    @Override
+    public boolean hasMember(String name) {
+        return false;
     }
 
     public CarbonScope getScope() {

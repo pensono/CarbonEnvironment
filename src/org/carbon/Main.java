@@ -22,7 +22,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         while (true) {
             System.out.print("$ ");
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
 
             if (input.equals("quit")){
                 break;
@@ -34,8 +34,13 @@ public class Main {
             }
 
             try {
-                CarbonExpression expression = Compiler.compile(rootScope, input);
-                System.out.println(expression.getFullString());
+                if (input.endsWith(";")) {
+                    Compiler.compileStatementsInto(rootScope, input);
+                } else {
+                    CarbonExpression expression = Compiler.compileExpression(rootScope, input);
+
+                    System.out.println(expression.getFullString());
+                }
             } catch (Exception e){
                 handleError(e);
             }
@@ -70,13 +75,7 @@ public class Main {
             paths.filter(path -> path.toString().endsWith(".cbn")).forEach(file -> {
                 try {
                     System.out.println("Compiling " + file);
-                    CarbonExpression expression = Compiler.compileFile(rootScope, new String(Files.readAllBytes(file)));
-                    expression = expression.reduce();
-
-                    // TODO a better way to extract the name of the file.
-                    // Doesn't work if you're unfortunate enough to call your file Name.Cbn.Something.cbn
-                    rootScope.putMember(file.getFileName().toString().replace(".cbn", ""), expression);
-                    System.out.println(expression.getFullString());
+                    Compiler.compileStatementsInto(rootScope, new String(Files.readAllBytes(file)));
                 } catch (IOException | CarbonException e) {
                     handleError(e);
                 }

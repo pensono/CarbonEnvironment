@@ -13,3 +13,11 @@ Compilation happens in several steps:
   - Results in expressions arranged in an AST
 
 * Reduction Evaluation / Optimization
+
+
+Definitions
+=======
+An identifier is several labels in a row, separated by dots:
+`This.IsAn.Identifier`
+
+A member refers to a direct descendant. In the example above, `IsAn` is a member of `This`.

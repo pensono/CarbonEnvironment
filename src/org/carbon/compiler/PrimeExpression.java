@@ -5,6 +5,7 @@ import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
 
 import java.util.Optional;
+import java.util.Stack;
 
 /**
  * An expression that is not compound
@@ -15,7 +16,7 @@ public abstract class PrimeExpression extends CarbonExpression {
         super(scope, _interface);
     }
 
-    public Optional<CarbonExpression> getByIdentifier(String name) {
+    public Optional<CarbonExpression> getByIdentifier(Stack<String> name) {
         return getScope().getByIdentifier(name);
     }
 }

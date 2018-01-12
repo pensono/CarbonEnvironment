@@ -52,7 +52,7 @@ public class RecursiveDescentParser {
     }
 
     private CompoundExpressionNode parseCompoundExpression(TokenIterator tokens) {
-        Set<StatementNode> statements = new HashSet<>();
+        List<StatementNode> statements = new ArrayList<>();
 
         tokens.consume("{");
         while (!tokens.peek().equals("}")) {
@@ -98,7 +98,7 @@ public class RecursiveDescentParser {
     }
 
     public CompoundExpressionNode parseStatements(TokenIterator tokens) {
-        Set<StatementNode> statements = new HashSet<>();
+        List<StatementNode> statements = new ArrayList<>();
         while (tokens.hasNext()) {
             statements.add(parseStatement(tokens));
         }

@@ -5,6 +5,7 @@ import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,12 +34,17 @@ public class RootScope implements CarbonScope {
         return "Root expression";
     }
 
-    public void putMember(String name, CarbonExpression expression){
-        members.put(name, expression);
+    @Override
+    public Optional<CarbonExpression> getMember(String name) {
+        return Optional.ofNullable(members.get(name));
+    }
+
+    public boolean hasMember(String name){
+        return members.containsKey(name);
     }
 
     @Override
-    public Optional<CarbonExpression> getByIdentifier(String name) {
-        return Optional.ofNullable(members.get(name));
+    public void addMember(String name, CarbonExpression member) {
+        members.put(name, member);
     }
 }
