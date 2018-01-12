@@ -25,11 +25,6 @@ public class IntegerExpression extends PrimeExpression {
         this.value = value;
     }
 
-    public IntegerExpression(CarbonScope scope, CarbonInterface carbonInterface, int value){
-        super(scope, carbonInterface);
-        this.value = value;
-    }
-
     @Override
     public Optional<CarbonExpression> getMember(String name) {
         switch (name){
@@ -75,6 +70,6 @@ public class IntegerExpression extends PrimeExpression {
 
     @Override
     public String getShortString() {
-        return "Integer";
+        return value + " : Integer";
     }
 }

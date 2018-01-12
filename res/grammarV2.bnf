@@ -2,7 +2,7 @@ statement ::= declaration parameterization? "=" expression ";"
 
 expression ::= compound_expression
              | enum_list
-             | value_expression application?
+             | value_expression ("." identifier)? application?
 
 value_expression ::= value_expression symbol value_expression
                    | identifier

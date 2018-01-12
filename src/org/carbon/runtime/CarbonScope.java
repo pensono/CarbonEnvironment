@@ -27,7 +27,11 @@ public interface CarbonScope extends PrettyPrintable {
             return Optional.empty();
         } else {
             String firstName = identifier.remove(0); // Mutation!
-            return getMember(firstName).get().getByIdentifier(identifier);
+            if (hasMember(firstName)) {
+                return getMember(firstName).get().getByIdentifier(identifier);
+            } else {
+                return Optional.empty();
+            }
         }
     }
 }

@@ -15,16 +15,11 @@ public class BooleanExpression extends PrimeExpression {
      * Empty means the bool could be either true or false.
      * Populated means only true or false
      */
-    private Optional<Boolean> value;
-
-    public BooleanExpression(CarbonScope scope) {
-        super(scope, new BooleanInterface(scope));
-        value = Optional.empty();
-    }
+    private boolean value;
 
     public BooleanExpression(CarbonScope scope, boolean value) {
         super(scope, new BooleanInterface(scope));
-        this.value = Optional.of(value);
+        this.value = value;
     }
 
     @Override
@@ -34,10 +29,10 @@ public class BooleanExpression extends PrimeExpression {
 
     @Override
     public String getShortString() {
-        return value.isPresent() ? "Boolean[" + value.get() + "]" : "Boolean";
+        return Boolean.toString(value) + " : Boolean";
     }
 
-    public Optional<Boolean> getValue() {
+    public boolean getValue() {
         return value;
     }
 }

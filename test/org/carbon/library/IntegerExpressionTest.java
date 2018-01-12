@@ -46,7 +46,7 @@ public class IntegerExpressionTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "5 > 4");
 
-        assertEquals(((BooleanExpression) sum).getValue().get(), true);
+        assertEquals(((BooleanExpression) sum).getValue(), true);
     }
 
     @Test

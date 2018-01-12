@@ -40,8 +40,8 @@ public class IntegerArithmeticExpression extends PrimeExpression {
     @Override
     public CarbonExpression apply(CarbonExpression expression) {
         if (rhs.isPresent()) {
-            //double paramaterization, what happens now?
-            throw new ParseException("Double parametrization" + this + "\n" + expression);
+            //double application, what happens now?
+            throw new ParseException("Double parametrization" + getShortString() + "\n" + expression);
         }
         if (!IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())) {
             throw new ParseException("Parameter is not a subtype of Integer. Parameter:\n" + expression.getFullString());
