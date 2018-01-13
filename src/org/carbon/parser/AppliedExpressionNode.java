@@ -1,5 +1,6 @@
 package org.carbon.parser;
 
+import org.carbon.PrettyPrintable;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 
@@ -36,6 +37,14 @@ public class AppliedExpressionNode extends ExpressionNode{
 
     @Override
     public String getShortString() {
-        return null;
+        return "Applied Expression";
+    }
+
+    @Override
+    public String getBodyString(int level) {
+        return PrettyPrintable.indent(level) + "Expression: \n" +
+                expression.getFullString(level + 1) + "\n" +
+                PrettyPrintable.indent(level) + "Arguments: \n" +
+                PrettyPrintable.bodyString(arguments, level + 1);
     }
 }

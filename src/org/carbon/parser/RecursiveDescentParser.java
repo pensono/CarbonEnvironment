@@ -1,5 +1,6 @@
 package org.carbon.parser;
 
+import jdk.internal.org.objectweb.asm.tree.LabelNode;
 import org.carbon.tokenizer.TokenIterator;
 import org.carbon.tokenizer.TokenType;
 
@@ -18,16 +19,6 @@ public class RecursiveDescentParser {
             // return parseEnumeration(tokens);
             default:
                 ExpressionNode expression = parseValueExpression(tokens);
-                if (tokens.hasNext() && tokens.peek().equals("(")) {
-                    List<ExpressionNode> arguments = new ArrayList<>();
-                    arguments.add(parseExpression(tokens));
-                    while (!tokens.peek().equals(")")){
-                        tokens.consume(",");
-                        arguments.add(parseExpression(tokens));
-                    }
-
-                    return new AppliedExpressionNode(expression, arguments);
-                }
                 return expression;
         }
     }
@@ -47,6 +38,27 @@ public class RecursiveDescentParser {
             ExpressionNode argument = parseValueExpression(tokens);
 
             expression = new OperatorNode(expression, operator, argument);
+        }
+
+
+        if (tokens.hasNext() && tokens.peek().equals(".")) {
+            tokens.consume(".");
+
+            IdentifierNode identifier = parseIdentifier(tokens);
+
+            expression = new MemberNode(expression, identifier);
+        }
+
+        if (tokens.hasNext() && tokens.peek().equals("(")) {
+            tokens.consume("(");
+            List<ExpressionNode> arguments = new ArrayList<>();
+            arguments.add(parseExpression(tokens));
+            while (!tokens.peek().equals(")")){
+                tokens.consume(",");
+                arguments.add(parseExpression(tokens));
+            }
+
+            return new AppliedExpressionNode(expression, arguments);
         }
         return expression;
     }

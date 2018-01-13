@@ -8,7 +8,6 @@ import org.carbon.PrettyPrintable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Stack;
 
 /**
  * @author Ethan
@@ -41,7 +40,7 @@ public class CompositeExpression extends CarbonExpression {
     }
 
     public String getBodyString(int level){
-        return PrettyPrintable.prettyPrint(children, level + 1);
+        return PrettyPrintable.bodyString(children, level + 1);
     }
 
     @Override
