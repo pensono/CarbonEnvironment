@@ -41,6 +41,11 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
     }
 
     @Override
+    public boolean hasMember(String name) {
+        return false;
+    }
+
+    @Override
     public CarbonExpression apply(CarbonExpression parameter) {
         return null;
     }

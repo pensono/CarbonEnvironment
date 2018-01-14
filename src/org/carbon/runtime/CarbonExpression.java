@@ -59,7 +59,7 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
 
     @Override
     public boolean hasMember(String name) {
-        return false;
+        return getInterface().hasMember(name);
     }
 
     public CarbonScope getScope() {

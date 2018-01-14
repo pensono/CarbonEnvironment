@@ -2,9 +2,8 @@ package org.carbon.parser;
 
 import org.carbon.compiler.Compiler;
 import org.carbon.compiler.LinkException;
-import org.carbon.library.BooleanExpression;
 import org.carbon.library.CarbonLibrary;
-import org.carbon.library.IntegerExpression;
+import org.carbon.library.IntegerLiteralExpression;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 import org.junit.Test;
@@ -20,7 +19,15 @@ public class RecursiveDescentParserTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "4.+(2)");
 
-        assertEquals(((IntegerExpression) sum).getValue(), 6);
+        assertEquals(((IntegerLiteralExpression) sum).getValue(), 6);
+    }
+
+    @Test
+    public void parseExpressionMultipleSymbols() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compileExpression(scope, "1 + 2 + 3");
+
+        assertEquals(((IntegerLiteralExpression) sum).getValue(), 6);
     }
 
     @Test(expected = LinkException.class)

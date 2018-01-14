@@ -61,10 +61,10 @@ public class ComparisonExpression extends PrimeExpression {
             return this;
         }
 
-        // TODO does this always reduce to a IntegerExpression?
+        // TODO does this always reduce to a IntegerLiteralExpression?
         rhs = Optional.of((IntegerExpression) rhs.get().reduce());
-        if (rhs.isPresent()){
-            boolean value = operator.test(lhs.getValue(), rhs.get().getValue());
+        if (rhs.isPresent() && rhs.get() instanceof IntegerLiteralExpression && lhs instanceof IntegerLiteralExpression){
+            boolean value = operator.test(((IntegerLiteralExpression)lhs).getValue(), ((IntegerLiteralExpression)rhs.get()).getValue());
             return new BooleanExpression(getScope(), value);
         }
         return this;

@@ -18,7 +18,7 @@ public class IntegerExpressionTest {
     @Test
     public void hasNoMembers() throws Exception {
         RootScope scope = new RootScope();
-        CarbonExpression expr = new IntegerExpression(scope, 0);
+        CarbonExpression expr = new IntegerLiteralExpression(scope, 0);
 
         // TODO add mockito and test for any string
         assertEquals(expr.getMember("notAMember"), Optional.empty());
@@ -27,9 +27,9 @@ public class IntegerExpressionTest {
     @Test
     public void parameteritize() throws Exception {
         RootScope scope = new RootScope();
-        CarbonExpression expr = new IntegerExpression(scope, 0);
+        CarbonExpression expr = new IntegerLiteralExpression(scope, 0);
 
-        CarbonExpression integer = new IntegerExpression(scope, 0);
+        CarbonExpression integer = new IntegerLiteralExpression(scope, 0);
         //expr.apply()
     }
 
@@ -38,7 +38,7 @@ public class IntegerExpressionTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "5 + 4");
 
-        assertEquals(((IntegerExpression) sum).getValue(), 9);
+        assertEquals(((IntegerLiteralExpression) sum).getValue(), 9);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class IntegerExpressionTest {
     @Test
     public void isSubtypeOfUnparameterized() throws Exception {
         CarbonScope scope = new CarbonLibrary();
-        CarbonExpression integer = new IntegerExpression(scope, Mockito.anyInt());
+        CarbonExpression integer = new IntegerLiteralExpression(scope, Mockito.anyInt());
 
         assertTrue(IntegerInterface.isSupertypeOfUnparameterized(integer.getInterface()));
     }

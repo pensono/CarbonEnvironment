@@ -1,6 +1,6 @@
 package org.carbon.parser;
 
-import org.carbon.library.IntegerExpression;
+import org.carbon.library.IntegerLiteralExpression;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 
@@ -16,7 +16,7 @@ public class NumericNode extends ExpressionNode {
 
     @Override
     public CarbonExpression link(CarbonScope scope) {
-        return new IntegerExpression(scope, value);
+        return new IntegerLiteralExpression(scope, value);
     }
 
     @Override

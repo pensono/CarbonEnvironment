@@ -3,9 +3,7 @@ package org.carbon.library;
 import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * TODO: Add refinements
@@ -58,5 +56,11 @@ public class IntegerInterface extends CarbonInterface {
             default:
                 return super.getInterfaceMember(name);
         }
+    }
+
+    private static final Set<String> ops = new HashSet<>(Arrays.asList("<", ">", "<=", ">=", "==", "!=", "+", "-", "*", "/"));
+    @Override
+    public boolean hasMember(String name) {
+        return ops.contains(name);
     }
 }

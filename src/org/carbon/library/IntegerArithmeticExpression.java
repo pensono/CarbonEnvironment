@@ -3,17 +3,16 @@ package org.carbon.library;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 import org.carbon.parser.ParseException;
-import org.carbon.compiler.PrimeExpression;
 
 import java.util.Optional;
 import java.util.function.IntBinaryOperator;
 
 /**
- * This can't extend IntegerExpression because it might not be an int. It could be a
+ * This can't extend IntegerLiteralExpression because it might not be an int. It could be a
  * function which takes an int and returns an int, but not an int itself. <-- on second thought may not be true
  * Created by Ethan Shea on 10/18/2016.
  */
-public class IntegerArithmeticExpression extends PrimeExpression {
+public class IntegerArithmeticExpression extends IntegerExpression {
     private IntegerExpression lhs;
 
     // TODO factor a new subclass
@@ -22,7 +21,7 @@ public class IntegerArithmeticExpression extends PrimeExpression {
     private IntBinaryOperator operator;
 
     private IntegerArithmeticExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, IntBinaryOperator operator, String operatorName) {
-        super(scope, new IntegerInterface(scope));
+        super(scope);
         this.lhs = lhs;
         this.rhs = rhs;
         this.operatorName = operatorName;
@@ -65,15 +64,17 @@ public class IntegerArithmeticExpression extends PrimeExpression {
             return this;
         }
 
-        // TODO does this always reduce to a IntegerExpression?
-        rhs = Optional.of((IntegerExpression) rhs.get().reduce());
+        // TODO does this always reduce to a IntegerLiteralExpression?
+        rhs = Optional.of((IntegerLiteralExpression) rhs.get().reduce());
         if (IntegerInterface.isSupertypeOfUnparameterized(lhs.getInterface()) &&
-                IntegerInterface.isSupertypeOfUnparameterized(rhs.get().getInterface())) {
-            int lhsValue = lhs.getValue();
-            int rhsValue = rhs.get().getValue();
+                IntegerInterface.isSupertypeOfUnparameterized(rhs.get().getInterface()) &&
+                rhs.get() instanceof IntegerLiteralExpression &&
+                lhs instanceof IntegerLiteralExpression) {
+            int lhsValue = ((IntegerLiteralExpression)lhs).getValue();
+            int rhsValue = ((IntegerLiteralExpression)rhs.get()).getValue();
 
             int value = operator.applyAsInt(lhsValue, rhsValue);
-            return new IntegerExpression(getScope(), value);
+            return new IntegerLiteralExpression(getScope(), value);
         }
         return this;
     }
