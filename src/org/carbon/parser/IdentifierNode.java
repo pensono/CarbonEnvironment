@@ -5,13 +5,14 @@ import org.carbon.runtime.CarbonScope;
 import org.carbon.compiler.LinkException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
 /**
  * @author Ethan
  */
-public class IdentifierNode extends ExpressionNode {
+public class IdentifierNode extends ExpressionNode implements Iterable<String> {
     private List<String> labels;
 
     public IdentifierNode(String label) {
@@ -27,7 +28,7 @@ public class IdentifierNode extends ExpressionNode {
     public CarbonExpression link(CarbonScope scope) {
         List<String> identifier = new ArrayList<>(labels);
         return scope.getByIdentifier(identifier)
-                .orElseThrow(() -> new LinkException("Could not find identifier \"" + String.join(".", labels) + "\""));
+                .orElseThrow(() -> new LinkException("Could not find identifier \"" + String.join(".", labels) + "\" in " + scope.getShortString()));
     }
 
     /**
@@ -44,5 +45,10 @@ public class IdentifierNode extends ExpressionNode {
     @Override
     public String getShortString() {
         return "Identifier \"" + String.join(".", labels) + "\"";
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return labels.iterator();
     }
 }

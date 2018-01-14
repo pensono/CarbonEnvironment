@@ -40,7 +40,7 @@ public class CompositeExpression extends CarbonExpression {
     }
 
     public String getBodyString(int level){
-        return PrettyPrintable.bodyString(children, level + 1);
+        return PrettyPrintable.fullString(children, level + 1);
     }
 
     @Override

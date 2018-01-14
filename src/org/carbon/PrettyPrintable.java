@@ -33,15 +33,15 @@ public interface PrettyPrintable {
         return Strings.repeat("  ", levels);
     }
 
-    static String bodyString(Set<? extends PrettyPrintable> children, int level) {
-        return bodyString(new HashSet<>(children), level);
+    static String fullString(Set<? extends PrettyPrintable> children, int level) {
+        return fullString(new HashSet<>(children), level);
     }
 
-    static String bodyString(List<? extends PrettyPrintable> children, int level) {
+    static String fullString(List<? extends PrettyPrintable> children, int level) {
         return String.join("\n", children.stream().map(p -> p.getFullString(level)).collect(Collectors.toList()));
     }
 
-    static String bodyString(Map<String, ? extends PrettyPrintable> children, int level) {
+    static String fullString(Map<String, ? extends PrettyPrintable> children, int level) {
         return children.entrySet().stream().map(
                 e -> {
                     return indent(level) + e.getKey() + " = " + e.getValue().getShortString() +

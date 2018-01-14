@@ -42,9 +42,9 @@ public class AppliedExpressionNode extends ExpressionNode{
 
     @Override
     public String getBodyString(int level) {
-        return PrettyPrintable.indent(level) + "Expression: \n" +
-                expression.getFullString(level + 1) + "\n" +
+        return PrettyPrintable.indent(level) + "Base: " + expression.getShortString() + "\n" +
+                expression.getBodyString(level + 1) + "\n" +
                 PrettyPrintable.indent(level) + "Arguments: \n" +
-                PrettyPrintable.bodyString(arguments, level + 1);
+                PrettyPrintable.fullString(arguments, level + 1);
     }
 }

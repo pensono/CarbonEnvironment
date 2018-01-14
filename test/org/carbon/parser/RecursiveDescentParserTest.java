@@ -1,6 +1,7 @@
 package org.carbon.parser;
 
 import org.carbon.compiler.Compiler;
+import org.carbon.compiler.LinkException;
 import org.carbon.library.BooleanExpression;
 import org.carbon.library.CarbonLibrary;
 import org.carbon.library.IntegerExpression;
@@ -20,6 +21,12 @@ public class RecursiveDescentParserTest {
         CarbonExpression sum = Compiler.compileExpression(scope, "4.+(2)");
 
         assertEquals(((IntegerExpression) sum).getValue(), 6);
+    }
+
+    @Test(expected = LinkException.class)
+    public void dotDoesNotAccessScopeAbove() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compileExpression(scope, "1.Integer");
     }
 
 }

@@ -15,6 +15,7 @@ public class Compiler {
         TokenIterator tokens = new TokenIterator(Tokenizer.tokenize(input));
 
         ExpressionNode syntax = parser.parseExpression(tokens);
+        System.out.println(syntax.getFullString());
 
         CarbonExpression expression = syntax.link(scope);
 

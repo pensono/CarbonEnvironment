@@ -1,6 +1,6 @@
 package org.carbon.parser;
 
-import org.carbon.PrettyPrintable;
+import org.carbon.compiler.LinkException;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
 
@@ -16,18 +16,15 @@ public class MemberNode extends ExpressionNode {
         this.identifier = identifier;
     }
 
-    public IdentifierNode getIdentifier() {
-        return identifier;
-    }
-
-    public ExpressionNode getBase() {
-        return base;
-    }
-
     @Override
     public CarbonExpression link(CarbonScope scope) {
         CarbonExpression baseExpression = base.link(scope);
-        return identifier.link(baseExpression);
+
+        for (String name : identifier) {
+            baseExpression = baseExpression.getMember(name)
+                .orElseThrow(() -> new LinkException("Could not find member " + name + " in " + identifier));
+        }
+        return baseExpression;
     }
 
     @Override
@@ -37,6 +34,14 @@ public class MemberNode extends ExpressionNode {
 
     @Override
     public String getBodyString(int level){
-        return identifier.getBodyString(level) + base.getBodyString(level);
+        return base.getFullString(level);
+    }
+
+    public IdentifierNode getIdentifier() {
+        return identifier;
+    }
+
+    public ExpressionNode getBase() {
+        return base;
     }
 }

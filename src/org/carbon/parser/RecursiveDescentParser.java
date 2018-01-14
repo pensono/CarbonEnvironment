@@ -37,7 +37,8 @@ public class RecursiveDescentParser {
 
             ExpressionNode argument = parseValueExpression(tokens);
 
-            expression = new OperatorNode(expression, operator, argument);
+            expression = new MemberNode(expression, new IdentifierNode(operator));
+            expression = new AppliedExpressionNode(expression, argument);
         }
 
 
