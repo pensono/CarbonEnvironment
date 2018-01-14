@@ -25,10 +25,15 @@ public class RecursiveDescentParser {
 
     private ExpressionNode parseValueExpression(TokenIterator tokens) {
         ExpressionNode expression;
+
         if (tokens.peekToken().getType() == TokenType.NUMERIC) {
             int value = Integer.parseInt(tokens.next()); // Should be able to parse custom numeric types
             expression = new NumericNode(value);
-        } else {
+        } else if (tokens.peek().equals("(")) {
+            tokens.consume("(");
+            expression = parseValueExpression(tokens);
+            tokens.consume(")");
+        }else {
             expression = parseIdentifier(tokens);
         }
 
@@ -40,7 +45,6 @@ public class RecursiveDescentParser {
             expression = new MemberNode(expression, new IdentifierNode(operator));
             expression = new AppliedExpressionNode(expression, argument);
         }
-
 
         if (tokens.hasNext() && tokens.peek().equals(".")) {
             tokens.consume(".");
@@ -58,6 +62,7 @@ public class RecursiveDescentParser {
                 tokens.consume(",");
                 arguments.add(parseExpression(tokens));
             }
+            tokens.consume(")");
 
             return new AppliedExpressionNode(expression, arguments);
         }

@@ -15,9 +15,14 @@ public class Compiler {
         TokenIterator tokens = new TokenIterator(Tokenizer.tokenize(input));
 
         ExpressionNode syntax = parser.parseExpression(tokens);
-        System.out.println(syntax.getFullString());
+        //System.out.println(syntax.getFullString());
+
+        if (tokens.hasNext()) {
+            throw new ParseException("End of expression reached while input is remaining", tokens.nextToken());
+        }
 
         CarbonExpression expression = syntax.link(scope);
+        //System.out.println(expression.getFullString());
 
         return expression.reduce();
     }
@@ -27,6 +32,9 @@ public class Compiler {
         TokenIterator tokens = new TokenIterator(Tokenizer.tokenize(input));
 
         CompoundExpressionNode syntax = parser.parseStatements(tokens);
+        if (tokens.hasNext()) {
+            throw new ParseException("End of expression reached while input is remaining", tokens.nextToken());
+        }
 
         // Eventually order shouldn't matter here
         for (StatementNode statement : syntax.getMembers()) {

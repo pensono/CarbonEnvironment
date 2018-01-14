@@ -19,7 +19,7 @@ public class RecursiveDescentParserTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "4.+(2)");
 
-        assertEquals(((IntegerLiteralExpression) sum).getValue(), 6);
+        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
     }
 
     @Test
@@ -27,7 +27,7 @@ public class RecursiveDescentParserTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "1 + 2 + 3");
 
-        assertEquals(((IntegerLiteralExpression) sum).getValue(), 6);
+        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
     }
 
     @Test(expected = LinkException.class)
@@ -36,4 +36,20 @@ public class RecursiveDescentParserTest {
         CarbonExpression sum = Compiler.compileExpression(scope, "1.Integer");
     }
 
+
+    @Test
+    public void parseParentheses() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compileExpression(scope, "(1 + 2)");
+
+        assertEquals(3, ((IntegerLiteralExpression) sum).getValue());
+    }
+
+    @Test
+    public void operationAfterParenthesies() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compileExpression(scope, "(1 + 2) + 3");
+
+        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
+    }
 }

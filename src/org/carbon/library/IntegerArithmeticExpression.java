@@ -49,13 +49,13 @@ public class IntegerArithmeticExpression extends IntegerExpression {
     }
 
     public String getBodyString(int level) {
-        return lhs.getBodyString(level + 1) +
-                (rhs.isPresent() ? "\n" + rhs.get().getBodyString(level + 1) : "");
+        return lhs.getFullString(level + 1) +
+                (rhs.isPresent() ? "\n" + rhs.get().getFullString(level + 1) : "");
     }
 
     @Override
     public String getShortString() {
-        return operatorName + ":" + getInterface().getShortString();
+        return operatorName + " : " + getInterface().getShortString();
     }
 
     @Override
@@ -65,7 +65,9 @@ public class IntegerArithmeticExpression extends IntegerExpression {
         }
 
         // TODO does this always reduce to a IntegerLiteralExpression?
+        // TODO keep immutibility here
         rhs = Optional.of((IntegerLiteralExpression) rhs.get().reduce());
+        lhs = (IntegerLiteralExpression) lhs.reduce();
         if (IntegerInterface.isSupertypeOfUnparameterized(lhs.getInterface()) &&
                 IntegerInterface.isSupertypeOfUnparameterized(rhs.get().getInterface()) &&
                 rhs.get() instanceof IntegerLiteralExpression &&

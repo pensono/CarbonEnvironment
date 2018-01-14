@@ -38,7 +38,7 @@ public class IntegerExpressionTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "5 + 4");
 
-        assertEquals(((IntegerLiteralExpression) sum).getValue(), 9);
+        assertEquals(9, ((IntegerLiteralExpression) sum).getValue());
     }
 
     @Test
@@ -46,7 +46,7 @@ public class IntegerExpressionTest {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "5 > 4");
 
-        assertEquals(((BooleanExpression) sum).getValue(), true);
+        assertEquals(true, ((BooleanExpression) sum).getValue());
     }
 
     @Test
@@ -56,5 +56,4 @@ public class IntegerExpressionTest {
 
         assertTrue(IntegerInterface.isSupertypeOfUnparameterized(integer.getInterface()));
     }
-
 }

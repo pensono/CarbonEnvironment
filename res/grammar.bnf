@@ -1,41 +1,38 @@
-expression ::= relation
-             | terminalExpression
-// Not sure about how this fits into the grammar
-//             | expression "[" expression "]"
+statement ::= declaration parameterization? "=" expression ";"
 
-relation ::= expression infixOperator expression
-           | expression "." expression
-           | expression "(" expressionList ")"
+expression ::= compound_expression
+             | enum_list
 
-compositeExpression ::= "{" specificationList "}"
+value_expression ::= value_expression symbol value_expression
+                   | value_expression ("." identifier)? application?
+                   | identifier
+                   | number
+                   | "(" value_expression ")"
 
-terminalExpression ::= literal
+parameter ::= label ":" type | type
+declaration ::= label ":" type | label
 
-expressionList ::= expression | expression "," expressionList
+type ::= identifier refinement?
 
-identity ::= name "(" specificationList ")"
-
-specification ::= identity expression
-                | expression
-
-specificationList ::= specification | specification "," specificationList
-
-// Root items
-literal ::= number
-          | '"' string '"'
-
-infixOperator ::= identifierSymbol | identifierSymbol identifierSymbol
-
-identifierSymbol ::= NOT grammarSymbol
-
-grammarSymbol ::= "(" | ")" | "{" | "}" | "." | "," | "[" | "]"
+refinement ::= "[" refinement_list "]"
+refinement_list ::= expression_list // that must typecheck to bool
 
 
-////////////////////////////////////////////////////////////////
-Integer = {
-    > (Other) : Boolean
-}
+compound_expression ::= "{" statement_list "}"
+statement_list ::= statement*
 
-Boolean = True | False
+parameterization ::= "(" parameter_list ")"
+parameter_list ::= parameter ("," parameter)*
 
-Nullable(Type) = Type | Null
+application ::= "(" expression_list ")"
+expression_list ::= expression ("," expression)*
+
+enum_list ::= ("|" label)+
+
+identifier ::= label ("." label)*
+
+label ::= // Any string of letters
+
+symbol ::= // Any non-alphanumeric characters
+
+number ::= // Any token beginning with a numeric character
