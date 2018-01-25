@@ -2,12 +2,15 @@ statement ::= declaration parameterization? "=" expression ";"
 
 expression ::= compound_expression
              | enum_list
+             | value_expression
 
-value_expression ::= value_expression symbol value_expression
-                   | value_expression ("." identifier)? application?
-                   | identifier
-                   | number
-                   | "(" value_expression ")"
+value_expression ::= term_expression (symbol term_expression)*
+
+term_expression ::= number
+                  | "(" value_expression ")"
+                  | identifier
+                  | term_expression "." identifier
+                  | term_expression "(" expression_list ")"
 
 parameter ::= label ":" type | type
 declaration ::= label ":" type | label
@@ -24,7 +27,6 @@ statement_list ::= statement*
 parameterization ::= "(" parameter_list ")"
 parameter_list ::= parameter ("," parameter)*
 
-application ::= "(" expression_list ")"
 expression_list ::= expression ("," expression)*
 
 enum_list ::= ("|" label)+

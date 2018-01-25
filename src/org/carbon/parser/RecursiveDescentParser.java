@@ -1,6 +1,5 @@
 package org.carbon.parser;
 
-import jdk.internal.org.objectweb.asm.tree.LabelNode;
 import org.carbon.tokenizer.TokenIterator;
 import org.carbon.tokenizer.TokenType;
 
@@ -24,6 +23,19 @@ public class RecursiveDescentParser {
     }
 
     private ExpressionNode parseValueExpression(TokenIterator tokens) {
+        ExpressionNode expression = parseTermExpression(tokens);
+        while (tokens.hasNext() && tokens.peekToken().getType() == TokenType.SYMBOL) {
+            String operator = tokens.next();
+
+            ExpressionNode argument = parseTermExpression(tokens);
+
+            expression = new MemberNode(expression, new IdentifierNode(operator));
+            expression = new AppliedExpressionNode(expression, argument);
+        }
+        return expression;
+    }
+
+    private ExpressionNode parseTermExpression(TokenIterator tokens) {
         ExpressionNode expression;
 
         if (tokens.peekToken().getType() == TokenType.NUMERIC) {
@@ -37,34 +49,25 @@ public class RecursiveDescentParser {
             expression = parseIdentifier(tokens);
         }
 
-        while (tokens.hasNext() && tokens.peekToken().getType() == TokenType.SYMBOL) {
-            String operator = tokens.next();
+        while (tokens.hasNext() && (tokens.peek().equals(".") || tokens.peek().equals("("))) {
+            if (tokens.peek().equals(".")) {
+                tokens.consume(".");
 
-            ExpressionNode argument = parseValueExpression(tokens);
+                IdentifierNode identifier = parseIdentifier(tokens);
 
-            expression = new MemberNode(expression, new IdentifierNode(operator));
-            expression = new AppliedExpressionNode(expression, argument);
-        }
-
-        if (tokens.hasNext() && tokens.peek().equals(".")) {
-            tokens.consume(".");
-
-            IdentifierNode identifier = parseIdentifier(tokens);
-
-            expression = new MemberNode(expression, identifier);
-        }
-
-        if (tokens.hasNext() && tokens.peek().equals("(")) {
-            tokens.consume("(");
-            List<ExpressionNode> arguments = new ArrayList<>();
-            arguments.add(parseExpression(tokens));
-            while (!tokens.peek().equals(")")){
-                tokens.consume(",");
+                expression = new MemberNode(expression, identifier);
+            } else if (tokens.peek().equals("(")) {
+                tokens.consume("(");
+                List<ExpressionNode> arguments = new ArrayList<>();
                 arguments.add(parseExpression(tokens));
-            }
-            tokens.consume(")");
+                while (!tokens.peek().equals(")")) {
+                    tokens.consume(",");
+                    arguments.add(parseExpression(tokens));
+                }
+                tokens.consume(")");
 
-            return new AppliedExpressionNode(expression, arguments);
+                expression = new AppliedExpressionNode(expression, arguments);
+            }
         }
         return expression;
     }

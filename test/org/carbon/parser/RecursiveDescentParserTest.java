@@ -23,6 +23,14 @@ public class RecursiveDescentParserTest {
     }
 
     @Test
+    public void parseExpressionMultipleDotApply() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression sum = Compiler.compileExpression(scope, "4.*(2).+(3)");
+
+        assertEquals(11, ((IntegerLiteralExpression) sum).getValue());
+    }
+
+    @Test
     public void parseExpressionMultipleSymbols() throws Exception {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "1 + 2 + 3");
@@ -46,10 +54,24 @@ public class RecursiveDescentParserTest {
     }
 
     @Test
-    public void operationAfterParenthesies() throws Exception {
+    public void operationAfterParentheses() throws Exception {
         CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "(1 + 2) + 3");
 
         assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
+    }
+
+    @Test
+    public void operationsLeftAssociative() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        CarbonExpression value = Compiler.compileExpression(scope, "4 * 2 + 3");
+
+        assertEquals(11, ((IntegerLiteralExpression) value).getValue());
+    }
+
+    @Test(expected = ParseException.class)
+    public void failSymbolMissingOperand() throws Exception {
+        CarbonScope scope = new CarbonLibrary();
+        Compiler.compileExpression(scope, "2 +");
     }
 }
