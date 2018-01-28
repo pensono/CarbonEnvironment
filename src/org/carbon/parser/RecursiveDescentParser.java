@@ -17,8 +17,7 @@ public class RecursiveDescentParser {
             //case "|":
             // return parseEnumeration(tokens);
             default:
-                ExpressionNode expression = parseValueExpression(tokens);
-                return expression;
+                return parseValueExpression(tokens);
         }
     }
 
@@ -101,11 +100,11 @@ public class RecursiveDescentParser {
 
         Optional<TypeNode> type = Optional.empty();
         if (tokens.peek().equals(":")) {
+            tokens.consume(":");
             type = Optional.of(parseType(tokens));
         }
 
         tokens.consume("=");
-
         ExpressionNode expression = parseExpression(tokens);
 
         tokens.consume(";");
@@ -114,8 +113,20 @@ public class RecursiveDescentParser {
     }
 
     private TypeNode parseType(TokenIterator tokens) {
-        // TODO: Refinements
-        return new TypeNode(parseIdentifier(tokens));
+        IdentifierNode typeIdentifier = parseIdentifier(tokens);
+
+        List<ExpressionNode> refinements = new ArrayList<>();
+        if (tokens.peek().equals("[")) {
+            tokens.consume("[");
+
+            while (!tokens.peek().equals("]")) {
+                refinements.add(parseExpression(tokens)); // This line won't work directly
+                tokens.consume(",");
+            }
+            tokens.consume("]");
+        }
+
+        return new TypeNode(typeIdentifier, refinements);
     }
 
     public CompoundExpressionNode parseStatements(TokenIterator tokens) {

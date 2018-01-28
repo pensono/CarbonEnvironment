@@ -22,7 +22,7 @@ public class MemberNode extends ExpressionNode {
 
         for (String name : identifier) {
             baseExpression = baseExpression.getMember(name)
-                .orElseThrow(() -> new LinkException("Could not find member " + name + " in " + identifier));
+                .orElseThrow(() -> new LinkException("Could not find member " + name + " in " + base.getShortString()));
         }
         return baseExpression;
     }

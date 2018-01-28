@@ -1,5 +1,6 @@
 package org.carbon.compiler;
 
+import org.carbon.library.BooleanInterface;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;

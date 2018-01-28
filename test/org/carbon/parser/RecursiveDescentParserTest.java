@@ -6,6 +6,7 @@ import org.carbon.library.CarbonLibrary;
 import org.carbon.library.IntegerLiteralExpression;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
+import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,64 +15,77 @@ import static org.junit.Assert.*;
  * @author Ethan
  */
 public class RecursiveDescentParserTest {
+    CarbonScope scope;
+
+    @Before
+    public void setup(){
+        scope = new CarbonLibrary();
+    }
+
     @Test
     public void parseExpressionDotApply() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compileExpression(scope, "4.+(2)");
-
-        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
+        assertEquals(6, compileIntExpression("4.+(2)"));
     }
 
     @Test
     public void parseExpressionMultipleDotApply() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compileExpression(scope, "4.*(2).+(3)");
-
-        assertEquals(11, ((IntegerLiteralExpression) sum).getValue());
+        assertEquals(11, compileIntExpression("4.*(2).+(3)"));
     }
 
     @Test
     public void parseExpressionMultipleSymbols() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compileExpression(scope, "1 + 2 + 3");
-
-        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
+        assertEquals(6, compileIntExpression("1 + 2 + 3"));
     }
 
     @Test(expected = LinkException.class)
     public void dotDoesNotAccessScopeAbove() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
         CarbonExpression sum = Compiler.compileExpression(scope, "1.Integer");
     }
 
 
     @Test
     public void parseParentheses() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compileExpression(scope, "(1 + 2)");
-
-        assertEquals(3, ((IntegerLiteralExpression) sum).getValue());
+        assertEquals(3, compileIntExpression("(1 + 2)"));
     }
 
     @Test
     public void operationAfterParentheses() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression sum = Compiler.compileExpression(scope, "(1 + 2) + 3");
+        assertEquals(6, compileIntExpression("(1 + 2) + 3"));
+    }
 
-        assertEquals(6, ((IntegerLiteralExpression) sum).getValue());
+    @Test
+    public void parenthesesAfterOperation() throws Exception {
+        assertEquals(6, compileIntExpression("1 + (2 + 3)"));
     }
 
     @Test
     public void operationsLeftAssociative() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
-        CarbonExpression value = Compiler.compileExpression(scope, "4 * 2 + 3");
-
-        assertEquals(11, ((IntegerLiteralExpression) value).getValue());
+        assertEquals(11, compileIntExpression( "4 * 2 + 3"));
     }
 
     @Test(expected = ParseException.class)
     public void failSymbolMissingOperand() throws Exception {
-        CarbonScope scope = new CarbonLibrary();
         Compiler.compileExpression(scope, "2 +");
     }
+
+    @Test
+    public void explicitlyTypedAssignment() throws Exception {
+        Compiler.compileStatementsInto(scope, "Test : Integer = 4;");
+
+        assertEquals(4, ((IntegerLiteralExpression) scope.getMember("Test").get()).getValue());
+    }
+
+    public int compileIntExpression(String expression) {
+        CarbonExpression value = Compiler.compileExpression(scope, expression);
+        return ((IntegerLiteralExpression) value).getValue();
+    }
+
+    // Uncomment when refinements/a type system are implemented
+//    @Test
+//    public void refinementParsed() throws Exception {
+//        CarbonScope scope = new CarbonLibrary();
+//        Compiler.compileStatementsInto(scope, "Test : Integer[< 5] = 4;");
+//
+//        assertEquals(4, ((IntegerLiteralExpression) expr).getValue());
+//    }
 }

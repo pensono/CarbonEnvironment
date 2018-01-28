@@ -43,14 +43,12 @@ public class IntegerInterface extends CarbonInterface {
             case "!=":
                 List<CarbonInterface> parameters = new ArrayList<>();
                 parameters.add(new IntegerInterface(getScope()));
-                parameters.add(new IntegerInterface(getScope()));
                 return Optional.of(new BooleanInterface(getScope(), parameters));
             case "+":
             case "-":
             case "*":
             case "/":
                 parameters = new ArrayList<>();
-                parameters.add(new IntegerInterface(getScope()));
                 parameters.add(new IntegerInterface(getScope()));
                 return Optional.of(new IntegerInterface(getScope(), parameters));
             default:

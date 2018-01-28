@@ -1,36 +1,39 @@
 package org.carbon.library;
 
 import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
 import org.carbon.parser.ParseException;
 import org.carbon.compiler.PrimeExpression;
 
-import java.util.Optional;
+import java.util.*;
 import java.util.function.BiPredicate;
 
 /**
  * @author Ethan
  */
-public class ComparisonExpression extends PrimeExpression {
+public class IntegerComparisonExpression extends PrimeExpression {
     private IntegerExpression lhs;
     private Optional<IntegerExpression> rhs;
     private String comparisonName;
     private BiPredicate<Integer, Integer> operator;
 
-    private ComparisonExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, BiPredicate<Integer, Integer> operator, String comparisonName){
-        super(scope, new BooleanInterface(scope));
+    // The way the parameterInterfaces is handled is bad
+    private IntegerComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName,
+                                        IntegerExpression lhs, Optional<IntegerExpression> rhs, List<CarbonInterface> parameterInterfaces){
+        super(scope, new BooleanInterface(scope, parameterInterfaces));
         this.lhs = lhs;
         this.rhs = rhs;
         this.comparisonName = comparisonName;
         this.operator = operator;
     }
 
-    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs) {
-        this(scope, lhs, Optional.empty(), operator, comparisonName);
+    public IntegerComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs) {
+        this(scope, operator, comparisonName, lhs, Optional.empty(), Collections.singletonList(new IntegerInterface(scope)));
     }
 
-    public ComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs, IntegerExpression rhs){
-        this(scope, lhs, Optional.of(rhs), operator, comparisonName);
+    public IntegerComparisonExpression(CarbonScope scope, BiPredicate<Integer, Integer> operator, String comparisonName, IntegerExpression lhs, IntegerExpression rhs){
+        this(scope, operator, comparisonName, lhs, Optional.of(rhs), Collections.emptyList());
     }
 
     @Override
@@ -42,7 +45,7 @@ public class ComparisonExpression extends PrimeExpression {
         if (!IntegerInterface.isSupertypeOfUnparameterized(expression.getInterface())){
             throw new ParseException("Parameter is not a subtype of Integer\n" + expression.getBodyString());
         }
-        return new ComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);
+        return new IntegerComparisonExpression(getScope(), operator, comparisonName, lhs, (IntegerExpression) expression);
     }
 
 //    public String getBodyString(int level) {
