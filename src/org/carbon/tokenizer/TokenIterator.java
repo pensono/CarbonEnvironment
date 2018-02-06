@@ -25,6 +25,22 @@ public class TokenIterator implements PeekingIterator<String> {
                     ":" + token.getColumnNumber() + ". Instead got a " + token.getText() + "\n" + token.getLine());
     }
 
+    public boolean isNext(String s) {
+        try {
+            return impl.peek().getText().equals(s);
+        } catch (NoSuchElementException ex){
+            throw new ParseException("End of file reached.");
+        }
+    }
+
+    public boolean isNext(TokenType t) {
+        try {
+            return impl.peek().getType().equals(t);
+        } catch (NoSuchElementException ex){
+            throw new ParseException("End of file reached.");
+        }
+    }
+
     @Override
     public String peek() {
         try {

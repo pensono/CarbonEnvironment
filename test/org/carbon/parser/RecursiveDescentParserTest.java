@@ -82,6 +82,17 @@ public class RecursiveDescentParserTest {
         assertEquals(4, ((IntegerLiteralExpression) scope.getMember("Test").get()).getValue());
     }
 
+    @Test
+    public void parseMultiDigitNumber() throws Exception {
+        assertEquals(1234, compileIntExpression("1234"));
+    }
+
+    @Test
+    public void parseNegativeNumber() throws Exception {
+        assertEquals(-10, compileIntExpression("-10"));
+        assertEquals(-1234, compileIntExpression("-1234"));
+    }
+
     public int compileIntExpression(String expression) {
         CarbonExpression value = Compiler.compileExpression(scope, expression);
         return ((IntegerLiteralExpression) value).getValue();
