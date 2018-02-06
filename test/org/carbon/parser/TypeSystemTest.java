@@ -36,6 +36,11 @@ public class TypeSystemTest {
     }
 
     @Test
+    public void nonBoolRefinementFails(){
+        assertThrows(TypeException.class, compileStatement("Test : Integer[+ 4] = 2;"));
+    }
+
+    @Test
     public void applicationTypesafety(){
         assertThrows(TypeException.class, compileExpression("5 + True"));
     }
