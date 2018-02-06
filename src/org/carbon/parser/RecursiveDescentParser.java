@@ -115,18 +115,40 @@ public class RecursiveDescentParser {
     private TypeNode parseType(TokenIterator tokens) {
         IdentifierNode typeIdentifier = parseIdentifier(tokens);
 
-        List<ExpressionNode> refinements = new ArrayList<>();
+        List<RefinementNode> refinements = new ArrayList<>();
         if (tokens.peek().equals("[")) {
             tokens.consume("[");
 
+            refinements.add(parseRefinement(tokens));
             while (!tokens.peek().equals("]")) {
-                refinements.add(parseExpression(tokens)); // This line won't work directly
+                refinements.add(parseRefinement(tokens));
                 tokens.consume(",");
             }
             tokens.consume("]");
         }
 
         return new TypeNode(typeIdentifier, refinements);
+    }
+
+    private RefinementNode parseRefinement(TokenIterator tokens) {
+        if (tokens.peekToken().getType() == TokenType.SYMBOL) {
+            String symbol = tokens.next();
+            return new RefinementNode(symbol, Collections.singletonList(parseExpression(tokens)));
+        } else {
+            String identifier = tokens.next();
+
+            List<ExpressionNode> arguments = new ArrayList<>();
+            if (tokens.peek().equals("(")) {
+                tokens.consume("(");
+                while (!tokens.peek().equals(")")) {
+                    arguments.add(parseExpression(tokens));
+                    tokens.consume(",");
+                }
+                tokens.consume(")");
+            }
+
+            return new RefinementNode(identifier, arguments);
+        }
     }
 
     public CompoundExpressionNode parseStatements(TokenIterator tokens) {

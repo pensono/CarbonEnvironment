@@ -15,11 +15,13 @@ term_expression ::= number
 parameter ::= label ":" type | type
 declaration ::= label ":" type | label
 
-type ::= identifier refinement?
+type ::= identifier ("[" refinement_list "]")?
 
-refinement ::= "[" refinement_list "]"
-refinement_list ::= expression_list // that must typecheck to bool
-
+refinement_list ::= refinement ("," refinement)* // that must typecheck to bool
+refinement ::= symbol expression
+             | identifier
+             | identifier "(" expression_list ")"
+             // What about Size == 5
 
 compound_expression ::= "{" statement_list "}"
 statement_list ::= statement*

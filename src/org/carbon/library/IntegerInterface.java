@@ -20,9 +20,8 @@ public class IntegerInterface extends CarbonInterface {
     }
 
     @Override
-    public boolean isSupertypeOf(CarbonInterface _interface){
-        return isSupertypeOfUnparameterized(_interface);
-        // Later do more advanced checking (for range interfaces or stepped ones)
+    public boolean isSubtypeOf(CarbonInterface _interface){
+        return (_interface.getClass() == IntegerInterface.class);
     }
 
     public static boolean isSupertypeOfUnparameterized(CarbonInterface _interface) {
@@ -56,9 +55,9 @@ public class IntegerInterface extends CarbonInterface {
         }
     }
 
-    private static final Set<String> ops = new HashSet<>(Arrays.asList("<", ">", "<=", ">=", "==", "!=", "+", "-", "*", "/"));
+    private static final Set<String> OPS = new HashSet<>(Arrays.asList("<", ">", "<=", ">=", "==", "!=", "+", "-", "*", "/"));
     @Override
     public boolean hasMember(String name) {
-        return ops.contains(name);
+        return OPS.contains(name);
     }
 }

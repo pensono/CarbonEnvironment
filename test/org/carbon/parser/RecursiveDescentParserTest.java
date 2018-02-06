@@ -75,6 +75,13 @@ public class RecursiveDescentParserTest {
         assertEquals(4, ((IntegerLiteralExpression) scope.getMember("Test").get()).getValue());
     }
 
+    @Test
+    public void refinementType() throws Exception {
+        Compiler.compileStatementsInto(scope, "Test : Integer[< 5] = 4;");
+
+        assertEquals(4, ((IntegerLiteralExpression) scope.getMember("Test").get()).getValue());
+    }
+
     public int compileIntExpression(String expression) {
         CarbonExpression value = Compiler.compileExpression(scope, expression);
         return ((IntegerLiteralExpression) value).getValue();
@@ -86,6 +93,6 @@ public class RecursiveDescentParserTest {
 //        CarbonScope scope = new CarbonLibrary();
 //        Compiler.compileStatementsInto(scope, "Test : Integer[< 5] = 4;");
 //
-//        assertEquals(4, ((IntegerLiteralExpression) expr).getValue());
+//        assertEquals(4, ((IntegerLiteralExpression) expr).getRhs());
 //    }
 }

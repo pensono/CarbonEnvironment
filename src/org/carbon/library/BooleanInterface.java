@@ -33,7 +33,7 @@ public class BooleanInterface extends CarbonInterface {
         this.refinement = Optional.of(refinement);
     }
 
-    public boolean isSupertypeOf(CarbonInterface carbonInterface) {
+    public boolean isSubtypeOf(CarbonInterface carbonInterface) {
         if (carbonInterface instanceof BooleanInterface){
             if (refinement.isPresent()){
                 BooleanInterface booleanInterface = (BooleanInterface) carbonInterface;

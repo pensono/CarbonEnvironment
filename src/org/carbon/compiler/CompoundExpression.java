@@ -8,23 +8,24 @@ import org.carbon.PrettyPrintable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Ethan
  */
-public class CompositeExpression extends CarbonExpression {
+public class CompoundExpression extends CarbonExpression {
     private Map<String, CarbonExpression> children;
 
-    public CompositeExpression(CarbonScope scope){
+    public CompoundExpression(CarbonScope scope){
         this(scope, new HashMap<>());
     }
 
-    public CompositeExpression(CarbonScope scope, Map<String, CarbonExpression> children){
+    public CompoundExpression(CarbonScope scope, Map<String, CarbonExpression> children){
         super(scope, new CarbonInterface(scope));
         this.children = children;
     }
 
-    public CompositeExpression(CarbonScope scope, CarbonInterface carbonInterface, Map<String, CarbonExpression> children){
+    public CompoundExpression(CarbonScope scope, CarbonInterface carbonInterface, Map<String, CarbonExpression> children){
         super(scope, carbonInterface);
         this.children = children;
     }
@@ -36,7 +37,7 @@ public class CompositeExpression extends CarbonExpression {
 
     @Override
     public String getShortString() {
-        return "CompositeExpression : " + getInterface().getShortString();
+        return "CompoundExpression : " + getInterface().getShortString();
     }
 
     public String getBodyString(int level){
@@ -56,6 +57,10 @@ public class CompositeExpression extends CarbonExpression {
         return children.containsKey(name);
     }
 
+    public Set<String> getMemberNames() {
+        return children.keySet();
+    }
+
     @Override
     public CarbonExpression reduce() {
         Map<String, CarbonExpression> newChildren = new HashMap<>();
@@ -63,6 +68,6 @@ public class CompositeExpression extends CarbonExpression {
             newChildren.put(name, children.get(name).reduce());
         }
 
-        return new CompositeExpression(getScope(), getInterface(), newChildren);
+        return new CompoundExpression(getScope(), getInterface(), newChildren);
     }
 }

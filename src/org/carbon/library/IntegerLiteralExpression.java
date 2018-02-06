@@ -14,7 +14,7 @@ public class IntegerLiteralExpression extends IntegerExpression {
     private int value;
 
     public IntegerLiteralExpression(CarbonScope scope, int value){
-        super(scope);
+        super(scope, new IntegerConstantInterface(scope, value));
         this.value = value;
     }
 

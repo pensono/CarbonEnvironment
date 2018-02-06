@@ -32,11 +32,11 @@ public class StatementNode extends SyntaxNode {
         return label;
     }
 
-    public Optional<TypeNode> getType() {
+    public Optional<TypeNode> getLhsType() {
         return type;
     }
 
-    public ExpressionNode getValue() {
+    public ExpressionNode getRhs() {
         return value;
     }
 

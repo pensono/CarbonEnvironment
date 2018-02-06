@@ -15,7 +15,7 @@ public class NumericNode extends ExpressionNode {
     }
 
     @Override
-    public CarbonExpression link(CarbonScope scope) {
+    public CarbonExpression linkExpression(CarbonScope scope) {
         return new IntegerLiteralExpression(scope, value);
     }
 

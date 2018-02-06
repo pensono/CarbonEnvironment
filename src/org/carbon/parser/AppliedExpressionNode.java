@@ -1,7 +1,7 @@
 package org.carbon.parser;
 
 import org.carbon.PrettyPrintable;
-import org.carbon.compiler.LinkException;
+import org.carbon.compiler.TypeException;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
@@ -29,11 +29,11 @@ public class AppliedExpressionNode extends ExpressionNode{
     }
 
     @Override
-    public CarbonExpression link(CarbonScope scope) {
-        CarbonExpression expression = this.expression.link(scope);
+    public CarbonExpression linkExpression(CarbonScope scope) {
+        CarbonExpression expression = this.expression.linkExpression(scope);
 
         if (expression.getInterface().getParameters().size() != arguments.size()) {
-            throw new LinkException("Not enough parameters for " + expression.getShortString() +
+            throw new TypeException("Not enough parameters for " + expression.getShortString() +
                     "\nRequired: " + expression.getInterface().getParameters().size() + " Found: " + arguments.size() +
                     "\nParameters:\n"+PrettyPrintable.fullString(arguments, 1));
         }
@@ -43,10 +43,10 @@ public class AppliedExpressionNode extends ExpressionNode{
             ExpressionNode argument = arguments.get(i);
             CarbonInterface parameterInterface = parameterInterfaces.get(i);
 
-            CarbonExpression argumentExpression = argument.link(scope);
-            if (!parameterInterface.isSupertypeOf(argumentExpression.getInterface())){
-                throw new LinkException("Interface of argument " + argumentExpression.getShortString() +
-                        " is not compatable with " + parameterInterface);
+            CarbonExpression argumentExpression = argument.linkExpression(scope);
+            if (!argumentExpression.getInterface().isSubtypeOf(parameterInterface)){
+                throw new TypeException("Interface of argument " + argumentExpression.getShortString() +
+                        " is not compatible with " + parameterInterface.getShortString());
             }
 
             expression = expression.apply(argumentExpression);

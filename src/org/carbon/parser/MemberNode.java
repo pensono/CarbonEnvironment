@@ -17,8 +17,8 @@ public class MemberNode extends ExpressionNode {
     }
 
     @Override
-    public CarbonExpression link(CarbonScope scope) {
-        CarbonExpression baseExpression = base.link(scope);
+    public CarbonExpression linkExpression(CarbonScope scope) {
+        CarbonExpression baseExpression = base.linkExpression(scope);
 
         for (String name : identifier) {
             baseExpression = baseExpression.getMember(name)
