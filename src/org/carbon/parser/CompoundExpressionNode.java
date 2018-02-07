@@ -42,7 +42,10 @@ public class CompoundExpressionNode extends ExpressionNode {
             } else {
                 CarbonInterface carbonInterface = statement.getLhsType()
                         .map(tn -> tn.linkInterface(scope))
-                        .orElseGet(() -> new CarbonInterface(scope));
+                        .orElseGet(() -> scope.getMember(statement.getLabel())
+                                .filter(e -> e instanceof CarbonInterface)
+                                .map(e -> (CarbonInterface) e)
+                                .orElseThrow(() -> new TypeException(statement.getLabel() + " is not an interface in scope " + scope.getShortString())));
                 newExpression.addParameter(statement.getLabel(), carbonInterface);
             }
 

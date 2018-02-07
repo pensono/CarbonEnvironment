@@ -3,7 +3,9 @@ package org.carbon.parser;
 import org.carbon.compiler.Compiler;
 import org.carbon.compiler.TypeException;
 import org.carbon.library.CarbonLibrary;
+import org.carbon.library.IntegerInterface;
 import org.carbon.runtime.CarbonScope;
+import org.carbon.runtime.ModifiableScope;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +15,7 @@ import static org.junit.Assert.*;
  * @author Ethan
  */
 public class TypeSystemTest {
-    CarbonScope scope;
+    ModifiableScope scope;
 
     @Before
     public void setup(){
@@ -43,6 +45,13 @@ public class TypeSystemTest {
     @Test
     public void applicationTypesafety(){
         assertThrows(TypeException.class, compileExpression("5 + True"));
+    }
+
+    @Test
+    public void nameTypeInfrence(){
+        Compiler.compileStatementsInto(scope, "Test = { Integer; };");
+        assertEquals(1, scope.getMember("Test").get()
+                .getInterface().getArity()); // Not sure how to check this...
     }
 
     private Runnable compileStatement(String text){

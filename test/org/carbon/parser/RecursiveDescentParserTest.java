@@ -7,6 +7,7 @@ import org.carbon.library.CarbonLibrary;
 import org.carbon.library.IntegerLiteralExpression;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
+import org.carbon.runtime.ModifiableScope;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ import static org.junit.Assert.*;
  * @author Ethan
  */
 public class RecursiveDescentParserTest {
-    CarbonScope scope;
+    ModifiableScope scope;
 
     @Before
     public void setup(){
@@ -113,6 +114,10 @@ public class RecursiveDescentParserTest {
         Compiler.compileStatementsInto(scope, "Test = 1234");
     }
 
+    @Test(expected = ParseException.class)
+    public void expressionFailsAsStatement() throws Exception {
+        Compiler.compileStatementsInto(scope, "Test { Integer; }");
+    }
 
     // Uncomment when refinements/a type system are implemented
 //    @Test
