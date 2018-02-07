@@ -32,7 +32,7 @@ public class TypeSystemTest {
     public void rangeIntegerTypesafetyComplexRhs(){
         assertThrows(TypeException.class, compileStatement("Test : Integer[< 4] = 2 + 4;"));
         assertThrows(TypeException.class, compileStatement("Test : Integer[> 4] = 3 - 4;"));
-        assertThrows(TypeException.class, compileStatement("Test : Integer[> 4] = 4 * 1;"));
+        assertThrows(TypeException.class, compileStatement("Test : Integer[< 4] = 3 * 2;"));
     }
 
     @Test
