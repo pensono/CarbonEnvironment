@@ -25,7 +25,7 @@ public class IdentifierNode extends ExpressionNode implements Iterable<String> {
         this.labels = labels;
     }
 
-    public CarbonExpression link(CarbonScope scope) {
+    public CarbonExpression linkExpression(CarbonScope scope) {
         List<String> identifier = new ArrayList<>(labels);
         return scope.getByIdentifier(identifier)
                 .orElseThrow(() -> new LinkException("Could not find identifier \"" + String.join(".", labels) + "\" in " + scope.getShortString()));

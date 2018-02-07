@@ -1,9 +1,12 @@
 package org.carbon.library;
 
 import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
 import org.carbon.parser.ParseException;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.IntBinaryOperator;
 
@@ -20,8 +23,10 @@ public class IntegerArithmeticExpression extends IntegerExpression {
     private String operatorName;
     private IntBinaryOperator operator;
 
-    private IntegerArithmeticExpression(CarbonScope scope, IntegerExpression lhs, Optional<IntegerExpression> rhs, IntBinaryOperator operator, String operatorName) {
-        super(scope);
+    // The way the parameterInterfaces is handled is bad
+    private IntegerArithmeticExpression(CarbonScope scope, IntBinaryOperator operator, String operatorName,
+                                        IntegerExpression lhs, Optional<IntegerExpression> rhs, List<CarbonInterface> parameterInterfaces) {
+        super(scope, new IntegerInterface(scope, parameterInterfaces));
         this.lhs = lhs;
         this.rhs = rhs;
         this.operatorName = operatorName;
@@ -29,11 +34,11 @@ public class IntegerArithmeticExpression extends IntegerExpression {
     }
 
     public IntegerArithmeticExpression(CarbonScope scope, IntBinaryOperator operator, String operatorName, IntegerExpression lhs) {
-        this(scope, lhs, Optional.empty(), operator, operatorName);
+        this(scope, operator, operatorName, lhs, Optional.empty(), Collections.singletonList(new IntegerInterface(scope)));
     }
 
     public IntegerArithmeticExpression(CarbonScope scope, IntBinaryOperator operator, String operatorName, IntegerExpression lhs, IntegerExpression rhs) {
-        this(scope, lhs, Optional.of(rhs), operator, operatorName);
+        this(scope, operator, operatorName, lhs, Optional.of(rhs), Collections.emptyList());
     }
 
     @Override

@@ -17,14 +17,14 @@ public class BooleanInterfaceTest {
 
         BooleanInterface noRefinement = new BooleanInterface(lib);
 
-        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface(lib, Mockito.anyBoolean())));
-        assertTrue(noRefinement.isSupertypeOf(new BooleanInterface(lib)));
+        assertTrue(noRefinement.isSubtypeOf(new BooleanInterface(lib, Mockito.anyBoolean())));
+        assertTrue(noRefinement.isSubtypeOf(new BooleanInterface(lib)));
 
         BooleanInterface aRefinement = new BooleanInterface(lib, true);
 
-        assertTrue(aRefinement.isSupertypeOf(new BooleanInterface(lib, true)));
-        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface(lib, false)));
-        assertFalse(aRefinement.isSupertypeOf(new BooleanInterface(lib)));
+        assertTrue(aRefinement.isSubtypeOf(new BooleanInterface(lib, true)));
+        assertFalse(aRefinement.isSubtypeOf(new BooleanInterface(lib, false)));
+        assertFalse(aRefinement.isSubtypeOf(new BooleanInterface(lib)));
     }
 
     @Test

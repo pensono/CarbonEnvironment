@@ -1,36 +1,51 @@
 package org.carbon.parser;
 
-import org.carbon.compiler.CompositeExpression;
+import org.carbon.compiler.CompoundExpression;
+import org.carbon.compiler.TypeException;
 import org.carbon.runtime.CarbonExpression;
+import org.carbon.runtime.CarbonInterface;
 import org.carbon.runtime.CarbonScope;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Ethan
  */
 public class CompoundExpressionNode extends ExpressionNode {
-    private List<StatementNode> members;
+    private List<StatementNode> statements;
 
     public CompoundExpressionNode(List<StatementNode> members) {
-        this.members = members;
+        this.statements = members;
     }
 
     @Override
-    public CompositeExpression link(CarbonScope scope) {
-        // Build a dependency graph and link with a pre-order traversal.
+    public CompoundExpression linkExpression(CarbonScope scope) {
+        // Build a dependency graph and linkExpression with a pre-order traversal.
         // Cyclic dependencies are not allowed in Carbon
 
         // ... eventually
 
         // For now, lets just require that an item is declared in source before it is referenced.
         // This policy can be relaxed later
-        CompositeExpression newExpression = new CompositeExpression(scope);
-        for (StatementNode member : members) {
-            newExpression.addMember(member.getLabel(), member.getValue().link(newExpression));
+        CompoundExpression newExpression = new CompoundExpression(scope);
+        for (StatementNode statement : statements) {
+            if (statement.getRhs().isPresent()) {
+                CarbonExpression rhs = statement.getRhs().get().linkExpression(scope);
+                if (statement.getLhsType().isPresent()) {
+                    CarbonInterface lhsInterface = statement.getLhsType().get().linkInterface(scope);
+                    if (!rhs.getInterface().isSubtypeOf(lhsInterface)) {
+                        throw new TypeException(rhs.getShortString() + " is not a subtype of " + lhsInterface.getShortString());
+                    }
+                }
+
+                newExpression.addMember(statement.getLabel(), rhs);
+            } else {
+                CarbonInterface carbonInterface = statement.getLhsType()
+                        .map(tn -> tn.linkInterface(scope))
+                        .orElseGet(() -> new CarbonInterface(scope));
+                newExpression.addParameter(statement.getLabel(), carbonInterface);
+            }
+
         }
 
         return newExpression;
@@ -41,7 +56,7 @@ public class CompoundExpressionNode extends ExpressionNode {
         return "Compound Expression";
     }
 
-    public List<StatementNode> getMembers() {
-        return members;
+    public List<StatementNode> getStatements() {
+        return statements;
     }
 }

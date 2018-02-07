@@ -22,7 +22,7 @@ public class Compiler {
             throw new ParseException("End of expression reached while input is remaining", tokens.nextToken());
         }
 
-        CarbonExpression expression = syntax.link(scope);
+        CarbonExpression expression = syntax.linkExpression(scope);
         //System.out.println(expression.getFullString());
 
         return expression.reduce();
@@ -37,9 +37,11 @@ public class Compiler {
             throw new ParseException("End of expression reached while input is remaining", tokens.nextToken());
         }
 
+        CompoundExpression expression = syntax.linkExpression(scope);
+
         // Eventually order shouldn't matter here
-        for (StatementNode statement : syntax.getMembers()) {
-            scope.addMember(statement.getLabel(), statement.getValue().link(scope));
+        for (String memberName : expression.getMemberNames()) {
+            scope.addMember(memberName, expression.getMember(memberName).get());
         }
     }
 }

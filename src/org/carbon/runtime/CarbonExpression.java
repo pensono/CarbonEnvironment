@@ -28,7 +28,9 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
     }
 
     /**
-     * Returns a version of this expression with the given parameter filled out
+     * Returns a version of this expression with the given parameter filled out.
+     *
+     * This parameter must typecheck.
      *
      * @param parameter
      * @return

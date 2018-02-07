@@ -28,8 +28,8 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
      * @param carbonInterface
      * @return
      */
-    public boolean isSupertypeOf(CarbonInterface carbonInterface) {
-        return (carbonInterface instanceof CarbonInterface);
+    public boolean isSubtypeOf(CarbonInterface carbonInterface) {
+        return (carbonInterface.getClass() == CarbonInterface.class);
     }
 
     public Optional<CarbonInterface> getInterfaceMember(String name) {
@@ -56,5 +56,9 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
 
     public int getArity() {
         return parameters.size();
+    }
+
+    public void addParameter(String name, CarbonInterface parameterInterface) {
+        parameters.add(parameterInterface); // Ignoring name??
     }
 }

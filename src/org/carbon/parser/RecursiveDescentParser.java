@@ -17,14 +17,13 @@ public class RecursiveDescentParser {
             //case "|":
             // return parseEnumeration(tokens);
             default:
-                ExpressionNode expression = parseValueExpression(tokens);
-                return expression;
+                return parseValueExpression(tokens);
         }
     }
 
     private ExpressionNode parseValueExpression(TokenIterator tokens) {
         ExpressionNode expression = parseTermExpression(tokens);
-        while (tokens.hasNext() && tokens.peekToken().getType() == TokenType.SYMBOL) {
+        while (tokens.hasNext() && tokens.isNext(TokenType.SYMBOL)) {
             String operator = tokens.next();
 
             ExpressionNode argument = parseTermExpression(tokens);
@@ -38,10 +37,14 @@ public class RecursiveDescentParser {
     private ExpressionNode parseTermExpression(TokenIterator tokens) {
         ExpressionNode expression;
 
-        if (tokens.peekToken().getType() == TokenType.NUMERIC) {
+        if (tokens.isNext("-")) {
+            tokens.consume("-");
+            int value = -Integer.parseInt(tokens.next()); // Support unary operators?
+            expression = new NumericNode(value);            
+        } else if (tokens.isNext(TokenType.NUMERIC)) {
             int value = Integer.parseInt(tokens.next()); // Should be able to parse custom numeric types
             expression = new NumericNode(value);
-        } else if (tokens.peek().equals("(")) {
+        } else if (tokens.isNext("(")) {
             tokens.consume("(");
             expression = parseValueExpression(tokens);
             tokens.consume(")");
@@ -49,18 +52,18 @@ public class RecursiveDescentParser {
             expression = parseIdentifier(tokens);
         }
 
-        while (tokens.hasNext() && (tokens.peek().equals(".") || tokens.peek().equals("("))) {
-            if (tokens.peek().equals(".")) {
+        while (tokens.hasNext() && (tokens.isNext(".") || tokens.isNext("("))) {
+            if (tokens.isNext(".")) {
                 tokens.consume(".");
 
                 IdentifierNode identifier = parseIdentifier(tokens);
 
                 expression = new MemberNode(expression, identifier);
-            } else if (tokens.peek().equals("(")) {
+            } else if (tokens.isNext("(")) {
                 tokens.consume("(");
                 List<ExpressionNode> arguments = new ArrayList<>();
                 arguments.add(parseExpression(tokens));
-                while (!tokens.peek().equals(")")) {
+                while (!tokens.isNext(")")) {
                     tokens.consume(",");
                     arguments.add(parseExpression(tokens));
                 }
@@ -76,7 +79,7 @@ public class RecursiveDescentParser {
         List<StatementNode> statements = new ArrayList<>();
 
         tokens.consume("{");
-        while (!tokens.peek().equals("}")) {
+        while (!tokens.isNext("}")) {
             statements.add(parseStatement(tokens));
         }
         tokens.consume("}");
@@ -88,7 +91,7 @@ public class RecursiveDescentParser {
         List<String> labels = new ArrayList<>();
         labels.add(tokens.next());
 
-        while (tokens.hasNext() && tokens.peek().equals(".")) {
+        while (tokens.hasNext() && tokens.isNext(".")) {
             tokens.consume(".");
             labels.add(tokens.next());
         }
@@ -100,13 +103,16 @@ public class RecursiveDescentParser {
         String label = tokens.next();
 
         Optional<TypeNode> type = Optional.empty();
-        if (tokens.peek().equals(":")) {
+        if (tokens.isNext(":")) {
+            tokens.consume(":");
             type = Optional.of(parseType(tokens));
         }
 
-        tokens.consume("=");
-
-        ExpressionNode expression = parseExpression(tokens);
+        Optional<ExpressionNode> expression = Optional.empty();
+        if (tokens.isNext("=")) {
+            tokens.consume("=");
+            expression = Optional.of(parseExpression(tokens));
+        }
 
         tokens.consume(";");
 
@@ -114,8 +120,42 @@ public class RecursiveDescentParser {
     }
 
     private TypeNode parseType(TokenIterator tokens) {
-        // TODO: Refinements
-        return new TypeNode(parseIdentifier(tokens));
+        IdentifierNode typeIdentifier = parseIdentifier(tokens);
+
+        List<RefinementNode> refinements = new ArrayList<>();
+        if (tokens.isNext("[")) {
+            tokens.consume("[");
+
+            refinements.add(parseRefinement(tokens));
+            while (!tokens.isNext("]")) {
+                refinements.add(parseRefinement(tokens));
+                tokens.consume(",");
+            }
+            tokens.consume("]");
+        }
+
+        return new TypeNode(typeIdentifier, refinements);
+    }
+
+    private RefinementNode parseRefinement(TokenIterator tokens) {
+        if (tokens.isNext(TokenType.SYMBOL)) {
+            String symbol = tokens.next();
+            return new RefinementNode(symbol, Collections.singletonList(parseExpression(tokens)));
+        } else {
+            String identifier = tokens.next();
+
+            List<ExpressionNode> arguments = new ArrayList<>();
+            if (tokens.isNext("(")) {
+                tokens.consume("(");
+                while (!tokens.isNext(")")) {
+                    arguments.add(parseExpression(tokens));
+                    tokens.consume(",");
+                }
+                tokens.consume(")");
+            }
+
+            return new RefinementNode(identifier, arguments);
+        }
     }
 
     public CompoundExpressionNode parseStatements(TokenIterator tokens) {
