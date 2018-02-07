@@ -29,15 +29,23 @@ public class CompoundExpressionNode extends ExpressionNode {
         // This policy can be relaxed later
         CompoundExpression newExpression = new CompoundExpression(scope);
         for (StatementNode statement : statements) {
-            CarbonExpression rhs = statement.getRhs().linkExpression(newExpression);
-            if (statement.getLhsType().isPresent()) {
-                CarbonInterface lhsInterface = statement.getLhsType().get().linkInterface(scope);
-                if (!rhs.getInterface().isSubtypeOf(lhsInterface)) {
-                    throw new TypeException(rhs.getShortString() + " is not a subtype of " + lhsInterface.getShortString());
+            if (statement.getRhs().isPresent()) {
+                CarbonExpression rhs = statement.getRhs().get().linkExpression(scope);
+                if (statement.getLhsType().isPresent()) {
+                    CarbonInterface lhsInterface = statement.getLhsType().get().linkInterface(scope);
+                    if (!rhs.getInterface().isSubtypeOf(lhsInterface)) {
+                        throw new TypeException(rhs.getShortString() + " is not a subtype of " + lhsInterface.getShortString());
+                    }
                 }
+
+                newExpression.addMember(statement.getLabel(), rhs);
+            } else {
+                CarbonInterface carbonInterface = statement.getLhsType()
+                        .map(tn -> tn.linkInterface(scope))
+                        .orElseGet(() -> new CarbonInterface(scope));
+                newExpression.addParameter(statement.getLabel(), carbonInterface);
             }
 
-            newExpression.addMember(statement.getLabel(), rhs);
         }
 
         return newExpression;

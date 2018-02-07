@@ -43,8 +43,7 @@ public class RootScope implements CarbonScope {
         return members.containsKey(name);
     }
 
-    @Override
-    public void addMember(String name, CarbonExpression member) {
+    public void addMember(String name, CarbonExpression member) { // Not 100% on this existing
         members.put(name, member);
     }
 }

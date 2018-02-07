@@ -57,4 +57,8 @@ public class CarbonInterface extends CarbonExpression implements PrettyPrintable
     public int getArity() {
         return parameters.size();
     }
+
+    public void addParameter(String name, CarbonInterface parameterInterface) {
+        parameters.add(parameterInterface); // Ignoring name??
+    }
 }

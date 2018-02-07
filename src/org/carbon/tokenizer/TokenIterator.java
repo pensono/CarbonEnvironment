@@ -19,10 +19,15 @@ public class TokenIterator implements PeekingIterator<String> {
     }
 
     public void consume(String tokenStr){
+        if (!impl.hasNext()) {
+            throw new ParseException("End of input reached. Expecting a " + tokenStr);
+        }
+
         Token token = impl.next();
-        if (!token.getText().equals(tokenStr))
+        if (!token.getText().equals(tokenStr)) {
             throw new ParseException("Expected a " + tokenStr + " at line:col " + token.getLineNumber() +
                     ":" + token.getColumnNumber() + ". Instead got a " + token.getText() + "\n" + token.getLine());
+        }
     }
 
     public boolean isNext(String s) {

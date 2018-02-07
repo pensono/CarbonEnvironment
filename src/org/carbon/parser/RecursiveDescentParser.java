@@ -108,8 +108,11 @@ public class RecursiveDescentParser {
             type = Optional.of(parseType(tokens));
         }
 
-        tokens.consume("=");
-        ExpressionNode expression = parseExpression(tokens);
+        Optional<ExpressionNode> expression = Optional.empty();
+        if (tokens.isNext("=")) {
+            tokens.consume("=");
+            expression = Optional.of(parseExpression(tokens));
+        }
 
         tokens.consume(";");
 

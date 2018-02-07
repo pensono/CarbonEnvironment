@@ -1,6 +1,7 @@
 package org.carbon.parser;
 
 import org.carbon.compiler.Compiler;
+import org.carbon.compiler.CompoundExpression;
 import org.carbon.compiler.LinkException;
 import org.carbon.library.CarbonLibrary;
 import org.carbon.library.IntegerLiteralExpression;
@@ -83,6 +84,15 @@ public class RecursiveDescentParserTest {
     }
 
     @Test
+    public void noValueParameterized() throws Exception {
+        Compiler.compileStatementsInto(scope, "Test = { Member : Integer; };");
+
+        CompoundExpression expr = (CompoundExpression) scope.getMember("Test").get();
+        assertEquals(1, expr.getInterface().getArity());
+        // assertTrue(expr.getMember("Member").isPresent()); // Not sure how I want to implement this yet...
+    }
+
+    @Test
     public void parseMultiDigitNumber() throws Exception {
         assertEquals(1234, compileIntExpression("1234"));
     }
@@ -97,6 +107,12 @@ public class RecursiveDescentParserTest {
         CarbonExpression value = Compiler.compileExpression(scope, expression);
         return ((IntegerLiteralExpression) value).getValue();
     }
+
+    @Test(expected = ParseException.class)
+    public void needsSemicolonEndOfInput() throws Exception {
+        Compiler.compileStatementsInto(scope, "Test = 1234");
+    }
+
 
     // Uncomment when refinements/a type system are implemented
 //    @Test

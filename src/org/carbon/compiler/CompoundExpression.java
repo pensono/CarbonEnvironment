@@ -61,6 +61,11 @@ public class CompoundExpression extends CarbonExpression {
         return children.keySet();
     }
 
+    // Should be immutable?
+    public void addParameter(String parameterName, CarbonInterface parameterType) {
+        getInterface().addParameter(parameterName, parameterType);
+    }
+
     @Override
     public CarbonExpression reduce() {
         Map<String, CarbonExpression> newChildren = new HashMap<>();
