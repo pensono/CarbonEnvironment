@@ -20,8 +20,6 @@ public interface CarbonScope extends PrettyPrintable {
      */
     boolean hasMember(String name);
 
-    void addMember(String name, CarbonExpression member); // I don't like that this method exists
-
     default Optional<CarbonExpression> getByIdentifier(List<String> identifier) {
         if (identifier.isEmpty()) {
             return Optional.empty();

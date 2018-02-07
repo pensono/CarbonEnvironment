@@ -12,7 +12,7 @@ import java.util.Optional;
 /**
  * Created by Ethan Shea on 9/6/2016.
  */
-public class RootScope implements CarbonScope {
+public class RootScope implements ModifiableScope {
     private Map<String, CarbonExpression> members = new HashMap<>();
 
     @Override

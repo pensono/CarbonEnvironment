@@ -3,6 +3,7 @@ package org.carbon.compiler;
 import org.carbon.parser.*;
 import org.carbon.runtime.CarbonExpression;
 import org.carbon.runtime.CarbonScope;
+import org.carbon.runtime.ModifiableScope;
 import org.carbon.tokenizer.TokenIterator;
 import org.carbon.tokenizer.Tokenizer;
 
@@ -27,7 +28,7 @@ public class Compiler {
         return expression.reduce();
     }
 
-    public static void compileStatementsInto(CarbonScope scope, String input) {
+    public static void compileStatementsInto(ModifiableScope scope, String input) {
         RecursiveDescentParser parser = new RecursiveDescentParser();
         TokenIterator tokens = new TokenIterator(Tokenizer.tokenize(input));
 

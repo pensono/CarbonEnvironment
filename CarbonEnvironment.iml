@@ -19,6 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="org.mockito:mockito-core:2.13.0" level="application" />
+    <orderEntry type="library" name="org.mockito:mockito-core:2.13.0" level="project" />
   </component>
 </module>

@@ -42,8 +42,6 @@ public abstract class CarbonExpression implements PrettyPrintable, CarbonScope {
         return Optional.empty();
     }
 
-    public void addMember(String name, CarbonExpression expression) { }
-
     public Optional<CarbonExpression> getByIdentifier(List<String> identifier) {
         if (identifier.isEmpty()) {
             return Optional.of(this);
